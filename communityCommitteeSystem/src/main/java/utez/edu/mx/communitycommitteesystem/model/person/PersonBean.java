@@ -1,9 +1,9 @@
 package utez.edu.mx.communitycommitteesystem.model.person;
 
 import jakarta.persistence.*;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import utez.edu.mx.communitycommitteesystem.model.municipality.MunicipalityBean;
 import utez.edu.mx.communitycommitteesystem.model.state.StateBean;
 
 @Entity
@@ -29,4 +29,7 @@ public class PersonBean {
 
     @OneToOne(mappedBy = "personBean", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private StateBean stateBean;
+
+    @OneToOne(mappedBy = "personBean", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private MunicipalityBean municipalityBean;
 }
