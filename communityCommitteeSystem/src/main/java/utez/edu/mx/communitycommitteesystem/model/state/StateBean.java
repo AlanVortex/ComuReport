@@ -18,7 +18,7 @@ public class StateBean {
     @Column(length = 100, nullable = false)
     private String nameState;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne
     @JoinColumn(name = "idPerson")
     private PersonBean personBean;
 }
