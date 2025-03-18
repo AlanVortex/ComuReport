@@ -3,7 +3,11 @@ package utez.edu.mx.communitycommitteesystem.model.person;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import utez.edu.mx.communitycommitteesystem.model.area.AreaBean;
+import utez.edu.mx.communitycommitteesystem.model.colony.ColonyBean;
+import utez.edu.mx.communitycommitteesystem.model.committee.CommitteeBean;
 import utez.edu.mx.communitycommitteesystem.model.municipality.MunicipalityBean;
+import utez.edu.mx.communitycommitteesystem.model.sms.SmsBean;
 import utez.edu.mx.communitycommitteesystem.model.state.StateBean;
 
 @Entity
@@ -32,4 +36,18 @@ public class PersonBean {
 
     @OneToOne(mappedBy = "personBean", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private MunicipalityBean municipalityBean;
+
+    @OneToOne(mappedBy = "personBean", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private ColonyBean colonyBean;
+
+    @OneToOne(mappedBy = "personBean", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private CommitteeBean committeeBean;
+
+    @OneToOne(mappedBy = "personBean", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private AreaBean areaBean;
+
+    @OneToOne(mappedBy = "personBean", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private SmsBean smsBean;
+
+
 }

@@ -4,7 +4,10 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import utez.edu.mx.communitycommitteesystem.model.municipality.MunicipalityBean;
 import utez.edu.mx.communitycommitteesystem.model.person.PersonBean;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -21,4 +24,7 @@ public class StateBean {
     @OneToOne
     @JoinColumn(name = "idPerson")
     private PersonBean personBean;
+
+    @OneToMany( mappedBy = "stateBean",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<MunicipalityBean> municipalityBeanList;
 }
