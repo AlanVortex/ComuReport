@@ -3,7 +3,12 @@ package utez.edu.mx.communitycommitteesystem.model.municipality;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import utez.edu.mx.communitycommitteesystem.model.area.AreaBean;
+import utez.edu.mx.communitycommitteesystem.model.colony.ColonyBean;
 import utez.edu.mx.communitycommitteesystem.model.person.PersonBean;
+import utez.edu.mx.communitycommitteesystem.model.state.StateBean;
+
+import java.util.List;
 
 @Entity
 @Getter
@@ -22,5 +27,13 @@ public class MunicipalityBean {
     @JoinColumn(name = "idPerson")
     private PersonBean personBean;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "idState")
+    private StateBean stateBean;
 
+    @OneToMany( mappedBy = "municipalityBean",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<ColonyBean> colonyBeanList;
+
+    @OneToMany( mappedBy = "municipalityBean",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<AreaBean> areaBeanList;
 }
