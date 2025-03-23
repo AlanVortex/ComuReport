@@ -1,7 +1,6 @@
 package utez.edu.mx.communitycommitteesystem.model.state;
 
 import jakarta.persistence.*;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import utez.edu.mx.communitycommitteesystem.model.municipality.MunicipalityBean;

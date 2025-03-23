@@ -1,7 +1,6 @@
 package utez.edu.mx.communitycommitteesystem.model.colony;
 
 import jakarta.persistence.*;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import utez.edu.mx.communitycommitteesystem.model.committee.CommitteeBean;
@@ -31,9 +30,64 @@ public class ColonyBean {
     @JoinColumn(name = "idMunicipality")
     private MunicipalityBean municipalityBean;
 
-    @OneToMany( mappedBy = "colonyBean",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "colonyBean", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<CommitteeBean> committeeBeanList;
 
-    @OneToMany( mappedBy = "colonyBean",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "colonyBean", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ReportBean> reportBeanList;
+
+    public ColonyBean() {
+    }
+
+    public ColonyBean(Long id) {
+        this.id = id;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getNameColony() {
+        return nameColony;
+    }
+
+    public void setNameColony(String nameColony) {
+        this.nameColony = nameColony;
+    }
+
+    public PersonBean getPersonBean() {
+        return personBean;
+    }
+
+    public void setPersonBean(PersonBean personBean) {
+        this.personBean = personBean;
+    }
+
+    public MunicipalityBean getMunicipalityBean() {
+        return municipalityBean;
+    }
+
+    public void setMunicipalityBean(MunicipalityBean municipalityBean) {
+        this.municipalityBean = municipalityBean;
+    }
+
+    public List<CommitteeBean> getCommitteeBeanList() {
+        return committeeBeanList;
+    }
+
+    public void setCommitteeBeanList(List<CommitteeBean> committeeBeanList) {
+        this.committeeBeanList = committeeBeanList;
+    }
+
+    public List<ReportBean> getReportBeanList() {
+        return reportBeanList;
+    }
+
+    public void setReportBeanList(List<ReportBean> reportBeanList) {
+        this.reportBeanList = reportBeanList;
+    }
 }
