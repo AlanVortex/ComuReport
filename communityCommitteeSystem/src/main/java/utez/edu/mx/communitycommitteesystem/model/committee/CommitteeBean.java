@@ -7,6 +7,7 @@ import utez.edu.mx.communitycommitteesystem.model.colony.ColonyBean;
 import utez.edu.mx.communitycommitteesystem.model.person.PersonBean;
 import utez.edu.mx.communitycommitteesystem.model.report.ReportBean;
 import utez.edu.mx.communitycommitteesystem.model.status.StatusBean;
+import utez.edu.mx.communitycommitteesystem.model.statusCommittee.StatusCommitteeBean;
 
 import java.util.List;
 
@@ -34,17 +35,16 @@ public class CommitteeBean {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idStatus")
-    private StatusBean statusBean;
+    private StatusCommitteeBean statusCommitteeBean;
 
     public CommitteeBean() {
         // Este es el constructor sin parámetros que puedes usar en el controlador
     }
-    public CommitteeBean(Long id, ColonyBean colonyBean, PersonBean personBean, List<ReportBean> reportBeanList, StatusBean statusBean) {
+    public CommitteeBean(Long id, ColonyBean colonyBean, PersonBean personBean, List<ReportBean> reportBeanList) {
         this.id = id;
         this.colonyBean = colonyBean;
         this.personBean = personBean;
         this.reportBeanList = reportBeanList;
-        this.statusBean = statusBean;
     }
 
     public PersonBean getPersonBean() {
@@ -57,7 +57,7 @@ public class CommitteeBean {
     public void setColonyBean(ColonyBean colonyBean) {
         this.colonyBean = colonyBean;
     }
-    public void setStatusBean(StatusBean statusBean) {
-        this.statusBean = statusBean;
+    public void setStatusCommitteeBean(StatusCommitteeBean statusCommitteeBean) {
+        this.statusCommitteeBean = statusCommitteeBean;
     }
 }

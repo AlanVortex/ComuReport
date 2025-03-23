@@ -19,14 +19,9 @@ public class StatusBean {
     private Long id;
     @Column(length = 100, nullable = false)
     private String type;
-    @Column(length = 100, nullable = false)
-    private String category;
 
     @OneToMany( mappedBy = "statusBean",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ReportBean> reportBeanList;
-
-    @OneToMany( mappedBy = "statusBean",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<CommitteeBean> committeeBeanList;
 
     public StatusBean() {
     }
