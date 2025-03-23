@@ -40,4 +40,61 @@ public class MunicipalityBean {
 
     @OneToMany(mappedBy = "municipalityBean", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ReportBean> reportBeanList;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getNameMunicipality() {
+        return nameMunicipality;
+    }
+
+    public void setNameMunicipality(String nameMunicipality) {
+        this.nameMunicipality = nameMunicipality;
+    }
+
+    public StateBean getStateBean() {
+        return stateBean;
+    }
+
+    public void setStateBean(StateBean stateBean) {
+        this.stateBean = stateBean;
+    }
+
+    public List<ColonyBean> getColonyBeanList() {
+        return colonyBeanList;
+    }
+
+    public void setColonyBeanList(List<ColonyBean> colonyBeanList) {
+        this.colonyBeanList = colonyBeanList;
+    }
+
+    public List<AreaBean> getAreaBeanList() {
+        return areaBeanList;
+    }
+
+    public void setAreaBeanList(List<AreaBean> areaBeanList) {
+        this.areaBeanList = areaBeanList;
+    }
+
+    public List<ReportBean> getReportBeanList() {
+        return reportBeanList;
+    }
+
+    public void setReportBeanList(List<ReportBean> reportBeanList) {
+        this.reportBeanList = reportBeanList;
+    }
+
+    public PersonBean getPersonBean() {
+        return personBean;
+    }
+
+    public void setPersonBean(PersonBean personBean) {
+        this.personBean = personBean;
+    }
+
 }
