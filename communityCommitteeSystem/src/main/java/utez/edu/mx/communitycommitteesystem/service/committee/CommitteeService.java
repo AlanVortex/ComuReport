@@ -8,6 +8,9 @@ import utez.edu.mx.communitycommitteesystem.config.ApiResponse;
 import utez.edu.mx.communitycommitteesystem.model.committee.CommitteeBean;
 import utez.edu.mx.communitycommitteesystem.model.committee.CommitteeRepository;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class CommitteeService {
 
@@ -17,4 +20,17 @@ public class CommitteeService {
     public void save(CommitteeBean committee) {
         committeeRepository.save(committee);
     }
+    public List<CommitteeBean> findAll() {
+        return committeeRepository.findAll();
+    }
+
+    public Optional<CommitteeBean> findById(Long id) {
+        return committeeRepository.findById(id);
+    }
+
+    public CommitteeBean update(CommitteeBean committee) {
+        return committeeRepository.save(committee);
+    }
+
+
 }
