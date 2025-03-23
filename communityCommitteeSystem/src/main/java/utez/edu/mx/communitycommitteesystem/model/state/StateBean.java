@@ -26,4 +26,41 @@ public class StateBean {
 
     @OneToMany( mappedBy = "stateBean",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<MunicipalityBean> municipalityBeanList;
+
+    public StateBean() {
+    }
+
+    public PersonBean getPersonBean() {
+        return personBean;
+    }
+
+    public void setPersonBean(PersonBean personBean) {
+        this.personBean = personBean;
+    }
+
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getNameState() {
+        return nameState;
+    }
+
+    public void setNameState(String nameState) {
+        this.nameState = nameState;
+    }
+
+    public List<MunicipalityBean> getMunicipalityBeanList() {
+        return municipalityBeanList;
+    }
+
+    public void setMunicipalityBeanList(List<MunicipalityBean> municipalityBeanList) {
+        this.municipalityBeanList = municipalityBeanList;
+    }
+
 }

@@ -23,5 +23,9 @@ public class PersonService {
     public PersonBean saveMun(PersonBean person) {
         return personRepository.save(person);
     }
+
+    public PersonBean saveState(PersonBean person) {
+        return personRepository.save(person);
+    }
 }
 

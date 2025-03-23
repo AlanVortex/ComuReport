@@ -15,4 +15,8 @@ public class StateService {
     public Optional<StateBean> findById(Long id) {
         return stateRepository.findById(id);
     }
+
+    public void save(StateBean state) {
+        stateRepository.save(state);
+    }
 }
