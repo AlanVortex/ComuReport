@@ -6,6 +6,7 @@ import lombok.Setter;
 import utez.edu.mx.communitycommitteesystem.model.area.AreaBean;
 import utez.edu.mx.communitycommitteesystem.model.colony.ColonyBean;
 import utez.edu.mx.communitycommitteesystem.model.person.PersonBean;
+import utez.edu.mx.communitycommitteesystem.model.report.ReportBean;
 import utez.edu.mx.communitycommitteesystem.model.state.StateBean;
 
 import java.util.List;
@@ -36,4 +37,7 @@ public class MunicipalityBean {
 
     @OneToMany( mappedBy = "municipalityBean",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<AreaBean> areaBeanList;
+
+    @OneToMany(mappedBy = "municipalityBean", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<ReportBean> reportBeanList;
 }
