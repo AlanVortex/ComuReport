@@ -24,6 +24,7 @@ public class CommitteeBean {
     @JoinColumn(name = "idColony")
     private ColonyBean colonyBean;
 
+    @Getter
     @OneToOne
     @JoinColumn(name = "idPerson")
     private PersonBean personBean;
@@ -44,6 +45,10 @@ public class CommitteeBean {
         this.personBean = personBean;
         this.reportBeanList = reportBeanList;
         this.statusBean = statusBean;
+    }
+
+    public PersonBean getPersonBean() {
+        return personBean;
     }
 
     public void setPersonBean(PersonBean personBean) {

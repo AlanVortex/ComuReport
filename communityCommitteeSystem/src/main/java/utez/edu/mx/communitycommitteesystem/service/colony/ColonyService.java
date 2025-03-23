@@ -13,4 +13,8 @@ public class ColonyService {
     public ColonyBean findById(Long id) {
         return colonyRepository.findById(id).orElseThrow(() -> new RuntimeException("Colony not found"));
     }
+
+    public void save(ColonyBean colony) {
+        colonyRepository.save(colony);
+    }
 }
