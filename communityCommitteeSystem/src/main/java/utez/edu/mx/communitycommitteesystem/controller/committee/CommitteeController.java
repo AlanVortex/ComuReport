@@ -10,10 +10,12 @@ import utez.edu.mx.communitycommitteesystem.model.colony.ColonyBean;
 import utez.edu.mx.communitycommitteesystem.model.committee.CommitteeBean;
 import utez.edu.mx.communitycommitteesystem.model.person.PersonBean;
 import utez.edu.mx.communitycommitteesystem.model.status.StatusBean;
+import utez.edu.mx.communitycommitteesystem.model.statusCommittee.StatusCommitteeBean;
 import utez.edu.mx.communitycommitteesystem.service.colony.ColonyService;
 import utez.edu.mx.communitycommitteesystem.service.committee.CommitteeService;
 import utez.edu.mx.communitycommitteesystem.service.person.PersonService;
 import utez.edu.mx.communitycommitteesystem.service.status.StatusService;
+import utez.edu.mx.communitycommitteesystem.service.statusCommittee.StatusCommitteeService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +37,7 @@ public class CommitteeController {
     private ColonyService colonyService;
 
     @Autowired
-    private StatusService statusService;
+    private StatusCommitteeService statusService;
 
     @PostMapping("/register")
     public ResponseEntity<String> registerPresident(@RequestBody CommitteeDto committeeDto) {
@@ -52,12 +54,12 @@ public class CommitteeController {
 
             ColonyBean colony = colonyService.findById(committeeDto.getIdColony());
 
-            StatusBean status = statusService.findById(committeeDto.getIdStatus());
+            StatusCommitteeBean status = statusService.findById(committeeDto.getIdStatus());
 
             CommitteeBean committee = new CommitteeBean();
             committee.setPersonBean(person);
             committee.setColonyBean(colony);
-            committee.setStatusBean(status);
+            committee.setStatusCommitteeBean(status);
 
             committeeService.save(committee);
 
@@ -118,9 +120,9 @@ public class CommitteeController {
 
         if (committeeOptional.isPresent()) {
             CommitteeBean committee = committeeOptional.get();
-            StatusBean newStatus = new StatusBean();
+            StatusCommitteeBean newStatus = new StatusCommitteeBean();
             newStatus.setId(request.getIdStatus());
-            committee.setStatusBean(newStatus);
+            committee.setStatusCommitteeBean(newStatus);
 
             committeeService.save(committee);
             return ResponseEntity.ok("El estado del presidente ha sido actualizado correctamente.");
