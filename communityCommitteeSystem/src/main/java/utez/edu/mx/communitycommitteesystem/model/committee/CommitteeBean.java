@@ -6,6 +6,7 @@ import lombok.Setter;
 import utez.edu.mx.communitycommitteesystem.model.colony.ColonyBean;
 import utez.edu.mx.communitycommitteesystem.model.person.PersonBean;
 import utez.edu.mx.communitycommitteesystem.model.report.ReportBean;
+import utez.edu.mx.communitycommitteesystem.model.status.StatusBean;
 
 import java.util.List;
 
@@ -30,4 +31,28 @@ public class CommitteeBean {
     @OneToMany( mappedBy = "committeeBean",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ReportBean> reportBeanList;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "idStatus")
+    private StatusBean statusBean;
+
+    public CommitteeBean() {
+        // Este es el constructor sin parámetros que puedes usar en el controlador
+    }
+    public CommitteeBean(Long id, ColonyBean colonyBean, PersonBean personBean, List<ReportBean> reportBeanList, StatusBean statusBean) {
+        this.id = id;
+        this.colonyBean = colonyBean;
+        this.personBean = personBean;
+        this.reportBeanList = reportBeanList;
+        this.statusBean = statusBean;
+    }
+
+    public void setPersonBean(PersonBean personBean) {
+        this.personBean = personBean;
+    }
+    public void setColonyBean(ColonyBean colonyBean) {
+        this.colonyBean = colonyBean;
+    }
+    public void setStatusBean(StatusBean statusBean) {
+        this.statusBean = statusBean;
+    }
 }

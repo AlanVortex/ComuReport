@@ -52,7 +52,7 @@ public class ReportBean {
     private List<ImageBean> ImageBeanList;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "idCommittee") // Clave foránea
+    @JoinColumn(name = "idCommittee")
     private CommitteeBean committeeBean;
 
 }
