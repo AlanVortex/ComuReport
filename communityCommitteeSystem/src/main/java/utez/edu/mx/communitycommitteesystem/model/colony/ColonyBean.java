@@ -1,5 +1,6 @@
 package utez.edu.mx.communitycommitteesystem.model.colony;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -30,6 +31,7 @@ public class ColonyBean {
     @JoinColumn(name = "idPerson")
     private PersonBean personBean;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idMunicipality")
     private MunicipalityBean municipalityBean;
