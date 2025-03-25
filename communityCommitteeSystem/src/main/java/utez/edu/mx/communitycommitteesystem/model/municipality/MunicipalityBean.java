@@ -1,5 +1,7 @@
 package utez.edu.mx.communitycommitteesystem.model.municipality;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -32,10 +34,12 @@ public class MunicipalityBean {
     @JoinColumn(name = "idPerson")
     private PersonBean personBean;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idState")
     private StateBean stateBean;
 
+    @JsonIgnore
     @OneToMany( mappedBy = "municipalityBean",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ColonyBean> colonyBeanList;
 

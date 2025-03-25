@@ -11,6 +11,7 @@ import utez.edu.mx.communitycommitteesystem.service.municipality.MunicipalitySer
 import utez.edu.mx.communitycommitteesystem.service.person.PersonService;
 import utez.edu.mx.communitycommitteesystem.service.state.StateService;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -52,4 +53,19 @@ public class MunicipalityController {
 
         return ResponseEntity.ok("Municipio y administrador registrados correctamente. UUID: " );
     }
+
+    @GetMapping("/admins/{stateUuid}")
+    public ResponseEntity<List<MunicipalityBean>> getMunicipalitiesByStateUuid(@PathVariable String stateUuid) {
+        Optional<StateBean> stateOpt = Optional.ofNullable(stateService.findByUuid(stateUuid));
+
+        if (!stateOpt.isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+
+        StateBean state = stateOpt.get();
+        // Asegúrate de tener una lista de municipios para este estado
+        List<MunicipalityBean> municipalities = state.getMunicipalityBeanList();
+        return ResponseEntity.ok(municipalities);
+    }
+
 }
