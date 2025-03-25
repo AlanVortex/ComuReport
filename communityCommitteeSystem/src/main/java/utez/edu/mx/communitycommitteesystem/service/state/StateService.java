@@ -2,9 +2,11 @@ package utez.edu.mx.communitycommitteesystem.service.state;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import utez.edu.mx.communitycommitteesystem.model.municipality.MunicipalityBean;
 import utez.edu.mx.communitycommitteesystem.model.state.StateBean;
 import utez.edu.mx.communitycommitteesystem.model.state.StateRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -12,16 +14,22 @@ public class StateService {
     @Autowired
     private StateRepository stateRepository;
 
-    public Optional<StateBean> findById(Long id) {
-        return stateRepository.findById(id);
-    }
 
     public void save(StateBean state) {
         stateRepository.save(state);
     }
 
-    public StateBean findByUuid(String uuid) {
-        return stateRepository.findByUuid(uuid).orElse(null);
+    public StateBean findByUuid(String stateUuid) {
+        return stateRepository.findByUuid(stateUuid).orElse(null);
+    }
+
+    public List<StateBean> findByNameState(String nameState) {
+        return stateRepository.findByNameState(nameState);
+    }
+
+    // Si quieres obtener los estados que están asociados a un municipio en particular
+    public List<StateBean> findByMunicipality(MunicipalityBean municipalityBean) {
+        return stateRepository.findByMunicipalityBeanList(municipalityBean);
     }
 
 }
