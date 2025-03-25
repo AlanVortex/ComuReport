@@ -10,6 +10,7 @@ import utez.edu.mx.communitycommitteesystem.model.report.ReportBean;
 import utez.edu.mx.communitycommitteesystem.model.state.StateBean;
 
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -23,6 +24,9 @@ public class MunicipalityBean {
 
     @Column(length = 100, nullable = false)
     private String nameMunicipality;
+
+    @Column(length = 36, nullable = false, unique = true, updatable = false)
+    private String uuid;
 
     @OneToOne
     @JoinColumn(name = "idPerson")
@@ -41,6 +45,15 @@ public class MunicipalityBean {
     @OneToMany(mappedBy = "municipalityBean", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ReportBean> reportBeanList;
 
+
+    public MunicipalityBean() {
+        this.uuid = UUID.randomUUID().toString();
+    }
+
+
+    public String getUuid() {
+        return uuid;
+    }
     public Long getId() {
         return id;
     }

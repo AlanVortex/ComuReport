@@ -5,4 +5,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface MunicipalityRepository  extends JpaRepository<MunicipalityBean , Long> {
+
+    // findByUuid
+    MunicipalityBean findByUuid(String uuid);
 }

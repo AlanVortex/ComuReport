@@ -36,7 +36,6 @@ public class StateController {
 
         stateService.save(state);
 
-        return ResponseEntity.ok("Estado y administrador registrados correctamente.");
+        return ResponseEntity.ok("Estado y administrador registrados correctamente");
     }
-
 }

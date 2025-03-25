@@ -19,4 +19,9 @@ public class StateService {
     public void save(StateBean state) {
         stateRepository.save(state);
     }
+
+    public StateBean findByUuid(String uuid) {
+        return stateRepository.findByUuid(uuid).orElse(null);
+    }
+
 }
