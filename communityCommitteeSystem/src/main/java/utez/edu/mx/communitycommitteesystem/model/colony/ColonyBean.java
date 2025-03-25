@@ -9,6 +9,7 @@ import utez.edu.mx.communitycommitteesystem.model.person.PersonBean;
 import utez.edu.mx.communitycommitteesystem.model.report.ReportBean;
 
 import java.util.List;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -21,6 +22,9 @@ public class ColonyBean {
     private Long id;
     @Column(length = 100, nullable = false)
     private String nameColony;
+
+    @Column(length = 36, nullable = false, unique = true, updatable = false)
+    private String uuid;
 
     @OneToOne
     @JoinColumn(name = "idPerson")
@@ -36,7 +40,18 @@ public class ColonyBean {
     @OneToMany(mappedBy = "colonyBean", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ReportBean> reportBeanList;
 
+
+
     public ColonyBean() {
+        this.uuid = UUID.randomUUID().toString();
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
     public ColonyBean(Long id) {

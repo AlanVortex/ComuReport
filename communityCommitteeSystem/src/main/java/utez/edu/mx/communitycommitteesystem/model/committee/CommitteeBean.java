@@ -10,6 +10,7 @@ import utez.edu.mx.communitycommitteesystem.model.status.StatusBean;
 import utez.edu.mx.communitycommitteesystem.model.statusCommittee.StatusCommitteeBean;
 
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -20,6 +21,10 @@ public class CommitteeBean {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(length = 36, unique = true, nullable = false)
+    private String uuid;
+
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idColony")
@@ -38,7 +43,7 @@ public class CommitteeBean {
     private StatusCommitteeBean statusCommitteeBean;
 
     public CommitteeBean() {
-        // Este es el constructor sin parámetros que puedes usar en el controlador
+        this.uuid = UUID.randomUUID().toString(); // Generar UUID automáticamente
     }
     public CommitteeBean(Long id, ColonyBean colonyBean, PersonBean personBean, List<ReportBean> reportBeanList) {
         this.id = id;
@@ -60,4 +65,13 @@ public class CommitteeBean {
     public void setStatusCommitteeBean(StatusCommitteeBean statusCommitteeBean) {
         this.statusCommitteeBean = statusCommitteeBean;
     }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
 }
+

@@ -18,7 +18,7 @@ public class CommitteeDto {
     private String email;
     private String password;
     private String phone;
-    private Long idColony;
+    private String colonyUuid;
     private Long idStatus;
 
     public String getName() {
@@ -61,12 +61,12 @@ public class CommitteeDto {
         this.phone = phone;
     }
 
-    public Long getIdColony() {
-        return idColony;
+    public String getColonyUuid() {
+        return colonyUuid;
     }
 
-    public void setIdColony(Long idColony) {
-        this.idColony = idColony;
+    public void setColonyUuid(String colonyUuid) {
+        this.colonyUuid = colonyUuid;
     }
 
     public Long getIdStatus() {
@@ -80,6 +80,7 @@ public class CommitteeDto {
     public CommitteeBean toEntity(Long personId) {
         CommitteeBean committee = new CommitteeBean();
 
+        // Crear la persona
         PersonBean person = new PersonBean();
         person.setId(personId);
         person.setName(this.name);
@@ -90,10 +91,12 @@ public class CommitteeDto {
 
         committee.setPersonBean(person);
 
+        // Buscar la colonia usando el UUID
         ColonyBean colony = new ColonyBean();
-        colony.setId(this.idColony);
+        colony.setUuid(this.colonyUuid);
         committee.setColonyBean(colony);
 
+        // Crear el objeto StatusCommitteeBean y asignar el status
         StatusCommitteeBean status = new StatusCommitteeBean();
         status.setId(this.idStatus);
         committee.setStatusCommitteeBean(status);

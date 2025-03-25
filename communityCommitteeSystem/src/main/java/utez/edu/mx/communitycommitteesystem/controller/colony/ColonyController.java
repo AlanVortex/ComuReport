@@ -37,9 +37,9 @@ public class ColonyController {
 
         PersonBean savedPerson = personService.saveColony(person);
 
-        Optional<MunicipalityBean> municipalityOpt = municipalityService.findById(dto.getMunicipalityId());
+        Optional<MunicipalityBean> municipalityOpt = municipalityService.findByUuid(dto.getMunicipalityUuid());
         if (!municipalityOpt.isPresent()) {
-            return ResponseEntity.badRequest().body("Municipio no encontrado");
+            return ResponseEntity.badRequest().body("Error: Municipio no encontrado.");
         }
 
         ColonyBean colony = new ColonyBean();
@@ -49,7 +49,6 @@ public class ColonyController {
 
         colonyService.save(colony);
 
-        return ResponseEntity.ok("Colonia y enlace colonial registrados correctamente");
+        return ResponseEntity.ok("Colonia y enlace colonial registrados correctamente.");
     }
-
 }

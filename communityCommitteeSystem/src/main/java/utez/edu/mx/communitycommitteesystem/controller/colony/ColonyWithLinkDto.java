@@ -15,6 +15,9 @@ public class ColonyWithLinkDto {
     private String password;
     private String phone;
 
+    private String municipalityUuid;
+
+
     public String getColonyName() {
         return colonyName;
     }
@@ -69,5 +72,13 @@ public class ColonyWithLinkDto {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public String getMunicipalityUuid() {
+        return municipalityUuid;
+    }
+
+    public void setMunicipalityUuid(String municipalityUuid) {
+        this.municipalityUuid = municipalityUuid;
     }
 }

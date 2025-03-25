@@ -6,4 +6,6 @@ import java.util.Optional;
 
 public interface ColonyRepository extends JpaRepository<ColonyBean, Long> {
     Optional<ColonyBean> findById(Long id);
+
+    Optional<ColonyBean> findByUuid(String uuid);
 }
