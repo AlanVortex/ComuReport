@@ -8,13 +8,13 @@ import lombok.Setter;
 public class AssignAdminMunicipalityDto {
 
     private String municipalityName;
-    private Long idState;
 
     private String name;
     private String lastname;
     private String email;
     private String password;
     private String phone;
+    private String stateUuid;
 
     public String getMunicipalityName() {
         return municipalityName;
@@ -22,14 +22,6 @@ public class AssignAdminMunicipalityDto {
 
     public void setMunicipalityName(String municipalityName) {
         this.municipalityName = municipalityName;
-    }
-
-    public Long getIdState() {
-        return idState;
-    }
-
-    public void setIdState(Long idState) {
-        this.idState = idState;
     }
 
 
@@ -72,4 +64,10 @@ public class AssignAdminMunicipalityDto {
     public void setPhone(String phone) {
         this.phone = phone;
     }
+
+    public String getStateUuid() {
+        return stateUuid;
+    }
 }
+
+

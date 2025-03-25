@@ -20,6 +20,9 @@ public class AreaBean {
     private Long id;
     @Column(length = 100, nullable = false)
     private String nameArea;
+    @Column(length = 36, nullable = false, unique = true, updatable = false)
+    private String uuid;
+
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idMunicipality")
@@ -32,4 +35,15 @@ public class AreaBean {
     @OneToMany( mappedBy = "areaBean",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ReportBean> reportBeanList;
 
+    public AreaBean() {
+        this.uuid = java.util.UUID.randomUUID().toString();
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
 }

@@ -9,6 +9,7 @@ import utez.edu.mx.communitycommitteesystem.controller.status.UpdateStatusDto;
 import utez.edu.mx.communitycommitteesystem.model.colony.ColonyBean;
 import utez.edu.mx.communitycommitteesystem.model.committee.CommitteeBean;
 import utez.edu.mx.communitycommitteesystem.model.person.PersonBean;
+import utez.edu.mx.communitycommitteesystem.model.state.StateBean;
 import utez.edu.mx.communitycommitteesystem.model.status.StatusBean;
 import utez.edu.mx.communitycommitteesystem.model.statusCommittee.StatusCommitteeBean;
 import utez.edu.mx.communitycommitteesystem.service.colony.ColonyService;
@@ -41,41 +42,49 @@ public class CommitteeController {
 
     @PostMapping("/register")
     public ResponseEntity<String> registerPresident(@RequestBody CommitteeDto committeeDto) {
-        try {
-            PersonBean person = new PersonBean(
-                    null,
-                    committeeDto.getName(),
-                    committeeDto.getLastname(),
-                    committeeDto.getEmail(),
-                    committeeDto.getPassword(),
-                    committeeDto.getPhone()
-            );
-            personService.save(person);
-
-            ColonyBean colony = colonyService.findById(committeeDto.getIdColony());
-
-            StatusCommitteeBean status = statusService.findById(committeeDto.getIdStatus());
-
-            CommitteeBean committee = new CommitteeBean();
-            committee.setPersonBean(person);
-            committee.setColonyBean(colony);
-            committee.setStatusCommitteeBean(status);
-
-            committeeService.save(committee);
-
-            return ResponseEntity.ok("Presidente registrado exitosamente");
-
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body("Error al registrar el presidente: " + e.getMessage());
+        Optional<ColonyBean> colonyOptional = colonyService.findByUuid(committeeDto.getColonyUuid());
+        if (!colonyOptional.isPresent()) {
+            return ResponseEntity.badRequest().body("Error: Colonia no encontrada.");
         }
+        ColonyBean colony = colonyOptional.get();
+
+        PersonBean person = new PersonBean();
+        person.setName(committeeDto.getName());
+        person.setLastname(committeeDto.getLastname());
+        person.setEmail(committeeDto.getEmail());
+        person.setPassword(committeeDto.getPassword());
+        person.setPhone(committeeDto.getPhone());
+
+        PersonBean savedPerson = personService.saveMun(person);
+
+        StatusCommitteeBean status = statusService.findById(committeeDto.getIdStatus());
+        if (status == null) {
+            return ResponseEntity.badRequest().body("Error: Status no encontrado.");
+        }
+
+        CommitteeBean committee = new CommitteeBean();
+        committee.setPersonBean(savedPerson);
+        committee.setColonyBean(colony);
+        committee.setStatusCommitteeBean(status);
+
+        committeeService.save(committee);
+
+        return ResponseEntity.ok("Presidente registrado exitosamente con UUID: " + committee.getUuid());
     }
 
-    @GetMapping("/all")
-    public ResponseEntity<List<CommitteeResponseDto>> getAllPresidents() {
+    @GetMapping("/all/{colonyUuid}")
+    public ResponseEntity<List<CommitteeResponseDto>> getAllPresidentsByColony(@PathVariable String colonyUuid) {
         try {
-            List<CommitteeBean> committees = committeeService.findAll();
+            Optional<ColonyBean> colonyOptional = colonyService.findByUuid(colonyUuid);
+            if (!colonyOptional.isPresent()) {
+                return ResponseEntity.badRequest().body(null);
+            }
+            ColonyBean colony = colonyOptional.get();
 
-            List<CommitteeResponseDto> committeeResponseDtos = committees.stream().map(committee -> {
+            List<CommitteeBean> committees = committeeService.findByColony(colony);
+
+            List<CommitteeResponseDto> committeeResponseDtos = committees.stream()
+                    .map(committee -> {
                         PersonBean person = committee.getPersonBean();
                         if (person != null) {
                             return new CommitteeResponseDto(
@@ -85,8 +94,9 @@ public class CommitteeController {
                                     person.getPhone()
                             );
                         }
-                        return null; // Si no hay persona asociada, retornar null o manejarlo de otra manera
-                    }).filter(dto -> dto != null) // Filtrar los null si hay algún presidente sin persona
+                        return null;
+                    })
+                    .filter(dto -> dto != null)
                     .collect(Collectors.toList());
 
             return ResponseEntity.ok(committeeResponseDtos);
@@ -96,23 +106,30 @@ public class CommitteeController {
         }
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<CommitteeResponseDto> getPresidentById(@PathVariable Long id) {
-        Optional<CommitteeBean> committee = committeeService.findById(id);
+    @GetMapping("/{uuid}")
+    public ResponseEntity<CommitteeResponseDto> getPresidentByUuid(@PathVariable String uuid) {
+        Optional<CommitteeBean> committeeOptional = committeeService.findByUuid(uuid);
 
-        if (committee.isPresent()) {
-            PersonBean person = committee.get().getPersonBean();
-            CommitteeResponseDto responseDto = new CommitteeResponseDto(
-                    person.getName(),
-                    person.getLastname(),
-                    person.getEmail(),
-                    person.getPhone()
-            );
-            return ResponseEntity.ok(responseDto);
+        if (committeeOptional.isPresent()) {
+            CommitteeBean committee = committeeOptional.get();
+            PersonBean person = committee.getPersonBean();
+
+            if (person != null) {
+                CommitteeResponseDto responseDto = new CommitteeResponseDto(
+                        person.getName(),
+                        person.getLastname(),
+                        person.getEmail(),
+                        person.getPhone()
+                );
+                return ResponseEntity.ok(responseDto);
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            }
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
+
 
     @PutMapping("/{id}/status")
     public ResponseEntity<String> updatePresidentStatus(@PathVariable Long id, @RequestBody UpdateStatusDto request) {

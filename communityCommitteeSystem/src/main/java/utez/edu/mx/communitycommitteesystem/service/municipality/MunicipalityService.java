@@ -19,4 +19,9 @@ public class MunicipalityService {
     public MunicipalityBean save(MunicipalityBean municipality) {
         return municipalityRepository.save(municipality);
     }
+
+    public Optional<MunicipalityBean> findByUuid(String uuid) {
+        return Optional.ofNullable(municipalityRepository.findByUuid(uuid));
+    }
+
 }

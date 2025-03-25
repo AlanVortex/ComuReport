@@ -4,6 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import utez.edu.mx.communitycommitteesystem.model.colony.ColonyBean;
 import utez.edu.mx.communitycommitteesystem.model.colony.ColonyRepository;
+import utez.edu.mx.communitycommitteesystem.model.municipality.MunicipalityBean;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ColonyService {
@@ -17,4 +21,13 @@ public class ColonyService {
     public void save(ColonyBean colony) {
         colonyRepository.save(colony);
     }
+
+    public Optional<ColonyBean> findByUuid(String uuid) {
+        return colonyRepository.findByUuid(uuid);
+    }
+
+    public List<ColonyBean> findByMunicipality(MunicipalityBean municipality) {
+        return colonyRepository.findByMunicipalityBean(municipality);
+    }
+
 }

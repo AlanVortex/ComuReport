@@ -11,6 +11,7 @@ import utez.edu.mx.communitycommitteesystem.service.municipality.MunicipalitySer
 import utez.edu.mx.communitycommitteesystem.service.person.PersonService;
 import utez.edu.mx.communitycommitteesystem.service.state.StateService;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -29,6 +30,11 @@ public class MunicipalityController {
 
     @PostMapping("/register-municipalityAdmin")
     public ResponseEntity<String> registerMunicipalityWithAdmin(@RequestBody AssignAdminMunicipalityDto dto) {
+        StateBean state = stateService.findByUuid(dto.getStateUuid());
+        if (state == null) {
+            return ResponseEntity.badRequest().body("No se encontró un estado con el UUID proporcionado.");
+        }
+
         PersonBean person = new PersonBean();
         person.setName(dto.getName());
         person.setLastname(dto.getLastname());
@@ -38,13 +44,6 @@ public class MunicipalityController {
 
         PersonBean savedPerson = personService.saveMun(person);
 
-        Optional<StateBean> optionalState =
-                stateService.findById(dto.getIdState());
-        if (!optionalState.isPresent()) {
-            return ResponseEntity.badRequest().body("El estado con ID " + dto.getIdState() + " no existe.");
-        }
-        StateBean state = optionalState.get();
-
         MunicipalityBean municipality = new MunicipalityBean();
         municipality.setNameMunicipality(dto.getMunicipalityName());
         municipality.setPersonBean(savedPerson);
@@ -52,6 +51,21 @@ public class MunicipalityController {
 
         municipalityService.save(municipality);
 
-        return ResponseEntity.ok("Municipio con estado y admin registrados correctamente");
+        return ResponseEntity.ok("Municipio y administrador registrados correctamente. UUID: " );
     }
+
+    @GetMapping("/admins/{stateUuid}")
+    public ResponseEntity<List<MunicipalityBean>> getMunicipalitiesByStateUuid(@PathVariable String stateUuid) {
+        Optional<StateBean> stateOpt = Optional.ofNullable(stateService.findByUuid(stateUuid));
+
+        if (!stateOpt.isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+
+        StateBean state = stateOpt.get();
+        // Asegúrate de tener una lista de municipios para este estado
+        List<MunicipalityBean> municipalities = state.getMunicipalityBeanList();
+        return ResponseEntity.ok(municipalities);
+    }
+
 }
