@@ -21,6 +21,8 @@ public class SmsBean {
     private String message;
     @Temporal(TemporalType.TIMESTAMP)
     private Date deliveryDate;
+    @Column(length = 36, nullable = false, unique = true, updatable = false)
+    private String uuid;
 
     @OneToOne
     @JoinColumn(name = "idPerson")
@@ -29,4 +31,17 @@ public class SmsBean {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idReport")
     private ReportBean reportBean;
+
+    public SmsBean() {
+        this.uuid = java.util.UUID.randomUUID().toString();
+
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
 }

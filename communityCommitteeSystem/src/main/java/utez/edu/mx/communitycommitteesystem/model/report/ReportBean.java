@@ -33,6 +33,9 @@ public class ReportBean {
     private Date reportDate;
     @Column(length = 100, nullable = false)
     private String statusDescription;
+    @Column(length = 36, nullable = false, unique = true, updatable = false)
+    private String uuid;
+
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idColony")
@@ -60,5 +63,15 @@ public class ReportBean {
     @JoinColumn(name = "idMunicipality")
     private MunicipalityBean municipalityBean;
 
+    public ReportBean() {
+        this.uuid = java.util.UUID.randomUUID().toString();
+    }
 
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
 }
