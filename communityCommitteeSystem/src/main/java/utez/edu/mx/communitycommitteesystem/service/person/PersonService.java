@@ -36,14 +36,20 @@ public class PersonService {
     }
 
     public PersonBean saveMun(PersonBean person) {
+        person.setStatus(true);
+        person.setBlocked(false);
         return personRepository.save(person);
     }
 
     public PersonBean saveState(PersonBean person) {
+        person.setStatus(true);
+        person.setBlocked(false);
         return personRepository.save(person);
     }
 
     public PersonBean saveColony(PersonBean person) {
+        person.setStatus(true);
+        person.setBlocked(false);
         return personRepository.save(person);
     }
 }
