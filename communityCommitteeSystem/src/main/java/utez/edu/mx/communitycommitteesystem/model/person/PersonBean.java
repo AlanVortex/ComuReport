@@ -28,7 +28,7 @@ public class PersonBean {
     private String lastname;
     @Column(length = 50, nullable = false)
     private String email;
-    @Column(length = 50, nullable = false)
+    @Column( nullable = false)
     private String password;
     @Column(length = 50, nullable = false)
     private String phone;
@@ -155,5 +155,24 @@ public class PersonBean {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public String getRole(){
+        if(this.committeeBean!=null){
+            return "Committee";
+        }
+        if(this.areaBean!=null){
+            return "Area";
+        }
+        if ( this.municipalityBean!=null){
+            return "Municipality";
+        }
+        if ( this.colonyBean!=null){
+            return "Colony";
+        }
+        if ( this.stateBean!=null){
+            return "State";
+        }
+        return "";
     }
 }
