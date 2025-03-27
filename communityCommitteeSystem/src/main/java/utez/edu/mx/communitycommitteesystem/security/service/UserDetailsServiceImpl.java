@@ -36,7 +36,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         Optional<PersonBean> foundUser = Optional.ofNullable(service.getPersonRepository().findByEmail(username));
 
         if (foundUser.isPresent()) {
-            logger.info("TOKEN : " + foundUser.get().getToken());
 
             return UserDetailsImpl.build(foundUser.get());
         }

@@ -4,10 +4,13 @@ import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import utez.edu.mx.communitycommitteesystem.exception.GlobalExceptionHandler;
 
 import java.security.Key;
 import java.util.Date;
@@ -20,9 +23,11 @@ public class JwtProvider {
     private long expiration;
     private final String TOKEN_HEADER = "Authorization";
     private final String TOKEN_TYPE = "Bearer ";
+    private static final Logger logger = LogManager.getLogger(GlobalExceptionHandler.class);
 
     public String generateToken(Authentication auth) {
         UserDetails user = (UserDetails) auth.getPrincipal();
+        logger.info("Roles " + user.getAuthorities());
         Claims claims = Jwts.claims().setSubject(user.getUsername());
         claims.put("roles", user.getAuthorities());
         Date tokenCreateTime = new Date();

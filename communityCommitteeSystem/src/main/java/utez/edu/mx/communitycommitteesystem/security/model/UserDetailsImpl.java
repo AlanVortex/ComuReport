@@ -1,8 +1,11 @@
 package utez.edu.mx.communitycommitteesystem.security.model;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import utez.edu.mx.communitycommitteesystem.exception.GlobalExceptionHandler;
 import utez.edu.mx.communitycommitteesystem.model.person.PersonBean;
 
 import java.util.ArrayList;
@@ -17,6 +20,7 @@ public class UserDetailsImpl implements UserDetails{
     private boolean blocked;
     private boolean enabled;
     private Collection<? extends GrantedAuthority> authorities;
+    private static final Logger logger = LogManager.getLogger(GlobalExceptionHandler.class);
 
     public UserDetailsImpl(String username, String password, boolean blocked, boolean enabled, String type) {
         this.username = username;
@@ -30,19 +34,13 @@ public class UserDetailsImpl implements UserDetails{
     }
 
     public static UserDetailsImpl build(PersonBean user){
-
+       // logger.info("Nombre : " +user.getRole());
         return new UserDetailsImpl(
                 user.getEmail(), user.getPassword(),
-                user.getBlocked(), user.getStatus(),user.getName()
+                user.getBlocked(), user.getStatus(),user.getRole()
         );
     }
-    public static UserDetailsImpl buildClient(PersonBean user){
 
-        return new UserDetailsImpl(
-                user.getEmail(), user.getPassword(),
-                user.getBlocked(), user.getStatus(),"cliente"
-        );
-    }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return authorities;
