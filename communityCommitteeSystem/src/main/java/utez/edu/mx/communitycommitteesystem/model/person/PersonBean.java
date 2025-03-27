@@ -1,6 +1,9 @@
 package utez.edu.mx.communitycommitteesystem.model.person;
 
 import jakarta.persistence.*;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import utez.edu.mx.communitycommitteesystem.model.area.AreaBean;
 import utez.edu.mx.communitycommitteesystem.model.colony.ColonyBean;
 import utez.edu.mx.communitycommitteesystem.model.committee.CommitteeBean;
@@ -9,7 +12,9 @@ import utez.edu.mx.communitycommitteesystem.model.sms.SmsBean;
 import utez.edu.mx.communitycommitteesystem.model.state.StateBean;
 
 @Entity
-
+@Data
+@Getter
+@Setter
 @Table(name = "person")
 public class PersonBean {
 
@@ -45,6 +50,12 @@ public class PersonBean {
 
     @OneToOne(mappedBy = "personBean", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private SmsBean smsBean;
+
+    @Column(columnDefinition = "BOOL DEFAULT true")
+    private Boolean status;
+    @Column(columnDefinition = "BOOL DEFAULT false")
+    private Boolean blocked;
+    private String token;
 
 
     public PersonBean() {
@@ -122,4 +133,27 @@ public class PersonBean {
         this.phone = phone;
     }
 
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
+    }
+
+    public Boolean getBlocked() {
+        return blocked;
+    }
+
+    public void setBlocked(Boolean blocked) {
+        this.blocked = blocked;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
 }
