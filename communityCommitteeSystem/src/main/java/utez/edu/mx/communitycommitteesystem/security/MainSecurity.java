@@ -26,10 +26,17 @@ import utez.edu.mx.communitycommitteesystem.security.service.UserDetailsServiceI
 @EnableMethodSecurity
 public class MainSecurity {
     private final String[] WHITE_LIST = {
-            "/api/auth/signin",
-            "/api/committee/register"
-
-
+            "/api/state/register-stateWithAdmin",
+            "/api/auth/signin"
+    };
+    private final String[] State_LIST = {
+            "/api/municipality/register-municipalityAdmin",
+    };
+    private final String[] Municipality_LIST = {
+            "/api/colony/register-colonyWithLink",
+    };
+    private final String[] Colony_LIST = {
+            "/api/committee/register",
     };
     private final UserDetailsServiceImpl service;
 
@@ -71,13 +78,23 @@ public class MainSecurity {
                     for (String path : WHITE_LIST) {
                         req.requestMatchers(new AntPathRequestMatcher(path)).permitAll();
                     }
+                    for (String path : State_LIST) {
+                        req.requestMatchers(new AntPathRequestMatcher(path)).hasAnyAuthority("State");
+                    }
+                    for (String path : Municipality_LIST) {
+                        req.requestMatchers(new AntPathRequestMatcher(path)).hasAnyAuthority("Municipality");
+                    }
+                    for (String path : Colony_LIST) {
+                        req.requestMatchers(new AntPathRequestMatcher(path)).hasAnyAuthority("Colony");
+                    }
+                    req.anyRequest().authenticated();
                 })
                 .httpBasic(Customizer.withDefaults())
                 .headers(header -> header.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(filter(), UsernamePasswordAuthenticationFilter.class)
-                .logout(out -> out.logoutUrl("/api/committee/register").clearAuthentication(true));
+                .logout(out -> out.logoutUrl("/api/auth/logout").clearAuthentication(true));
         return http.build();
     }
 
