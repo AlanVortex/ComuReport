@@ -3,6 +3,7 @@ package utez.edu.mx.communitycommitteesystem.controller.committee;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import utez.edu.mx.communitycommitteesystem.config.ApiResponse;
 import utez.edu.mx.communitycommitteesystem.controller.status.UpdateStatusDto;
@@ -52,7 +53,11 @@ public class CommitteeController {
         person.setName(committeeDto.getName());
         person.setLastname(committeeDto.getLastname());
         person.setEmail(committeeDto.getEmail());
-        person.setPassword(committeeDto.getPassword());
+
+        BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
+        String encryptedPsw = bcrypt.encode(committeeDto.getPassword());
+
+        person.setPassword(encryptedPsw);
         person.setPhone(committeeDto.getPhone());
 
         PersonBean savedPerson = personService.saveMun(person);

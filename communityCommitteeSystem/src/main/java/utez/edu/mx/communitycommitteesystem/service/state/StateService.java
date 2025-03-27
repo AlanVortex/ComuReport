@@ -1,5 +1,6 @@
 package utez.edu.mx.communitycommitteesystem.service.state;
 
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import utez.edu.mx.communitycommitteesystem.model.municipality.MunicipalityBean;
@@ -10,6 +11,8 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Data
+
 public class StateService {
     @Autowired
     private StateRepository stateRepository;
