@@ -1,5 +1,7 @@
 package utez.edu.mx.communitycommitteesystem.controller.committee;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -7,6 +9,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import utez.edu.mx.communitycommitteesystem.config.ApiResponse;
 import utez.edu.mx.communitycommitteesystem.controller.status.UpdateStatusDto;
+import utez.edu.mx.communitycommitteesystem.exception.GlobalExceptionHandler;
 import utez.edu.mx.communitycommitteesystem.model.colony.ColonyBean;
 import utez.edu.mx.communitycommitteesystem.model.committee.CommitteeBean;
 import utez.edu.mx.communitycommitteesystem.model.person.PersonBean;
@@ -40,9 +43,12 @@ public class CommitteeController {
 
     @Autowired
     private StatusCommitteeService statusService;
+    private static final Logger logger = LogManager.getLogger(GlobalExceptionHandler.class);
 
     @PostMapping("/register")
     public ResponseEntity<String> registerPresident(@RequestBody CommitteeDto committeeDto) {
+        try {
+            logger.info("Registro de presidente: " + committeeDto.toString());
         Optional<ColonyBean> colonyOptional = colonyService.findByUuid(committeeDto.getColonyUuid());
         if (!colonyOptional.isPresent()) {
             return ResponseEntity.badRequest().body("Error: Colonia no encontrada.");
@@ -74,8 +80,13 @@ public class CommitteeController {
 
         committeeService.save(committee);
 
+
+
         return ResponseEntity.ok("Presidente registrado exitosamente con UUID: " + committee.getUuid());
-    }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            throw new RuntimeException(e);
+        }}
 
     @GetMapping("/all/{colonyUuid}")
     public ResponseEntity<List<CommitteeResponseDto>> getAllPresidentsByColony(@PathVariable String colonyUuid) {

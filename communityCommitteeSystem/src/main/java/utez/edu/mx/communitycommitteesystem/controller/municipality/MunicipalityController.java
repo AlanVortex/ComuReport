@@ -3,6 +3,7 @@ package utez.edu.mx.communitycommitteesystem.controller.municipality;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import utez.edu.mx.communitycommitteesystem.model.municipality.MunicipalityBean;
 import utez.edu.mx.communitycommitteesystem.model.person.PersonBean;
@@ -39,7 +40,10 @@ public class MunicipalityController {
         person.setName(dto.getName());
         person.setLastname(dto.getLastname());
         person.setEmail(dto.getEmail());
-        person.setPassword(dto.getPassword());
+        BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
+        String encryptedPsw = bcrypt.encode(dto.getPassword());
+
+        person.setPassword(encryptedPsw);
         person.setPhone(dto.getPhone());
 
         PersonBean savedPerson = personService.saveMun(person);
