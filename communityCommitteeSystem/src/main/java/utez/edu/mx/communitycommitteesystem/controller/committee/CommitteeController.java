@@ -1,5 +1,6 @@
 package utez.edu.mx.communitycommitteesystem.controller.committee;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,7 @@ import utez.edu.mx.communitycommitteesystem.service.statusCommittee.StatusCommit
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -32,72 +34,32 @@ import java.util.stream.Collectors;
 @CrossOrigin(origins = "*")
 public class CommitteeController {
 
-    @Autowired
     private CommitteeService committeeService;
 
-    @Autowired
-    private PersonService personService;
+    public CommitteeController(CommitteeService committeeService) {
+        this.committeeService = committeeService;
+    }
 
-    @Autowired
-    private ColonyService colonyService;
-
-    @Autowired
-    private StatusCommitteeService statusService;
     private static final Logger logger = LogManager.getLogger(GlobalExceptionHandler.class);
 
     @PostMapping("/register")
     public ResponseEntity<String> registerPresident(@RequestBody CommitteeDto committeeDto) {
         try {
             logger.info("Registro de presidente: " + committeeDto.toString());
-        Optional<ColonyBean> colonyOptional = colonyService.findByUuid(committeeDto.getColonyUuid());
-        if (!colonyOptional.isPresent()) {
-            return ResponseEntity.badRequest().body("Error: Colonia no encontrada.");
-        }
-        ColonyBean colony = colonyOptional.get();
-
-        PersonBean person = new PersonBean();
-        person.setName(committeeDto.getName());
-        person.setLastname(committeeDto.getLastname());
-        person.setEmail(committeeDto.getEmail());
-
-        BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
-        String encryptedPsw = bcrypt.encode(committeeDto.getPassword());
-
-        person.setPassword(encryptedPsw);
-        person.setPhone(committeeDto.getPhone());
-
-        PersonBean savedPerson = personService.saveMun(person);
-
-        StatusCommitteeBean status = statusService.findById(committeeDto.getIdStatus());
-        if (status == null) {
-            return ResponseEntity.badRequest().body("Error: Status no encontrado.");
-        }
-
-        CommitteeBean committee = new CommitteeBean();
-        committee.setPersonBean(savedPerson);
-        committee.setColonyBean(colony);
-        committee.setStatusCommitteeBean(status);
-
-        committeeService.save(committee);
-
-
-
-        return ResponseEntity.ok("Presidente registrado exitosamente con UUID: " + committee.getUuid());
+            String response = committeeService.registerPresident(committeeDto);
+            return ResponseEntity.ok(response);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         } catch (Exception e) {
-            System.out.println(e.getMessage());
-            throw new RuntimeException(e);
-        }}
+            logger.error("Error en el registro del presidente", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error en el servidor");
+        }
+    }
 
     @GetMapping("/all/{colonyUuid}")
     public ResponseEntity<List<CommitteeResponseDto>> getAllPresidentsByColony(@PathVariable String colonyUuid) {
         try {
-            Optional<ColonyBean> colonyOptional = colonyService.findByUuid(colonyUuid);
-            if (!colonyOptional.isPresent()) {
-                return ResponseEntity.badRequest().body(null);
-            }
-            ColonyBean colony = colonyOptional.get();
-
-            List<CommitteeBean> committees = committeeService.findByColony(colony);
+            List<CommitteeBean> committees = committeeService.getCommitteesByColonyUuid(colonyUuid);
 
             List<CommitteeResponseDto> committeeResponseDtos = committees.stream()
                     .map(committee -> {
@@ -112,55 +74,41 @@ public class CommitteeController {
                         }
                         return null;
                     })
-                    .filter(dto -> dto != null)
+                    .filter(Objects::nonNull)
                     .collect(Collectors.toList());
 
             return ResponseEntity.ok(committeeResponseDtos);
-
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.badRequest().body(null);
         } catch (Exception e) {
             return ResponseEntity.status(500).body(null);
         }
     }
 
+
     @GetMapping("/{uuid}")
     public ResponseEntity<CommitteeResponseDto> getPresidentByUuid(@PathVariable String uuid) {
-        Optional<CommitteeBean> committeeOptional = committeeService.findByUuid(uuid);
-
-        if (committeeOptional.isPresent()) {
-            CommitteeBean committee = committeeOptional.get();
-            PersonBean person = committee.getPersonBean();
-
-            if (person != null) {
-                CommitteeResponseDto responseDto = new CommitteeResponseDto(
-                        person.getName(),
-                        person.getLastname(),
-                        person.getEmail(),
-                        person.getPhone()
-                );
-                return ResponseEntity.ok(responseDto);
-            } else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-            }
-        } else {
+        try {
+            CommitteeResponseDto responseDto = committeeService.getPresidentByUuid(uuid);
+            return ResponseEntity.ok(responseDto);
+        } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(null);
         }
     }
 
 
     @PutMapping("/{id}/status")
     public ResponseEntity<String> updatePresidentStatus(@PathVariable Long id, @RequestBody UpdateStatusDto request) {
-        Optional<CommitteeBean> committeeOptional = committeeService.findById(id);
-
-        if (committeeOptional.isPresent()) {
-            CommitteeBean committee = committeeOptional.get();
-            StatusCommitteeBean newStatus = new StatusCommitteeBean();
-            newStatus.setId(request.getIdStatus());
-            committee.setStatusCommitteeBean(newStatus);
-
-            committeeService.save(committee);
-            return ResponseEntity.ok("El estado del presidente ha sido actualizado correctamente.");
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Presidente no encontrado.");
+        try {
+            String response = committeeService.updatePresidentStatus(id, request.getIdStatus());
+            return ResponseEntity.ok(response);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al actualizar el estado.");
         }
     }
+
 }
