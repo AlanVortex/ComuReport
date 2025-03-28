@@ -42,7 +42,7 @@ public class CommitteeController {
 
     private static final Logger logger = LogManager.getLogger(GlobalExceptionHandler.class);
 
-    @PostMapping("/register")
+    @PostMapping()
     public ResponseEntity<String> registerPresident(@RequestBody CommitteeDto committeeDto) {
         try {
             logger.info("Registro de presidente: " + committeeDto.toString());

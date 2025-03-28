@@ -7,14 +7,13 @@ import lombok.Setter;
 @Setter
 public class AssignAdminMunicipalityDto {
 
-    private String municipalityName;
-
+    private String stateUuid;
     private String name;
     private String lastname;
     private String email;
     private String password;
     private String phone;
-    private String stateUuid;
+    private String municipalityName;
 
     public String getMunicipalityName() {
         return municipalityName;
