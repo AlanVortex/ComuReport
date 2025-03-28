@@ -30,4 +30,5 @@ public class ReportController {
         List<ReportSummaryDto> reports = reportService.getReportsByColonyUuid(colonyUuid);
         return ResponseEntity.ok(reports);
     }
-    }
+
+}

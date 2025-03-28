@@ -60,6 +60,11 @@ public class ColonyBean {
         this.id = id;
     }
 
+    public ColonyBean(Long id, String nameColony) {
+        this.id = id;
+        this.nameColony = nameColony;
+    }
+
     public String getNameColony() {
         return nameColony;
     }

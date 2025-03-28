@@ -39,7 +39,7 @@ public class ReportBean {
     private String uuid;
 
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idColony")
     private ColonyBean colonyBean;
 

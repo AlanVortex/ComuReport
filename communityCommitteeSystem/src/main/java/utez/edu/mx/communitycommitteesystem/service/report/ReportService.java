@@ -76,15 +76,43 @@ public class ReportService {
     }
 
     public List<ReportSummaryDto> getReportsByColonyUuid(String colonyUuid) {
-        List<ReportBean> reports = reportRepository.findByColonyUuid(colonyUuid);
+        Optional<ColonyBean> colony = colonyRepository.findByUuid(colonyUuid);
 
-        return reports.stream().map(report -> new ReportSummaryDto(
-                report.getTitle(),
-                report.getImageBeanList().isEmpty() ? null : report.getImageBeanList().get(0).getImage(),
-                report.getReportDate(),
-                report.getStatusBean(),
-                report.getCommitteeBean().getPersonBean().getName() + " " + report.getCommitteeBean().getPersonBean().getLastname()
-        )).collect(Collectors.toList());
+        if (colony.isEmpty()) {
+            throw new RuntimeException("Colonia no encontrada con UUID: " + colonyUuid);
+        }
+
+        List<ReportBean> reports = reportRepository.findByColonyBean(colony.get());
+
+
+        return reports.stream().map(this::convertToDto).collect(Collectors.toList());
     }
-}
 
+
+    private ReportSummaryDto convertToDto(ReportBean report) {
+        String title = (report.getTitle() != null) ? report.getTitle() : "Sin título";
+        String image = (report.getImageBeanList() != null && !report.getImageBeanList().isEmpty()) ? report.getImageBeanList().get(0).getImage() : null;
+        Date date = (report.getReportDate() != null) ? report.getReportDate() : null;
+        String status = (report.getStatusBean() != null) ? (String) report.getStatusBean().getName() : null;
+
+        ColonyBean colony = report.getColonyBean();
+        if (colony == null) {
+            return new ReportSummaryDto(title, image, date, status);
+        }
+
+        PersonBean president = colony.getPersonBean();
+        if (president == null) {
+            return new ReportSummaryDto(title, image, date, status);
+        }
+
+        return new ReportSummaryDto(
+                title,
+                image,
+                date,
+                president.getName(),
+                president.getLastname(),
+                status
+        );
+    }
+
+}

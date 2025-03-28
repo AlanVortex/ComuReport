@@ -1,7 +1,5 @@
 package utez.edu.mx.communitycommitteesystem.controller.report;
 
-import utez.edu.mx.communitycommitteesystem.model.status.StatusBean;
-
 import java.time.LocalDate;
 import java.util.Date;
 
@@ -9,11 +7,21 @@ public class ReportSummaryDto {
     private String title;
     private String image;
     private LocalDate date;
+
     private String status;
     private String presidentName;
     private String presidentLastname;
 
-    public ReportSummaryDto(String title, String s, Date reportDate, StatusBean statusBean, String s1) {
+    public ReportSummaryDto(String title, String s, Date reportDate, String status) {
+    }
+
+    public ReportSummaryDto(String title, String image, Date date, String name, String lastname, String status) {
+        this.title = title;
+        this.image = image;
+        this.date = LocalDate.now();
+        this.presidentName = name;
+        this.presidentLastname = lastname;
+        this.status = status;
     }
 
     public String getTitle() {
@@ -40,13 +48,6 @@ public class ReportSummaryDto {
         this.date = date;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
 
     public String getPresidentName() {
         return presidentName;
@@ -62,5 +63,9 @@ public class ReportSummaryDto {
 
     public void setPresidentLastname(String presidentLastname) {
         this.presidentLastname = presidentLastname;
+    }
+
+    public String getStatus() {
+        return status;
     }
 }

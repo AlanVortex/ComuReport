@@ -33,4 +33,8 @@ public class StatusBean {
     public void setId(Long id) {
         this.id = id;
     }
+
+    public Object getName() {
+        return type;
+    }
 }
