@@ -24,53 +24,35 @@ public class StateController {
     @Autowired
     private StateService stateService;
 
-    @PostMapping("/register-stateWithAdmin")
+    @PostMapping()
     public ResponseEntity<String> registerStateWithAdmin(@RequestBody StateWithAdminDto dto) {
-        PersonBean person = new PersonBean();
-        person.setName(dto.getName());
-        person.setLastname(dto.getLastname());
-        person.setEmail(dto.getEmail());
-        BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
-        String encryptedPsw = bcrypt.encode(dto.getPassword());
-
-        person.setPassword(encryptedPsw);
-        person.setPhone(dto.getPhone());
-
-        PersonBean savedPerson = personService.saveState(person);
-
-        StateBean state = new StateBean();
-        state.setNameState(dto.getStateName());
-        state.setPersonBean(savedPerson);
-
-        stateService.save(state);
-
-        return ResponseEntity.ok("Estado y administrador registrados correctamente");
-    }
-
-    @GetMapping("/admins/{stateUuid}")
-    public ResponseEntity<List<StateBean>> getStateAdminsByStateUuid(@PathVariable String stateUuid) {
-        Optional<StateBean> stateOpt = Optional.ofNullable(stateService.findByUuid(stateUuid));
-
-        if (!stateOpt.isPresent()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        try {
+            String result = stateService.registerStateWithAdmin(dto);
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al registrar el estado.");
         }
-
-        StateBean state = stateOpt.get();
-
-        List<StateBean> stateAdmins = stateService.findByNameState(state.getNameState());
-        return ResponseEntity.ok(stateAdmins);
+    }
+    @GetMapping("/{stateUuid}")
+    public ResponseEntity<List<StateBean>> getStateAdminsByStateUuid(@PathVariable String stateUuid) {
+        try {
+            List<StateBean> stateAdmins = stateService.findStateAdminsByUuid(stateUuid);
+            if (stateAdmins.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            }
+            return ResponseEntity.ok(stateAdmins);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 
     @GetMapping("/admin/{adminUuid}")
     public ResponseEntity<StateBean> getStateAdminByUuid(@PathVariable String adminUuid) {
-        Optional<StateBean> adminOpt = Optional.ofNullable(stateService.findByUuid(adminUuid));
-
-        if (!adminOpt.isPresent()) {
+        try {
+            StateBean admin = stateService.findStateAdminByUuid(adminUuid);
+            return ResponseEntity.ok(admin);
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
-
-        StateBean admin = adminOpt.get();
-        return ResponseEntity.ok(admin);
     }
-
 }
