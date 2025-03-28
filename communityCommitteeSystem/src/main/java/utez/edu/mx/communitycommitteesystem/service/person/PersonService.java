@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import utez.edu.mx.communitycommitteesystem.model.person.PersonBean;
@@ -16,6 +17,8 @@ import utez.edu.mx.communitycommitteesystem.model.person.PersonRepository;
 public class PersonService {
 
     private final PersonRepository personRepository;
+
+
 
     public PersonService(PersonRepository personRepository) {
         this.personRepository = personRepository;
@@ -52,5 +55,10 @@ public class PersonService {
         person.setBlocked(false);
         return personRepository.save(person);
     }
+
+    public String encryptPassword(String password) {
+        return new BCryptPasswordEncoder().encode(password);
+    }
+
 }
 

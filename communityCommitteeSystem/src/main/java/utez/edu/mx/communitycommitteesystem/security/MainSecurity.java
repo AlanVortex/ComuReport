@@ -26,17 +26,18 @@ import utez.edu.mx.communitycommitteesystem.security.service.UserDetailsServiceI
 @EnableMethodSecurity
 public class MainSecurity {
     private final String[] WHITE_LIST = {
-            "/api/state/register-stateWithAdmin",
+            "/api/state",
             "/api/auth/signin"
     };
     private final String[] State_LIST = {
-            "/api/municipality/register-municipalityAdmin",
+            "/api/municipality",
     };
     private final String[] Municipality_LIST = {
-            "/api/colony/register-colonyWithLink",
+            "/api/colony",
     };
     private final String[] Colony_LIST = {
-            "/api/committee/register",
+            "/api/committee",
+            "/api/report",
     };
     private final UserDetailsServiceImpl service;
 
