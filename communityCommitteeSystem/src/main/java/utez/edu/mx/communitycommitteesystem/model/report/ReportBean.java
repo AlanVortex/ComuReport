@@ -8,6 +8,7 @@ import utez.edu.mx.communitycommitteesystem.model.colony.ColonyBean;
 import utez.edu.mx.communitycommitteesystem.model.committee.CommitteeBean;
 import utez.edu.mx.communitycommitteesystem.model.image.ImageBean;
 import utez.edu.mx.communitycommitteesystem.model.municipality.MunicipalityBean;
+import utez.edu.mx.communitycommitteesystem.model.person.PersonBean;
 import utez.edu.mx.communitycommitteesystem.model.sms.SmsBean;
 import utez.edu.mx.communitycommitteesystem.model.state.StateBean;
 import utez.edu.mx.communitycommitteesystem.model.status.StatusBean;
@@ -164,5 +165,9 @@ public class ReportBean {
 
     public void setMunicipalityBean(MunicipalityBean municipalityBean) {
         this.municipalityBean = municipalityBean;
+    }
+
+    public PersonBean getPersonBean() {
+        return colonyBean.getPersonBean();
     }
 }
