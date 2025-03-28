@@ -21,48 +21,27 @@ import java.util.Optional;
 public class ColonyController {
 
     @Autowired
-    private PersonService personService;
-
-    @Autowired
     private MunicipalityService municipalityService;
 
     @Autowired
     private ColonyService colonyService;
 
-    @PostMapping("/register-colonyWithLink")
+    @PostMapping()
     public ResponseEntity<String> registerColonyWithLink(@RequestBody ColonyWithLinkDto dto) {
-        PersonBean person = new PersonBean();
-        person.setName(dto.getName());
-        person.setLastname(dto.getLastname());
-        person.setEmail(dto.getEmail());
-        BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
-        String encryptedPsw = bcrypt.encode(dto.getPassword());
-
-        person.setPassword(encryptedPsw);
-        person.setPhone(dto.getPhone());
-
-        PersonBean savedPerson = personService.saveColony(person);
-
-        Optional<MunicipalityBean> municipalityOpt = municipalityService.findByUuid(dto.getMunicipalityUuid());
-        if (!municipalityOpt.isPresent()) {
-            return ResponseEntity.badRequest().body("Error: Municipio no encontrado.");
+        try {
+            colonyService.registerColonyWithLink(dto);
+            return ResponseEntity.ok("Colonia y enlace colonial registrados correctamente.");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error: " + e.getMessage());
         }
-
-        ColonyBean colony = new ColonyBean();
-        colony.setNameColony(dto.getColonyName());
-        colony.setMunicipalityBean(municipalityOpt.get());
-        colony.setPersonBean(savedPerson);
-
-        colonyService.save(colony);
-
-        return ResponseEntity.ok("Colonia y enlace colonial registrados correctamente.");
     }
+
 
     @GetMapping("/municipality/{municipalityUuid}")
     public ResponseEntity<List<ColonyBean>> getColoniesByMunicipality(@PathVariable String municipalityUuid) {
         Optional<MunicipalityBean> municipalityOpt = municipalityService.findByUuid(municipalityUuid);
         if (!municipalityOpt.isPresent()) {
-            return ResponseEntity.badRequest().body(null); // Municipio no encontrado
+            return ResponseEntity.badRequest().body(null);
         }
 
         MunicipalityBean municipality = municipalityOpt.get();

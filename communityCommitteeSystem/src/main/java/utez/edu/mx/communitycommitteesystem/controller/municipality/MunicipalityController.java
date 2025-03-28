@@ -25,7 +25,7 @@ public class MunicipalityController {
     private MunicipalityService municipalityService;
 
 
-    @PostMapping("/register-municipalityAdmin")
+    @PostMapping()
     public ResponseEntity<String> registerMunicipalityWithAdmin(@RequestBody AssignAdminMunicipalityDto dto) {
         try {
             String response = municipalityService.registerMunicipalityWithAdmin(dto);
@@ -53,11 +53,11 @@ public class MunicipalityController {
     public ResponseEntity<PersonBean> getMunicipalityAdminByUuid(@PathVariable String municipalityUuid) {
         try {
             PersonBean admin = municipalityService.getMunicipalityAdminByUuid(municipalityUuid);
-            return ResponseEntity.ok(admin); // Devuelves los detalles del administrador
+            return ResponseEntity.ok(admin);
         } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); // En caso de error 404 si no se encuentra
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null); // En caso de error general
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 
