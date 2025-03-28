@@ -1,5 +1,6 @@
 package utez.edu.mx.communitycommitteesystem.controller.municipality;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,55 +22,43 @@ import java.util.Optional;
 public class MunicipalityController {
 
     @Autowired
-    private PersonService personService;
-
-    @Autowired
     private MunicipalityService municipalityService;
 
-    @Autowired
-    private StateService stateService;
 
     @PostMapping("/register-municipalityAdmin")
     public ResponseEntity<String> registerMunicipalityWithAdmin(@RequestBody AssignAdminMunicipalityDto dto) {
-        StateBean state = stateService.findByUuid(dto.getStateUuid());
-        if (state == null) {
-            return ResponseEntity.badRequest().body("No se encontró un estado con el UUID proporcionado.");
+        try {
+            String response = municipalityService.registerMunicipalityWithAdmin(dto);
+            return ResponseEntity.ok(response);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error interno del servidor.");
         }
-
-        PersonBean person = new PersonBean();
-        person.setName(dto.getName());
-        person.setLastname(dto.getLastname());
-        person.setEmail(dto.getEmail());
-        BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
-        String encryptedPsw = bcrypt.encode(dto.getPassword());
-
-        person.setPassword(encryptedPsw);
-        person.setPhone(dto.getPhone());
-
-        PersonBean savedPerson = personService.saveMun(person);
-
-        MunicipalityBean municipality = new MunicipalityBean();
-        municipality.setNameMunicipality(dto.getMunicipalityName());
-        municipality.setPersonBean(savedPerson);
-        municipality.setStateBean(state);
-
-        municipalityService.save(municipality);
-
-        return ResponseEntity.ok("Municipio y administrador registrados correctamente. UUID: " );
     }
 
     @GetMapping("/admins/{stateUuid}")
     public ResponseEntity<List<MunicipalityBean>> getMunicipalitiesByStateUuid(@PathVariable String stateUuid) {
-        Optional<StateBean> stateOpt = Optional.ofNullable(stateService.findByUuid(stateUuid));
-
-        if (!stateOpt.isPresent()) {
+        try {
+            List<MunicipalityBean> municipalities = municipalityService.getMunicipalitiesByStateUuid(stateUuid);
+            return ResponseEntity.ok(municipalities);
+        } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
+    }
 
-        StateBean state = stateOpt.get();
-        // Asegúrate de tener una lista de municipios para este estado
-        List<MunicipalityBean> municipalities = state.getMunicipalityBeanList();
-        return ResponseEntity.ok(municipalities);
+    @GetMapping("/admin/{municipalityUuid}")
+    public ResponseEntity<PersonBean> getMunicipalityAdminByUuid(@PathVariable String municipalityUuid) {
+        try {
+            PersonBean admin = municipalityService.getMunicipalityAdminByUuid(municipalityUuid);
+            return ResponseEntity.ok(admin); // Devuelves los detalles del administrador
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); // En caso de error 404 si no se encuentra
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null); // En caso de error general
+        }
     }
 
 }
