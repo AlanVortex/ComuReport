@@ -34,6 +34,7 @@ public class MainSecurity {
     };
     private final String[] Municipality_LIST = {
             "/api/colony",
+            "/api/report/updateStatus/",
     };
     private final String[] Colony_LIST = {
             "/api/committee",
