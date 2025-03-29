@@ -13,5 +13,8 @@ public interface ReportRepository extends JpaRepository<ReportBean, Long> {
 
     List<ReportBean> findByColonyBean(ColonyBean colony);
 
+    Optional<ReportBean> findByUuid(String uuid);
+
+
 }
 

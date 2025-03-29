@@ -10,6 +10,7 @@ public class ReportDto {
     private String committeeUuid;
     private String municipalityUuid;
 
+
     public String getTitle() {
         return title;
     }

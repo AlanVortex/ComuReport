@@ -37,9 +37,11 @@ public class ColonyBean {
     private MunicipalityBean municipalityBean;
 
     @OneToMany(mappedBy = "colonyBean", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<CommitteeBean> committeeBeanList;
 
     @OneToMany(mappedBy = "colonyBean", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<ReportBean> reportBeanList;
 
 

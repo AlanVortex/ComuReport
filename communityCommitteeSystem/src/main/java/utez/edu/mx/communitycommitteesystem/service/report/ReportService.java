@@ -2,7 +2,9 @@ package utez.edu.mx.communitycommitteesystem.service.report;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import utez.edu.mx.communitycommitteesystem.controller.report.ReportDto;
+import utez.edu.mx.communitycommitteesystem.controller.report.ReportStatusUpdateDto;
 import utez.edu.mx.communitycommitteesystem.controller.report.ReportSummaryDto;
 import utez.edu.mx.communitycommitteesystem.model.colony.ColonyBean;
 import utez.edu.mx.communitycommitteesystem.model.colony.ColonyRepository;
@@ -14,6 +16,8 @@ import utez.edu.mx.communitycommitteesystem.model.municipality.MunicipalityRepos
 import utez.edu.mx.communitycommitteesystem.model.person.PersonBean;
 import utez.edu.mx.communitycommitteesystem.model.report.ReportBean;
 import utez.edu.mx.communitycommitteesystem.model.report.ReportRepository;
+import utez.edu.mx.communitycommitteesystem.model.status.StatusBean;
+import utez.edu.mx.communitycommitteesystem.model.status.StatusRepository;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -35,6 +39,9 @@ public class ReportService {
 
     @Autowired
     private ColonyRepository colonyRepository;
+
+    @Autowired
+    private StatusRepository statusRepository;
 
     public ReportBean registerReport(ReportDto dto, String loggedInColonyUuid) {
         Optional<ColonyBean> colony = colonyRepository.findByUuid(loggedInColonyUuid);
@@ -93,7 +100,7 @@ public class ReportService {
         String title = (report.getTitle() != null) ? report.getTitle() : "Sin título";
         String image = (report.getImageBeanList() != null && !report.getImageBeanList().isEmpty()) ? report.getImageBeanList().get(0).getImage() : null;
         Date date = (report.getReportDate() != null) ? report.getReportDate() : null;
-        String status = (report.getStatusBean() != null) ? (String) report.getStatusBean().getName() : null;
+        String status = (report.getStatusBean() != null) ? (String) report.getStatusBean().getType() : null;
 
         ColonyBean colony = report.getColonyBean();
         if (colony == null) {
@@ -115,4 +122,17 @@ public class ReportService {
         );
     }
 
+    @Transactional
+    public ReportBean updateReportStatus(String uuid, ReportStatusUpdateDto request) {
+        ReportBean report = reportRepository.findByUuid(uuid)
+                .orElseThrow(() -> new RuntimeException("Reporte no encontrado"));
+
+        StatusBean status = statusRepository.findById(request.getStatusId())
+                .orElseThrow(() -> new RuntimeException("Estado no encontrado"));
+
+        report.setStatusBean(status);
+        report.setStatusDescription(request.getStatusDescription()); // Actualiza la descripción del estado
+
+        return reportRepository.save(report);
+    }
 }

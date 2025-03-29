@@ -1,5 +1,7 @@
 package utez.edu.mx.communitycommitteesystem.model.status;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -34,7 +36,7 @@ public class StatusBean {
         this.id = id;
     }
 
-    public Object getName() {
+    public String getType() {
         return type;
     }
 }
