@@ -1,5 +1,7 @@
 package utez.edu.mx.communitycommitteesystem.model.report;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -39,29 +41,29 @@ public class ReportBean {
     private String uuid;
 
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idColony")
     private ColonyBean colonyBean;
 
     @OneToMany( mappedBy = "reportBean",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<SmsBean> smsBeanList;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idArea")
     private AreaBean areaBean;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idStatus")
     private StatusBean statusBean;
 
-    @OneToMany( mappedBy = "reportBean",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany( mappedBy = "reportBean",cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<ImageBean> ImageBeanList;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idCommittee")
     private CommitteeBean committeeBean;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idMunicipality")
     private MunicipalityBean municipalityBean;
 

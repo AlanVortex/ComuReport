@@ -30,4 +30,16 @@ public class ReportController {
         List<ReportSummaryDto> reports = reportService.getReportsByColonyUuid(colonyUuid);
         return ResponseEntity.ok(reports);
     }
+
+    @PutMapping("/updateStatus/{uuid}")
+    public ResponseEntity<String> updateReportStatus(@PathVariable String uuid, @RequestBody ReportStatusUpdateDto request) {
+        try {
+            reportService.updateReportStatus(uuid, request);
+            return ResponseEntity.ok("Reporte actualizado");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: " + e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al actualizar el estado.");
+        }
     }
+}

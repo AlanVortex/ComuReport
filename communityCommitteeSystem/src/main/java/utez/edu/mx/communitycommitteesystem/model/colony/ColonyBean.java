@@ -37,9 +37,11 @@ public class ColonyBean {
     private MunicipalityBean municipalityBean;
 
     @OneToMany(mappedBy = "colonyBean", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<CommitteeBean> committeeBeanList;
 
     @OneToMany(mappedBy = "colonyBean", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<ReportBean> reportBeanList;
 
 
@@ -58,6 +60,11 @@ public class ColonyBean {
 
     public ColonyBean(Long id) {
         this.id = id;
+    }
+
+    public ColonyBean(Long id, String nameColony) {
+        this.id = id;
+        this.nameColony = nameColony;
     }
 
     public String getNameColony() {

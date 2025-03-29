@@ -26,14 +26,13 @@ public class StateBean {
     @OneToOne
     @JoinColumn(name = "idPerson")
     @JsonManagedReference
-
     private PersonBean personBean;
 
     @Column(length = 36, nullable = false, unique = true, updatable = false)
     private String uuid;
 
 
-    @OneToMany( mappedBy = "stateBean",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany( mappedBy = "stateBean",cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonIgnore
     private List<MunicipalityBean> municipalityBeanList;
 
