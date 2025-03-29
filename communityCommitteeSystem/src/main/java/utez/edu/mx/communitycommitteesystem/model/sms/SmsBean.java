@@ -44,4 +44,36 @@ public class SmsBean {
     public void setUuid(String uuid) {
         this.uuid = uuid;
     }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public Date getDeliveryDate() {
+        return deliveryDate;
+    }
+
+    public void setDeliveryDate(Date deliveryDate) {
+        this.deliveryDate = deliveryDate;
+    }
+
+    public PersonBean getPersonBean() {
+        return personBean;
+    }
+
+    public void setPersonBean(PersonBean personBean) {
+        this.personBean = personBean;
+    }
+
+    public ReportBean getReportBean() {
+        return reportBean;
+    }
+
+    public void setReportBean(ReportBean reportBean) {
+        this.reportBean = reportBean;
+    }
 }

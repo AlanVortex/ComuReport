@@ -16,8 +16,11 @@ import utez.edu.mx.communitycommitteesystem.model.municipality.MunicipalityRepos
 import utez.edu.mx.communitycommitteesystem.model.person.PersonBean;
 import utez.edu.mx.communitycommitteesystem.model.report.ReportBean;
 import utez.edu.mx.communitycommitteesystem.model.report.ReportRepository;
+import utez.edu.mx.communitycommitteesystem.model.sms.SmsBean;
+import utez.edu.mx.communitycommitteesystem.model.sms.SmsRepository;
 import utez.edu.mx.communitycommitteesystem.model.status.StatusBean;
 import utez.edu.mx.communitycommitteesystem.model.status.StatusRepository;
+import utez.edu.mx.communitycommitteesystem.service.sms.SmsService;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -42,6 +45,12 @@ public class ReportService {
 
     @Autowired
     private StatusRepository statusRepository;
+
+    @Autowired
+    private SmsService smsService;
+
+    @Autowired
+    private SmsRepository smsRepository;
 
     public ReportBean registerReport(ReportDto dto, String loggedInColonyUuid) {
         Optional<ColonyBean> colony = colonyRepository.findByUuid(loggedInColonyUuid);
@@ -123,7 +132,7 @@ public class ReportService {
     }
 
     @Transactional
-    public ReportBean updateReportStatus(String uuid, ReportStatusUpdateDto request) {
+    public String updateReportStatus(String uuid, ReportStatusUpdateDto request) {
         ReportBean report = reportRepository.findByUuid(uuid)
                 .orElseThrow(() -> new RuntimeException("Reporte no encontrado"));
 
@@ -131,8 +140,26 @@ public class ReportService {
                 .orElseThrow(() -> new RuntimeException("Estado no encontrado"));
 
         report.setStatusBean(status);
-        report.setStatusDescription(request.getStatusDescription()); // Actualiza la descripción del estado
+        report.setStatusDescription(request.getStatusDescription());
+        reportRepository.save(report);
 
-        return reportRepository.save(report);
+        CommitteeBean committee = report.getCommitteeBean();
+        if (committee == null || committee.getPersonBean() == null || committee.getPersonBean().getPhone() == null) {
+            return "Reporte actualizado, pero no se pudo enviar SMS: número no encontrado.";
+        }
+
+        String phoneNumber = committee.getPersonBean().getPhone();
+        String messageBody = "El estado de su reporte ha sido actualizado a: " + status.getType();
+
+        smsService.sendSms(phoneNumber, messageBody);
+
+        SmsBean sms = new SmsBean();
+        sms.setDeliveryDate(new Date());
+        sms.setReportBean(report);
+        sms.setPersonBean(committee.getPersonBean());
+        sms.setMessage(messageBody);
+        smsRepository.save(sms);
+
+        return "Reporte actualizado y SMS enviado.";
     }
 }
