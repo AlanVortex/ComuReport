@@ -22,6 +22,7 @@ import utez.edu.mx.communitycommitteesystem.model.status.StatusBean;
 import utez.edu.mx.communitycommitteesystem.model.status.StatusRepository;
 import utez.edu.mx.communitycommitteesystem.service.sms.SmsService;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -149,7 +150,14 @@ public class ReportService {
         }
 
         String phoneNumber = committee.getPersonBean().getPhone();
-        String messageBody = "El estado de su reporte ha sido actualizado a: " + status.getType();
+
+        String messageBody = String.format(
+                "ACTUALIZACIÓN DE REPORTE\n" +
+                        "Título: %s\n" +
+                        "Estado: %s\n" +
+                report.getTitle(),
+                status.getType()
+        );
 
         smsService.sendSms(phoneNumber, messageBody);
 
