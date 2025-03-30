@@ -1,5 +1,7 @@
 package utez.edu.mx.communitycommitteesystem.exception;
 
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
 public enum ErrorCatalog {
     UNAUTHORIZED_ACCESS(1005, "Acceso no autorizado"),
     RESOURCE_NOT_FOUND(1005, "EndPoint no encontrado"),
@@ -10,8 +12,9 @@ public enum ErrorCatalog {
     ArithmeticException(1012,"Error de aritmetica"),
     HttpRequestMethodNotSupportedException(1013,"Metodo no soportado"),
     INTERNAL_SERVER_ERROR(5000, "Error interno del servidor"),
-    IllegalArgumentException(9000,"Argumento invalido");
-
+    IllegalArgumentException(9000,"Argumento invalido"),
+    UsernameNotFoundException(9001,"Usuario invalido"),
+    EntityNotFoundException(9002,"Entidad no encontrada"),;
     private final int code;
     private final String message;
 
