@@ -1,6 +1,8 @@
 package utez.edu.mx.communitycommitteesystem.model.area;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import utez.edu.mx.communitycommitteesystem.model.municipality.MunicipalityBean;
@@ -10,6 +12,7 @@ import utez.edu.mx.communitycommitteesystem.model.report.ReportBean;
 import java.util.List;
 
 @Entity
+@Data
 @Getter
 @Setter
 @Table(name = "area")
@@ -23,14 +26,16 @@ public class AreaBean {
     @Column(length = 36, nullable = false, unique = true, updatable = false)
     private String uuid;
 
-
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idMunicipality")
     private MunicipalityBean municipalityBean;
 
+    @JsonIgnore
     @OneToOne
-    @JoinColumn(name = "idPerson")
+    @JoinColumn(name = "idPerson"  )
     private PersonBean personBean;
+
 
     @OneToMany( mappedBy = "areaBean",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ReportBean> reportBeanList;

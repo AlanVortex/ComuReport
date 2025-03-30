@@ -3,6 +3,7 @@ package utez.edu.mx.communitycommitteesystem.model.municipality;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import utez.edu.mx.communitycommitteesystem.model.area.AreaBean;
@@ -17,6 +18,7 @@ import java.util.UUID;
 @Entity
 @Getter
 @Setter
+@Data
 @Table(name = "municipality")
 public class MunicipalityBean {
 
