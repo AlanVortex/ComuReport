@@ -26,8 +26,8 @@ import utez.edu.mx.communitycommitteesystem.security.service.UserDetailsServiceI
 @EnableMethodSecurity
 public class MainSecurity {
     private final String[] WHITE_LIST = {
-            "/api/state",
-            "/api/auth/signin"
+            "/api/auth/signin",
+            "/api/state"
     };
     private final String[] State_LIST = {
             "/api/municipality",
