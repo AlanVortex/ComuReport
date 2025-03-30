@@ -17,14 +17,14 @@ public class SmsBean {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(length = 250, nullable = false)
+    @Column(length = 500, nullable = false)
     private String message;
     @Temporal(TemporalType.TIMESTAMP)
     private Date deliveryDate;
     @Column(length = 36, nullable = false, unique = true, updatable = false)
     private String uuid;
 
-    @OneToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idPerson")
     private PersonBean personBean;
 

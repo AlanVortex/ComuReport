@@ -11,6 +11,8 @@ import utez.edu.mx.communitycommitteesystem.model.municipality.MunicipalityBean;
 import utez.edu.mx.communitycommitteesystem.model.sms.SmsBean;
 import utez.edu.mx.communitycommitteesystem.model.state.StateBean;
 
+import java.util.List;
+
 @Entity
 @Data
 @Getter
@@ -48,8 +50,8 @@ public class PersonBean {
     @OneToOne(mappedBy = "personBean", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private AreaBean areaBean;
 
-    @OneToOne(mappedBy = "personBean", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private SmsBean smsBean;
+    @OneToMany(mappedBy = "personBean", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<SmsBean> smsBeanList;
 
     @Column(columnDefinition = "BOOL DEFAULT true")
     private Boolean status;
@@ -61,7 +63,7 @@ public class PersonBean {
     public PersonBean() {
     }
 
-    public PersonBean(Long id, String name, String lastname, String email, String password, String phone, StateBean stateBean, MunicipalityBean municipalityBean, ColonyBean colonyBean, CommitteeBean committeeBean, AreaBean areaBean, SmsBean smsBean) {
+    public PersonBean(Long id, String name, String lastname, String email, String password, String phone, StateBean stateBean, MunicipalityBean municipalityBean, ColonyBean colonyBean, CommitteeBean committeeBean, AreaBean areaBean, List<SmsBean> smsBeanList) {
         this.id = id;
         this.name = name;
         this.lastname = lastname;
@@ -73,7 +75,7 @@ public class PersonBean {
         this.colonyBean = colonyBean;
         this.committeeBean = committeeBean;
         this.areaBean = areaBean;
-        this.smsBean = smsBean;
+        this.smsBeanList = smsBeanList;
     }
 
     public PersonBean(Long id, String name, String lastname, String email, String password, String phone) {
