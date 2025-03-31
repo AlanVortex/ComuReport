@@ -11,6 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import utez.edu.mx.communitycommitteesystem.exception.GlobalExceptionHandler;
+import utez.edu.mx.communitycommitteesystem.security.model.UserDetailsImpl;
 
 import java.security.Key;
 import java.util.Date;
@@ -26,10 +27,13 @@ public class JwtProvider {
     private static final Logger logger = LogManager.getLogger(GlobalExceptionHandler.class);
 
     public String generateToken(Authentication auth) {
-        UserDetails user = (UserDetails) auth.getPrincipal();
+        UserDetails user = (UserDetailsImpl) auth.getPrincipal();
         logger.info("Roles " + user.getAuthorities());
         Claims claims = Jwts.claims().setSubject(user.getUsername());
         claims.put("roles", user.getAuthorities());
+        claims.put("uuid", ((UserDetailsImpl) user).getUuid());
+
+
         Date tokenCreateTime = new Date();
         Date tokenValidity = new Date(
                 tokenCreateTime.getTime() + expiration * 1000
@@ -89,5 +93,17 @@ public class JwtProvider {
         return false;
     }
 
+    public String resolveClaimsJUuid(HttpServletRequest req) {
+        try {
+            Claims claims =  resolveClaims(req);
+            if (claims != null)
+                return (String) claims.get("uuid");
+            return null;
+        } catch (ExpiredJwtException e) {
+            throw e;
+        } catch (Exception e) {
+            throw e;
+        }
+    }
 
 }

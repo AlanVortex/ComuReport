@@ -8,10 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import utez.edu.mx.communitycommitteesystem.exception.GlobalExceptionHandler;
 import utez.edu.mx.communitycommitteesystem.model.person.PersonBean;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class UserDetailsImpl implements UserDetails{
@@ -19,14 +16,16 @@ public class UserDetailsImpl implements UserDetails{
     private String password;
     private boolean blocked;
     private boolean enabled;
+    private String uuid;
     private Collection<? extends GrantedAuthority> authorities;
     private static final Logger logger = LogManager.getLogger(GlobalExceptionHandler.class);
 
-    public UserDetailsImpl(String username, String password, boolean blocked, boolean enabled, String type) {
+    public UserDetailsImpl(String username, String password, boolean blocked, boolean enabled, String type , String uuid) {
         this.username = username;
         this.password = password;
         this.blocked = blocked;
         this.enabled = enabled;
+        this.uuid = uuid;
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority(type));
         this.authorities = authorities;
@@ -37,10 +36,13 @@ public class UserDetailsImpl implements UserDetails{
        // logger.info("Nombre : " +user.getRole());
         return new UserDetailsImpl(
                 user.getEmail(), user.getPassword(),
-                user.getBlocked(), user.getStatus(),user.getRole()
+                user.getBlocked(), user.getStatus(),user.getRole() , user.getRoleUuid()
         );
     }
 
+    public String getUuid() {
+        return uuid;
+    }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return authorities;
