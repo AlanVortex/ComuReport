@@ -1,5 +1,6 @@
 package utez.edu.mx.communitycommitteesystem.model.person;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -19,7 +20,7 @@ import java.util.List;
 @Setter
 @Table(name = "person")
 public class PersonBean {
-
+    @JsonIgnore
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -31,32 +32,35 @@ public class PersonBean {
     @Column(length = 50, nullable = false)
     private String email;
     @Column( nullable = false)
+    @JsonIgnore
     private String password;
     @Column(length = 50, nullable = false)
     private String phone;
-
+    @JsonIgnore
     @OneToOne(mappedBy = "personBean", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private StateBean stateBean;
-
+    @JsonIgnore
     @OneToOne(mappedBy = "personBean", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private MunicipalityBean municipalityBean;
-
+    @JsonIgnore
     @OneToOne(mappedBy = "personBean", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private ColonyBean colonyBean;
-
+    @JsonIgnore
     @OneToOne(mappedBy = "personBean", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private CommitteeBean committeeBean;
-
-    @OneToOne(mappedBy = "personBean", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
+    @OneToOne(mappedBy = "personBean", cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
     private AreaBean areaBean;
-
+    @JsonIgnore
     @OneToMany(mappedBy = "personBean", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<SmsBean> smsBeanList;
-
+    @JsonIgnore
     @Column(columnDefinition = "BOOL DEFAULT true")
     private Boolean status;
+    @JsonIgnore
     @Column(columnDefinition = "BOOL DEFAULT false")
     private Boolean blocked;
+    @JsonIgnore
     private String token;
 
 
@@ -154,7 +158,7 @@ public class PersonBean {
     public void setToken(String token) {
         this.token = token;
     }
-
+    @JsonIgnore
     public String getRole(){
         if(this.committeeBean!=null){
             return "Committee";
@@ -170,6 +174,25 @@ public class PersonBean {
         }
         if ( this.stateBean!=null){
             return "State";
+        }
+        return "";
+    }
+    @JsonIgnore
+    public String getRoleUuid(){
+        if(this.committeeBean!=null){
+            return committeeBean.getUuid();
+        }
+        if(this.areaBean!=null){
+            return areaBean.getUuid();
+        }
+        if ( this.municipalityBean!=null){
+            return municipalityBean.getUuid();
+        }
+        if ( this.colonyBean!=null){
+            return committeeBean.getUuid();
+        }
+        if ( this.stateBean!=null){
+            return stateBean.getUuid();
         }
         return "";
     }
