@@ -18,6 +18,7 @@ import java.util.List;
 @Table(name = "area")
 public class AreaBean {
 
+    @JsonIgnore
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -31,12 +32,11 @@ public class AreaBean {
     @JoinColumn(name = "idMunicipality")
     private MunicipalityBean municipalityBean;
 
-    @JsonIgnore
     @OneToOne
-    @JoinColumn(name = "idPerson"  )
+    @JoinColumn(name = "idPerson" )
     private PersonBean personBean;
 
-
+    @JsonIgnore
     @OneToMany( mappedBy = "areaBean",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ReportBean> reportBeanList;
 
