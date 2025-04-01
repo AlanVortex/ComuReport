@@ -34,8 +34,11 @@ public class PersonService {
     }
 
     // Guardar persona
-    public void save(PersonBean person) {
-        personRepository.save(person);
+    public PersonBean save(PersonBean person) {
+        person.setStatus(true);
+        person.setBlocked(false);
+        return personRepository.save(person);
+
     }
 
     public PersonBean saveMun(PersonBean person) {
@@ -44,11 +47,7 @@ public class PersonService {
         return personRepository.save(person);
     }
 
-    public PersonBean saveState(PersonBean person) {
-        person.setStatus(true);
-        person.setBlocked(false);
-        return personRepository.save(person);
-    }
+
 
     public PersonBean saveColony(PersonBean person) {
         person.setStatus(true);

@@ -27,9 +27,6 @@ public class StateService {
     private BCryptPasswordEncoder bcryptPasswordEncoder;
 
 
-    public void save(StateBean state) {
-        stateRepository.save(state);
-    }
 
     public StateBean findByUuid(String stateUuid) {
         return stateRepository.findByUuid(stateUuid).orElse(null);
@@ -44,25 +41,15 @@ public class StateService {
         return stateRepository.findByMunicipalityBeanList(municipalityBean);
     }
 
-    public String registerStateWithAdmin(StateWithAdminDto dto) {
-        PersonBean person = new PersonBean();
-        person.setName(dto.getName());
-        person.setLastname(dto.getLastname());
-        person.setEmail(dto.getEmail());
+    public String registerStateWithAdmin(StateBean stateBean) {
 
-        BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
-        String encryptedPsw = bcrypt.encode(dto.getPassword());
-        person.setPassword(encryptedPsw);
-        person.setPhone(dto.getPhone());
 
-        PersonBean savedPerson = personService.saveState(person);
 
-        StateBean state = new StateBean();
-        state.setNameState(dto.getStateName());
-        state.setPersonBean(savedPerson);
+        PersonBean personBean =  personService.save(stateBean.getPersonBean());
+        stateBean.setPersonBean(personBean);
 
-        stateRepository.save(state);
 
+        stateRepository.save(stateBean);
         return "Estado y administrador registrados correctamente";
     }
 

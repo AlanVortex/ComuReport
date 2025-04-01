@@ -15,7 +15,6 @@ import utez.edu.mx.communitycommitteesystem.security.model.UserDetailsImpl;
 
 import java.security.Key;
 import java.util.Date;
-
 @Service
 public class JwtProvider {
     @Value("${jwt.secret}")

@@ -26,42 +26,20 @@ public class MunicipalityService {
     @Autowired
     private PersonService personService;
 
-    public Optional<MunicipalityBean> findById(Long id) {
-        return municipalityRepository.findById(id);
-    }
-
-    public MunicipalityBean save(MunicipalityBean municipality) {
-        return municipalityRepository.save(municipality);
-    }
-
     public Optional<MunicipalityBean> findByUuid(String uuid) {
         return Optional.ofNullable(municipalityRepository.findByUuid(uuid));
     }
 
-    public String registerMunicipalityWithAdmin(AssignAdminMunicipalityDto dto) {
-        StateBean state = stateService.findByUuid(dto.getStateUuid());
+    public String registerMunicipalityWithAdmin(MunicipalityBean municipalityBean , String uuidState) {
+        StateBean state = stateService.findByUuid(uuidState);
         if (state == null) {
             throw new EntityNotFoundException("No se encontró un estado con el UUID proporcionado.");
         }
 
-        PersonBean person = new PersonBean();
-        person.setName(dto.getName());
-        person.setLastname(dto.getLastname());
-        person.setEmail(dto.getEmail());
-
-        BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
-        String encryptedPsw = bcrypt.encode(dto.getPassword());
-        person.setPassword(encryptedPsw);
-        person.setPhone(dto.getPhone());
-
-        PersonBean savedPerson = personService.saveMun(person);
-
-        MunicipalityBean municipality = new MunicipalityBean();
-        municipality.setNameMunicipality(dto.getMunicipalityName());
-        municipality.setPersonBean(savedPerson);
-        municipality.setStateBean(state);
-
-        save(municipality);
+        PersonBean savedPerson = personService.save(municipalityBean.getPersonBean());
+        municipalityBean.setPersonBean(savedPerson);
+        municipalityBean.setStateBean(state);
+        municipalityRepository.save(municipalityBean);
 
         return "Municipio y administrador registrados correctamente";
     }
@@ -74,12 +52,26 @@ public class MunicipalityService {
         return state.getMunicipalityBeanList();
     }
 
-    public PersonBean getMunicipalityAdminByUuid(String municipalityUuid) {
+    public MunicipalityBean getMunicipalityAdminByUuid(String municipalityUuid , String uuidState) {
         MunicipalityBean municipality = municipalityRepository.findByUuid(municipalityUuid);
         if (municipality == null) {
             throw new EntityNotFoundException("Municipio no encontrado con el UUID proporcionado.");
         }
-        return municipality.getPersonBean(); // Obtienes la persona (administrador) asociada
+        municipalityRepository.findByUuidAndStateBean(uuidState,municipality.getStateBean());
+        return municipality; // Obtienes la persona (administrador) asociada
+    }
+    public MunicipalityBean update (MunicipalityBean municipalityBean , String uuidState) {
+        MunicipalityBean municipalityUpdate = getMunicipalityAdminByUuid(municipalityBean.getUuid(), uuidState);
+
+        municipalityUpdate.setNameMunicipality(municipalityBean.getNameMunicipality());
+
+        return  municipalityRepository.save(municipalityUpdate);
+    }
+
+    public void  delete(MunicipalityBean municipalityBean , String uuidState) {
+        MunicipalityBean municipality = getMunicipalityAdminByUuid(municipalityBean.getUuid(), uuidState);
+
+        municipalityRepository.delete(municipality);
     }
 
 

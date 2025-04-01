@@ -14,7 +14,8 @@ public enum ErrorCatalog {
     INTERNAL_SERVER_ERROR(5000, "Error interno del servidor"),
     IllegalArgumentException(9000,"Argumento invalido"),
     UsernameNotFoundException(9001,"Usuario invalido"),
-    EntityNotFoundException(9002,"Entidad no encontrada"),;
+    EntityNotFoundException(9002,"Entidad no encontrada"),
+    DataIntegrityViolationException(9003,"Error en el ingreso de datos"),;
     private final int code;
     private final String message;
 

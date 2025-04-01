@@ -4,6 +4,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import utez.edu.mx.communitycommitteesystem.config.ApiResponse;
 import utez.edu.mx.communitycommitteesystem.controller.auth.dto.SignDto;
+import utez.edu.mx.communitycommitteesystem.controller.auth.dto.TokenDto;
 import utez.edu.mx.communitycommitteesystem.service.auth.AuthService;
 
 @RestController
@@ -17,7 +18,7 @@ public class AuthController {
     }
 
     @PostMapping("/signin")
-    public ResponseEntity<String> signIn(@RequestBody SignDto dto) {
+    public ResponseEntity<TokenDto> signIn(@RequestBody SignDto dto) {
         return service.signIn
                 (dto.getUsername(), dto.getPassword());
     }
