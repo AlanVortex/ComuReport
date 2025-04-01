@@ -1,71 +1,34 @@
 package utez.edu.mx.communitycommitteesystem.controller.municipality;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import utez.edu.mx.communitycommitteesystem.controller.person.PersonDto;
+import utez.edu.mx.communitycommitteesystem.model.municipality.MunicipalityBean;
+import utez.edu.mx.communitycommitteesystem.model.person.PersonBean;
+import utez.edu.mx.communitycommitteesystem.model.state.StateBean;
 
-@Getter
-@Setter
-public class AssignAdminMunicipalityDto {
+@Data
+public class AssignAdminMunicipalityDto extends PersonDto {
 
-    private String stateUuid;
-    private String name;
-    private String lastname;
-    private String email;
-    private String password;
-    private String phone;
     private String municipalityName;
+    private String uuid;
 
-    public String getMunicipalityName() {
-        return municipalityName;
+    public MunicipalityBean toEntity(){
+        MunicipalityBean municipalityBean = new MunicipalityBean();
+        PersonBean person = getPersonBean();
+        municipalityBean.setPersonBean(person);
+        municipalityBean.setNameMunicipality(municipalityName);
+        return municipalityBean;
+
     }
 
-    public void setMunicipalityName(String municipalityName) {
-        this.municipalityName = municipalityName;
-    }
+    public MunicipalityBean toEntityUpdate(){
+        MunicipalityBean municipalityBean = new MunicipalityBean();
+        municipalityBean.setNameMunicipality(municipalityName);
+        municipalityBean.setUuid(uuid);
+        return municipalityBean;
 
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getLastname() {
-        return lastname;
-    }
-
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getStateUuid() {
-        return stateUuid;
     }
 }
 

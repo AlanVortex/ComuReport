@@ -1,10 +1,13 @@
 package utez.edu.mx.communitycommitteesystem.controller.state;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import utez.edu.mx.communitycommitteesystem.exception.GlobalExceptionHandler;
 import utez.edu.mx.communitycommitteesystem.model.person.PersonBean;
 import utez.edu.mx.communitycommitteesystem.model.state.StateBean;
 import utez.edu.mx.communitycommitteesystem.service.person.PersonService;
@@ -24,14 +27,13 @@ public class StateController {
     @Autowired
     private StateService stateService;
 
+    private static final Logger logger = LogManager.getLogger(GlobalExceptionHandler.class);
+
     @PostMapping()
     public ResponseEntity<String> registerStateWithAdmin(@RequestBody StateWithAdminDto dto) {
-        try {
-            String result = stateService.registerStateWithAdmin(dto);
+            String result = stateService.registerStateWithAdmin(dto.toEntity());
             return ResponseEntity.ok(result);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al registrar el estado.");
-        }
+
     }
     @GetMapping("/{stateUuid}")
     public ResponseEntity<List<StateBean>> getStateAdminsByStateUuid(@PathVariable String stateUuid) {

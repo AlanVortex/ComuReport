@@ -1,5 +1,6 @@
 package utez.edu.mx.communitycommitteesystem.controller.person;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,6 +10,7 @@ import utez.edu.mx.communitycommitteesystem.model.person.PersonBean;
 @NoArgsConstructor
 @Getter
 @Setter
+@Data
 public class PersonDto {
     private String name;
     private String lastname;

@@ -3,6 +3,7 @@ package utez.edu.mx.communitycommitteesystem.model.state;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import utez.edu.mx.communitycommitteesystem.model.municipality.MunicipalityBean;
@@ -13,6 +14,7 @@ import java.util.UUID;
 
 @Getter
 @Setter
+@Data
 @Entity
 @Table(name = "state")
 public class StateBean {
@@ -48,13 +50,6 @@ public class StateBean {
         this.uuid = uuid;
     }
 
-    public PersonBean getPersonBean() {
-        return personBean;
-    }
-
-    public void setPersonBean(PersonBean personBean) {
-        this.personBean = personBean;
-    }
 
 
     public void setId(Long id) {
