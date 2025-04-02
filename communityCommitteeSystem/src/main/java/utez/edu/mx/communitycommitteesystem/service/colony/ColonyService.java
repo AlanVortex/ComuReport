@@ -1,9 +1,8 @@
 package utez.edu.mx.communitycommitteesystem.service.colony;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import utez.edu.mx.communitycommitteesystem.controller.colony.ColonyWithLinkDto;
 import utez.edu.mx.communitycommitteesystem.model.colony.ColonyBean;
 import utez.edu.mx.communitycommitteesystem.model.colony.ColonyRepository;
 import utez.edu.mx.communitycommitteesystem.model.municipality.MunicipalityBean;
@@ -12,7 +11,6 @@ import utez.edu.mx.communitycommitteesystem.service.municipality.MunicipalitySer
 import utez.edu.mx.communitycommitteesystem.service.person.PersonService;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ColonyService {
@@ -26,45 +24,39 @@ public class ColonyService {
     private MunicipalityService municipalityService;
 
     public ColonyBean findById(Long id) {
-        return colonyRepository.findById(id).orElseThrow(() -> new RuntimeException("Colony not found"));
+        return colonyRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Colony not found"));
     }
 
+    public void delete(String uuidMunicipality ,String uuid) {
 
-    public Optional<ColonyBean> findByUuid(String uuid) {
-        return colonyRepository.findByUuid(uuid);
+        MunicipalityBean municipalityBean = municipalityService.findByUuid(uuidMunicipality).orElseThrow(() -> new EntityNotFoundException("Municipality not found"));
+        ColonyBean colonyBean =  colonyRepository.findByUuidAndMunicipalityBean(uuid, municipalityBean).orElseThrow(() -> new EntityNotFoundException("Colony not found"));
+
+        colonyRepository.delete(colonyBean);
+    }
+
+    public ColonyBean get(String uuid , String uuidMunicipality) {
+        MunicipalityBean municipalityBean = municipalityService.findByUuid(uuidMunicipality).orElseThrow(() -> new EntityNotFoundException("Municipality not found"));
+        ColonyBean colonyBean =  colonyRepository.findByUuidAndMunicipalityBean(uuid, municipalityBean).orElseThrow(() -> new EntityNotFoundException("Colony not found"));
+        return colonyBean;
     }
 
     public List<ColonyBean> findByMunicipality(MunicipalityBean municipality) {
         return colonyRepository.findByMunicipalityBean(municipality);
     }
 
-    public void registerColonyWithLink(ColonyWithLinkDto dto) {
-        PersonBean person = new PersonBean();
-        person.setName(dto.getName());
-        person.setLastname(dto.getLastname());
-        person.setEmail(dto.getEmail());
+    public String registerColonyWithLink(ColonyBean colonyBean , String uuid) {
+        PersonBean savedPerson = personService.saveColony(colonyBean.getPersonBean());
+        colonyBean.setPersonBean(savedPerson);
+        MunicipalityBean municipalityBean = municipalityService.findByUuid(uuid).orElseThrow(() -> new EntityNotFoundException("Municipality not found"));
+        colonyBean.setMunicipalityBean(municipalityBean);
+        colonyRepository.save(colonyBean);
 
-        BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
-        String encryptedPsw = bcrypt.encode(dto.getPassword());
-        person.setPassword(encryptedPsw);
-        person.setPhone(dto.getPhone());
-
-        PersonBean savedPerson = personService.saveColony(person);
-
-        MunicipalityBean municipality = municipalityService.findByUuid(dto.getMunicipalityUuid())
-                .orElseThrow(() -> new RuntimeException("Municipio no encontrado."));
-
-        // Crear la colonia
-        ColonyBean colony = new ColonyBean();
-        colony.setNameColony(dto.getColonyName());
-        colony.setMunicipalityBean(municipality);
-        colony.setPersonBean(savedPerson);
-
-        save(colony);
+        return "Colony Success";
     }
 
-    public void save(ColonyBean colony) {
-         colonyRepository.save(colony);
+    public List<ColonyBean> findAll(String uuidMunicipality) {
+       MunicipalityBean  municipalityBean   =  municipalityService.findByUuid(uuidMunicipality).orElseThrow(() -> new EntityNotFoundException("Municipality not found"));
+        return colonyRepository.findByMunicipalityBean(municipalityBean);
     }
-
 }

@@ -76,7 +76,7 @@ public class MainSecurity {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.cors(Customizer.withDefaults())
-                .csrf(AbstractHttpConfigurer::disable)
+                .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(req -> {
                     // Iterar sobre el arreglo WHITE_LIST y aplicar cada ruta
                     for (String path : WHITE_LIST) {

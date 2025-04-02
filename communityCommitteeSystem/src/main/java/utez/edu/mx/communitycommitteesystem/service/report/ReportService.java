@@ -22,7 +22,6 @@ import utez.edu.mx.communitycommitteesystem.model.status.StatusBean;
 import utez.edu.mx.communitycommitteesystem.model.status.StatusRepository;
 import utez.edu.mx.communitycommitteesystem.service.sms.SmsService;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;

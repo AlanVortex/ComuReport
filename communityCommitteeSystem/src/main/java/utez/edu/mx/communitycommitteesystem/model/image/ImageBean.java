@@ -22,19 +22,5 @@ public class ImageBean {
     @JoinColumn(name = "idReport")
     private ReportBean reportBean;
 
-    public String getImage() {
-        return image;
-    }
 
-    public void setImage(String image) {
-        this.image = image;
-    }
-
-    public ReportBean getReportBean() {
-        return reportBean;
-    }
-
-    public void setReportBean(ReportBean reportBean) {
-        this.reportBean = reportBean;
-    }
 }

@@ -1,9 +1,6 @@
 package utez.edu.mx.communitycommitteesystem.service.person;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

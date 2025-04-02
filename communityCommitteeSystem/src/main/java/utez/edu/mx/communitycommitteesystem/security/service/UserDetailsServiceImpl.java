@@ -12,9 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import utez.edu.mx.communitycommitteesystem.exception.GlobalExceptionHandler;
 import utez.edu.mx.communitycommitteesystem.model.person.PersonBean;
 import utez.edu.mx.communitycommitteesystem.security.model.UserDetailsImpl;
-import utez.edu.mx.communitycommitteesystem.service.committee.CommitteeService;
 import utez.edu.mx.communitycommitteesystem.service.person.PersonService;
-import utez.edu.mx.communitycommitteesystem.service.state.StateService;
 
 import java.util.Optional;
 

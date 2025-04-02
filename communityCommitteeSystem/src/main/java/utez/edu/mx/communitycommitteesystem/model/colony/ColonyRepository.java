@@ -13,4 +13,7 @@ public interface ColonyRepository extends JpaRepository<ColonyBean, Long> {
 
     //findbyMunicipality
     List<ColonyBean> findByMunicipalityBean(MunicipalityBean municipalityBean);
+
+
+    Optional<ColonyBean> findByUuidAndMunicipalityBean(String uuid, MunicipalityBean municipalityBean);
 }

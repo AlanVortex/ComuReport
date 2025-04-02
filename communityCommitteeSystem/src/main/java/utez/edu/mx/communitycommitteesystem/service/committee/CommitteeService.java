@@ -3,10 +3,7 @@ package utez.edu.mx.communitycommitteesystem.service.committee;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import utez.edu.mx.communitycommitteesystem.config.ApiResponse;
 import utez.edu.mx.communitycommitteesystem.controller.committee.CommitteeDto;
 import utez.edu.mx.communitycommitteesystem.controller.committee.CommitteeResponseDto;
 import utez.edu.mx.communitycommitteesystem.model.colony.ColonyBean;
@@ -63,8 +60,7 @@ public class CommitteeService {
     }
 
     public String registerPresident(CommitteeDto committeeDto) {
-        ColonyBean colony = colonyService.findByUuid(committeeDto.getColonyUuid())
-                .orElseThrow(() -> new EntityNotFoundException("Error: Colonia no encontrada."));
+        ColonyBean colony = colonyService.findById(1l);
 
         StatusCommitteeBean status = statusService.findById(committeeDto.getIdStatus());
         if (status == null) {
@@ -91,8 +87,7 @@ public class CommitteeService {
     }
 
     public List<CommitteeBean> getCommitteesByColonyUuid(String colonyUuid) {
-        ColonyBean colony = colonyService.findByUuid(colonyUuid)
-                .orElseThrow(() -> new EntityNotFoundException("Colonia no encontrada."));
+        ColonyBean colony = colonyService.findById(1L);
 
         return findByColony(colony);
     }

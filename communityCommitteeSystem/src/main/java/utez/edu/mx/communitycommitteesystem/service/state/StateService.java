@@ -4,7 +4,6 @@ import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import utez.edu.mx.communitycommitteesystem.controller.state.StateWithAdminDto;
 import utez.edu.mx.communitycommitteesystem.model.municipality.MunicipalityBean;
 import utez.edu.mx.communitycommitteesystem.model.person.PersonBean;
 import utez.edu.mx.communitycommitteesystem.model.state.StateBean;
@@ -12,7 +11,6 @@ import utez.edu.mx.communitycommitteesystem.model.state.StateRepository;
 import utez.edu.mx.communitycommitteesystem.service.person.PersonService;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Data

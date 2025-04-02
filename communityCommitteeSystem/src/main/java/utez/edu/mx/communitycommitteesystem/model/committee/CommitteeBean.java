@@ -1,13 +1,11 @@
 package utez.edu.mx.communitycommitteesystem.model.committee;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import utez.edu.mx.communitycommitteesystem.model.colony.ColonyBean;
 import utez.edu.mx.communitycommitteesystem.model.person.PersonBean;
 import utez.edu.mx.communitycommitteesystem.model.report.ReportBean;
-import utez.edu.mx.communitycommitteesystem.model.status.StatusBean;
 import utez.edu.mx.communitycommitteesystem.model.statusCommittee.StatusCommitteeBean;
 
 import java.util.List;
@@ -57,22 +55,6 @@ public class CommitteeBean {
         return personBean;
     }
 
-    public void setPersonBean(PersonBean personBean) {
-        this.personBean = personBean;
-    }
-    public void setColonyBean(ColonyBean colonyBean) {
-        this.colonyBean = colonyBean;
-    }
-    public void setStatusCommitteeBean(StatusCommitteeBean statusCommitteeBean) {
-        this.statusCommitteeBean = statusCommitteeBean;
-    }
 
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
-    }
-
-    public String getUuid() {
-        return uuid;
-    }
 }
 
