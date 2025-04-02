@@ -18,7 +18,9 @@ import java.util.List;
 @Data
 @Getter
 @Setter
-@Table(name = "person")
+@Table(name = "person",indexes = {
+        @Index(name = "idx_unique_email", columnList = "email", unique = true)
+})
 public class PersonBean {
     @JsonIgnore
     @Id

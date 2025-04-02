@@ -63,8 +63,7 @@ public class CommitteeService {
     }
 
     public String registerPresident(CommitteeDto committeeDto) {
-        ColonyBean colony = colonyService.findByUuid(committeeDto.getColonyUuid())
-                .orElseThrow(() -> new EntityNotFoundException("Error: Colonia no encontrada."));
+        ColonyBean colony = colonyService.findById(1l);
 
         StatusCommitteeBean status = statusService.findById(committeeDto.getIdStatus());
         if (status == null) {
@@ -91,8 +90,7 @@ public class CommitteeService {
     }
 
     public List<CommitteeBean> getCommitteesByColonyUuid(String colonyUuid) {
-        ColonyBean colony = colonyService.findByUuid(colonyUuid)
-                .orElseThrow(() -> new EntityNotFoundException("Colonia no encontrada."));
+        ColonyBean colony = colonyService.findById(1L);
 
         return findByColony(colony);
     }

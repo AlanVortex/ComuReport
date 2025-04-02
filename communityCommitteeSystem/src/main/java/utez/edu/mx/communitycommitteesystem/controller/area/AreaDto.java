@@ -9,7 +9,6 @@ import utez.edu.mx.communitycommitteesystem.model.area.AreaBean;
 import utez.edu.mx.communitycommitteesystem.model.municipality.MunicipalityBean;
 import utez.edu.mx.communitycommitteesystem.model.person.PersonBean;
 
-@Data
 @Getter
 @Setter
 public class AreaDto extends PersonDto {
