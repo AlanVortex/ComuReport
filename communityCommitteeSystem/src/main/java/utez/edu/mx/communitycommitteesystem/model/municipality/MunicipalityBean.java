@@ -1,7 +1,6 @@
 package utez.edu.mx.communitycommitteesystem.model.municipality;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -57,60 +56,5 @@ public class MunicipalityBean {
     }
 
 
-    public String getUuid() {
-        return uuid;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getNameMunicipality() {
-        return nameMunicipality;
-    }
-
-    public void setNameMunicipality(String nameMunicipality) {
-        this.nameMunicipality = nameMunicipality;
-    }
-
-    public StateBean getStateBean() {
-        return stateBean;
-    }
-
-    public void setStateBean(StateBean stateBean) {
-        this.stateBean = stateBean;
-    }
-
-    public List<ColonyBean> getColonyBeanList() {
-        return colonyBeanList;
-    }
-
-    public void setColonyBeanList(List<ColonyBean> colonyBeanList) {
-        this.colonyBeanList = colonyBeanList;
-    }
-
-    public List<AreaBean> getAreaBeanList() {
-        return areaBeanList;
-    }
-
-    public void setAreaBeanList(List<AreaBean> areaBeanList) {
-        this.areaBeanList = areaBeanList;
-    }
-
-    public List<ReportBean> getReportBeanList() {
-        return reportBeanList;
-    }
-
-    public void setReportBeanList(List<ReportBean> reportBeanList) {
-        this.reportBeanList = reportBeanList;
-    }
-
-    public PersonBean getPersonBean() {
-        return personBean;
-    }
-
-    public void setPersonBean(PersonBean personBean) {
-        this.personBean = personBean;
-    }
 
 }

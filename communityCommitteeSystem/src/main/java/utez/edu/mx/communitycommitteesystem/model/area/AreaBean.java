@@ -44,11 +44,4 @@ public class AreaBean {
         this.uuid = java.util.UUID.randomUUID().toString();
     }
 
-    public String getUuid() {
-        return uuid;
-    }
-
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
-    }
 }

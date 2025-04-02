@@ -40,7 +40,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
             response.sendError(HttpServletResponse.SC_FORBIDDEN, e.getMessage());
         }
     }

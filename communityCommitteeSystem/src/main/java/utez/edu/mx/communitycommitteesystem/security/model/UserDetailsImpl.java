@@ -9,7 +9,6 @@ import utez.edu.mx.communitycommitteesystem.exception.GlobalExceptionHandler;
 import utez.edu.mx.communitycommitteesystem.model.person.PersonBean;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class UserDetailsImpl implements UserDetails{
     private String username;

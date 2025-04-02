@@ -2,9 +2,7 @@ package utez.edu.mx.communitycommitteesystem.service.colony;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import utez.edu.mx.communitycommitteesystem.controller.colony.ColonyWithLinkDto;
 import utez.edu.mx.communitycommitteesystem.model.colony.ColonyBean;
 import utez.edu.mx.communitycommitteesystem.model.colony.ColonyRepository;
 import utez.edu.mx.communitycommitteesystem.model.municipality.MunicipalityBean;
@@ -13,7 +11,6 @@ import utez.edu.mx.communitycommitteesystem.service.municipality.MunicipalitySer
 import utez.edu.mx.communitycommitteesystem.service.person.PersonService;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ColonyService {

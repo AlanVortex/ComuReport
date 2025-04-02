@@ -42,34 +42,8 @@ public class StateBean {
         this.uuid = UUID.randomUUID().toString(); // Generar UUID al crear la entidad
     }
 
-    public String getUuid() {
-        return uuid;
-    }
-
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
-    }
 
 
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getNameState() {
-        return nameState;
-    }
-
-    public void setNameState(String nameState) {
-        this.nameState = nameState;
-    }
-
-    public List<MunicipalityBean> getMunicipalityBeanList() {
-        return municipalityBeanList;
-    }
-
-    public void setMunicipalityBeanList(List<MunicipalityBean> municipalityBeanList) {
-        this.municipalityBeanList = municipalityBeanList;
-    }
 
 }

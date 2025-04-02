@@ -1,7 +1,5 @@
 package utez.edu.mx.communitycommitteesystem.exception;
 
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-
 public enum ErrorCatalog {
     UNAUTHORIZED_ACCESS(1005, "Acceso no autorizado"),
     RESOURCE_NOT_FOUND(1005, "EndPoint no encontrado"),

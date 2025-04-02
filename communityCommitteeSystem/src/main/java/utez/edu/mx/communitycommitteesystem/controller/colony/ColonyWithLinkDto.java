@@ -1,8 +1,6 @@
 package utez.edu.mx.communitycommitteesystem.controller.colony;
 
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 import utez.edu.mx.communitycommitteesystem.controller.person.PersonDto;
 import utez.edu.mx.communitycommitteesystem.model.colony.ColonyBean;
 import utez.edu.mx.communitycommitteesystem.model.person.PersonBean;

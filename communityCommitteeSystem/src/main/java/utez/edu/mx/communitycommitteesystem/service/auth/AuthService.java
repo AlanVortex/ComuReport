@@ -1,7 +1,6 @@
 package utez.edu.mx.communitycommitteesystem.service.auth;
 
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AccountExpiredException;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -76,7 +75,6 @@ public class AuthService {
             return ResponseEntity.ok(tokenDto);
         } catch (Exception e) {
 
-            e.printStackTrace();
             String message = "CredentialsMismatch";
             if (e instanceof DisabledException)
                 message = "UserDisabled";

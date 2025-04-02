@@ -1,7 +1,5 @@
 package utez.edu.mx.communitycommitteesystem.model.report;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,7 +10,6 @@ import utez.edu.mx.communitycommitteesystem.model.image.ImageBean;
 import utez.edu.mx.communitycommitteesystem.model.municipality.MunicipalityBean;
 import utez.edu.mx.communitycommitteesystem.model.person.PersonBean;
 import utez.edu.mx.communitycommitteesystem.model.sms.SmsBean;
-import utez.edu.mx.communitycommitteesystem.model.state.StateBean;
 import utez.edu.mx.communitycommitteesystem.model.status.StatusBean;
 
 import java.util.ArrayList;
@@ -73,103 +70,5 @@ public class ReportBean {
 
     }
 
-    public String getUuid() {
-        return uuid;
-    }
 
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Date getReportDate() {
-        return reportDate;
-    }
-
-    public void setReportDate(Date reportDate) {
-        this.reportDate = reportDate;
-    }
-
-    public String getStatusDescription() {
-        return statusDescription;
-    }
-
-    public void setStatusDescription(String statusDescription) {
-        this.statusDescription = statusDescription;
-    }
-
-    public ColonyBean getColonyBean() {
-        return colonyBean;
-    }
-
-    public void setColonyBean(ColonyBean colonyBean) {
-        this.colonyBean = colonyBean;
-    }
-
-    public List<SmsBean> getSmsBeanList() {
-        return smsBeanList;
-    }
-
-    public void setSmsBeanList(List<SmsBean> smsBeanList) {
-        this.smsBeanList = smsBeanList;
-    }
-
-    public AreaBean getAreaBean() {
-        return areaBean;
-    }
-
-    public void setAreaBean(AreaBean areaBean) {
-        this.areaBean = areaBean;
-    }
-
-    public StatusBean getStatusBean() {
-        return statusBean;
-    }
-
-    public void setStatusBean(StatusBean statusBean) {
-        this.statusBean = statusBean;
-    }
-
-    public List<ImageBean> getImageBeanList() {
-        return ImageBeanList;
-    }
-
-    public void setImageBeanList(List<ImageBean> imageBeanList) {
-        ImageBeanList = imageBeanList;
-    }
-
-    public CommitteeBean getCommitteeBean() {
-        return committeeBean;
-    }
-
-    public void setCommitteeBean(CommitteeBean committeeBean) {
-        this.committeeBean = committeeBean;
-    }
-
-    public MunicipalityBean getMunicipalityBean() {
-        return municipalityBean;
-    }
-
-    public void setMunicipalityBean(MunicipalityBean municipalityBean) {
-        this.municipalityBean = municipalityBean;
-    }
-
-    public PersonBean getPersonBean() {
-        return colonyBean.getPersonBean();
-    }
 }

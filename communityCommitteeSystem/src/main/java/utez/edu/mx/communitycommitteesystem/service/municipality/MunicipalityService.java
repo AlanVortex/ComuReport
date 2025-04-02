@@ -2,9 +2,7 @@ package utez.edu.mx.communitycommitteesystem.service.municipality;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import utez.edu.mx.communitycommitteesystem.controller.municipality.AssignAdminMunicipalityDto;
 import utez.edu.mx.communitycommitteesystem.model.municipality.MunicipalityBean;
 import utez.edu.mx.communitycommitteesystem.model.municipality.MunicipalityRepository;
 import utez.edu.mx.communitycommitteesystem.model.person.PersonBean;

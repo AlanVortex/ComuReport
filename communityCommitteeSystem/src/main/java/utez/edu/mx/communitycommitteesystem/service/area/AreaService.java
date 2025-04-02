@@ -2,7 +2,6 @@ package utez.edu.mx.communitycommitteesystem.service.area;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
-import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +14,6 @@ import utez.edu.mx.communitycommitteesystem.model.person.PersonBean;
 import utez.edu.mx.communitycommitteesystem.service.municipality.MunicipalityService;
 import utez.edu.mx.communitycommitteesystem.service.person.PersonService;
 
-import java.awt.geom.Area;
 import java.util.List;
 
 @AllArgsConstructor

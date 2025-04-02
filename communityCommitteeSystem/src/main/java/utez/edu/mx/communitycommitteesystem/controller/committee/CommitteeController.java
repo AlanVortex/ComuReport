@@ -3,35 +3,21 @@ package utez.edu.mx.communitycommitteesystem.controller.committee;
 import jakarta.persistence.EntityNotFoundException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import utez.edu.mx.communitycommitteesystem.config.ApiResponse;
 import utez.edu.mx.communitycommitteesystem.controller.status.UpdateStatusDto;
 import utez.edu.mx.communitycommitteesystem.exception.GlobalExceptionHandler;
-import utez.edu.mx.communitycommitteesystem.model.colony.ColonyBean;
 import utez.edu.mx.communitycommitteesystem.model.committee.CommitteeBean;
 import utez.edu.mx.communitycommitteesystem.model.person.PersonBean;
-import utez.edu.mx.communitycommitteesystem.model.state.StateBean;
-import utez.edu.mx.communitycommitteesystem.model.status.StatusBean;
-import utez.edu.mx.communitycommitteesystem.model.statusCommittee.StatusCommitteeBean;
-import utez.edu.mx.communitycommitteesystem.service.colony.ColonyService;
 import utez.edu.mx.communitycommitteesystem.service.committee.CommitteeService;
-import utez.edu.mx.communitycommitteesystem.service.person.PersonService;
-import utez.edu.mx.communitycommitteesystem.service.status.StatusService;
-import utez.edu.mx.communitycommitteesystem.service.statusCommittee.StatusCommitteeService;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/committee")
-@CrossOrigin(origins = "*")
 public class CommitteeController {
 
     private CommitteeService committeeService;

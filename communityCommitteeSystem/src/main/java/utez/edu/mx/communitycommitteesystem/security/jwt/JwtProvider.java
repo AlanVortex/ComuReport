@@ -85,9 +85,7 @@ public class JwtProvider {
             parseJwtClaims(token);
             return claims.getExpiration().after(new Date());
         }catch (MalformedJwtException | UnsupportedJwtException | ExpiredJwtException e){
-            e.printStackTrace();
         } catch (Exception e){
-            e.printStackTrace();
         }
         return false;
     }

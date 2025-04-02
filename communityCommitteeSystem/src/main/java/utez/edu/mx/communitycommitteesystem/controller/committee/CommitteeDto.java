@@ -6,7 +6,6 @@ import lombok.Setter;
 import utez.edu.mx.communitycommitteesystem.model.colony.ColonyBean;
 import utez.edu.mx.communitycommitteesystem.model.committee.CommitteeBean;
 import utez.edu.mx.communitycommitteesystem.model.person.PersonBean;
-import utez.edu.mx.communitycommitteesystem.model.status.StatusBean;
 import utez.edu.mx.communitycommitteesystem.model.statusCommittee.StatusCommitteeBean;
 
 @NoArgsConstructor
