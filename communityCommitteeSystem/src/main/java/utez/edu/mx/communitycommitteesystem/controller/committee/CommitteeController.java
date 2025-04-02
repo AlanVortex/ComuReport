@@ -26,7 +26,7 @@ public class CommitteeController {
         this.committeeService = committeeService;
     }
 
-    private static final Logger logger = LogManager.getLogger(GlobalExceptionHandler.class);
+    private static final Logger logger = LogManager.getLogger(CommitteeController.class);
 
     @PostMapping()
     public ResponseEntity<String> registerPresident(@RequestBody CommitteeDto committeeDto) {

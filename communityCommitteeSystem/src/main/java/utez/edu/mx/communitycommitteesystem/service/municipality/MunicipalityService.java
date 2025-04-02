@@ -1,6 +1,7 @@
 package utez.edu.mx.communitycommitteesystem.service.municipality;
 
 import jakarta.persistence.EntityNotFoundException;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import utez.edu.mx.communitycommitteesystem.model.municipality.MunicipalityBean;
@@ -14,15 +15,15 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class MunicipalityService {
-    @Autowired
-    private MunicipalityRepository municipalityRepository;
+    private final MunicipalityRepository municipalityRepository;
 
-    @Autowired
-    private StateService stateService;
 
-    @Autowired
-    private PersonService personService;
+    private final StateService stateService;
+
+
+    private final PersonService personService;
 
     public Optional<MunicipalityBean> findByUuid(String uuid) {
         return Optional.ofNullable(municipalityRepository.findByUuid(uuid));

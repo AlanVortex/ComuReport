@@ -1,6 +1,7 @@
 package utez.edu.mx.communitycommitteesystem.service.committee;
 
 import jakarta.persistence.EntityNotFoundException;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,19 +21,20 @@ import java.util.Optional;
 
 @Service
 @Data
+@AllArgsConstructor
 public class CommitteeService {
 
-    @Autowired
-    private CommitteeRepository committeeRepository;
 
-    @Autowired
-    private ColonyService colonyService;
+    private final CommitteeRepository committeeRepository;
 
-    @Autowired
-    private StatusCommitteeService statusService;
 
-    @Autowired
-    private PersonService personService;
+    private final ColonyService colonyService;
+
+
+    private final StatusCommitteeService statusService;
+
+
+    private final PersonService personService;
 
 
 

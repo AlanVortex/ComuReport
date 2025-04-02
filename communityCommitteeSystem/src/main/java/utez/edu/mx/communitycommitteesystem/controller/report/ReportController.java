@@ -1,5 +1,6 @@
 package utez.edu.mx.communitycommitteesystem.controller.report;
 
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,9 +12,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/report")
+@AllArgsConstructor
 public class ReportController {
-    @Autowired
-    private ReportService reportService;
+
+    private final ReportService reportService;
 
     @PostMapping()
     public ResponseEntity<String> registerReport(@RequestBody ReportDto dto, @RequestHeader("Colony-UUID") String colonyUuid) {

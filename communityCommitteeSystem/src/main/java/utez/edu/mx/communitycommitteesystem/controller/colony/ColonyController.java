@@ -17,13 +17,9 @@ import java.util.List;
 @RequestMapping("/api/colony")
 public class ColonyController {
 
-    @Autowired
-    private MunicipalityService municipalityService;
 
-    @Autowired
-    private ColonyService colonyService;
-    @Autowired
-    private JwtProvider jwtProvider;
+    private final ColonyService colonyService;
+    private final JwtProvider jwtProvider;
 
     @PostMapping()
     public ResponseEntity<String> create(@RequestBody ColonyWithLinkDto dto,HttpServletRequest req) {

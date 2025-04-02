@@ -1,5 +1,6 @@
 package utez.edu.mx.communitycommitteesystem.controller.state;
 
+import lombok.AllArgsConstructor;
 import lombok.Value;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -15,14 +16,14 @@ import utez.edu.mx.communitycommitteesystem.service.state.StateService;
 import java.util.List;
 
 @RestController
+@AllArgsConstructor
 @RequestMapping("/api/state")
 public class StateController {
 
-    @Autowired
-    private PersonService personService;
 
-    @Autowired
-    private StateService stateService;
+
+
+    private final StateService stateService;
 
     private static final Logger logger = LogManager.getLogger(GlobalExceptionHandler.class);
 

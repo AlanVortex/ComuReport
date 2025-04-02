@@ -16,9 +16,8 @@ import java.util.List;
 @AllArgsConstructor
 public class MunicipalityController {
 
-    @Autowired
-    private MunicipalityService municipalityService;
 
+    private final MunicipalityService municipalityService;
     private final JwtProvider jwtProvider;
 
 

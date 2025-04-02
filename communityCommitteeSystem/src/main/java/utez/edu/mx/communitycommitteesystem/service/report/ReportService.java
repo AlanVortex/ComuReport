@@ -1,5 +1,6 @@
 package utez.edu.mx.communitycommitteesystem.service.report;
 
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,28 +30,27 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class ReportService {
 
-    @Autowired
-    private ReportRepository reportRepository;
 
-    @Autowired
-    private CommitteeRepository committeeRepository;
+    private final ReportRepository reportRepository;
 
-    @Autowired
-    private MunicipalityRepository municipalityRepository;
 
-    @Autowired
-    private ColonyRepository colonyRepository;
+    private final CommitteeRepository committeeRepository;
 
-    @Autowired
-    private StatusRepository statusRepository;
 
-    @Autowired
-    private SmsService smsService;
+    private final MunicipalityRepository municipalityRepository;
 
-    @Autowired
-    private SmsRepository smsRepository;
+
+    private final ColonyRepository colonyRepository;
+
+    private final StatusRepository statusRepository;
+
+
+    private final SmsService smsService;
+
+    private final SmsRepository smsRepository;
 
     public ReportBean registerReport(ReportDto dto, String loggedInColonyUuid) {
         Optional<ColonyBean> colony = colonyRepository.findByUuid(loggedInColonyUuid);

@@ -16,11 +16,9 @@ import java.util.List;
 @RequestMapping("/api/area")
 @AllArgsConstructor
 public class AreaController {
+
     private final AreaService areaService;
-
     private final JwtProvider jwtProvider;
-
-    private static final Logger logger = LogManager.getLogger(AreaController.class);
 
     //Crear una area , con verificacion y asginacion de su administrador de municipio
     @PostMapping("")

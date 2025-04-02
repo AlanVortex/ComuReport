@@ -20,13 +20,13 @@ import java.util.List;
 @Service
 public class AreaService {
 
-    @Autowired
-    private AreaRepository areaRepository;
+
+    private final AreaRepository areaRepository;
 
     private final PersonService personService;
 
-    @Autowired
-    private MunicipalityService municipalityService;
+
+    private final MunicipalityService municipalityService;
 
     private static final Logger logger = LogManager.getLogger(GlobalExceptionHandler.class);
 

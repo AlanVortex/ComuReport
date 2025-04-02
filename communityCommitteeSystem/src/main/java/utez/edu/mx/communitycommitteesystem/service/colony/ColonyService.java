@@ -1,6 +1,7 @@
 package utez.edu.mx.communitycommitteesystem.service.colony;
 
 import jakarta.persistence.EntityNotFoundException;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import utez.edu.mx.communitycommitteesystem.model.colony.ColonyBean;
@@ -13,15 +14,16 @@ import utez.edu.mx.communitycommitteesystem.service.person.PersonService;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class ColonyService {
-    @Autowired
-    private ColonyRepository colonyRepository;
 
-    @Autowired
-    private PersonService personService;
+    private final ColonyRepository colonyRepository;
 
-    @Autowired
-    private MunicipalityService municipalityService;
+
+    private final PersonService personService;
+
+
+    private final MunicipalityService municipalityService;
 
     public ColonyBean findById(Long id) {
         return colonyRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Colony not found"));

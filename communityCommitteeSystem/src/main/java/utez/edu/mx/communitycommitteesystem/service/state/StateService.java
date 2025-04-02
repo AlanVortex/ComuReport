@@ -1,5 +1,6 @@
 package utez.edu.mx.communitycommitteesystem.service.state;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -16,13 +17,13 @@ import java.util.List;
 @Data
 
 public class StateService {
-    @Autowired
-    private StateRepository stateRepository;
 
-    @Autowired
-    private PersonService personService;
+    private final StateRepository stateRepository;
 
-    private BCryptPasswordEncoder bcryptPasswordEncoder;
+
+    private final PersonService personService;
+
+    private  BCryptPasswordEncoder bcryptPasswordEncoder;
 
 
 
