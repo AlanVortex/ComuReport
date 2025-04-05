@@ -1,19 +1,19 @@
 package utez.edu.mx.communitycommitteesystem.exception;
 
 public enum ErrorCatalog {
-    UNAUTHORIZED_ACCESS(1005, "Acceso no autorizado"),
-    RESOURCE_NOT_FOUND(1005, "EndPoint no encontrado"),
-    PATH_MISSING(1006, "Falta de parametros"),
-    INDEX_OUT_OF_BOUNDS_EXCEPTION(1007,"Error en la busqueda de listas"),
-    MethodArgumentTypeMismatchException(1010 ,"Error en envio de parametros"),
-    NullPointerException(1011,"Valores nulos"),
-    ArithmeticException(1012,"Error de aritmetica"),
-    HttpRequestMethodNotSupportedException(1013,"Metodo no soportado"),
-    INTERNAL_SERVER_ERROR(5000, "Error interno del servidor"),
-    IllegalArgumentException(9000,"Argumento invalido"),
-    UsernameNotFoundException(9001,"Usuario invalido"),
-    EntityNotFoundException(9002,"Entidad no encontrada"),
-    DataIntegrityViolationException(9003,"Error en el ingreso de datos"),;
+    UNAUTHORIZED_ACCESS(1005, "UNAUTHORIZED ACCESS"),
+    RESOURCE_NOT_FOUND(1005, "ENDPOINT NOT FOUND"),
+    PATH_MISSING(1006, "MISSING PARAMETERS"),
+    INDEX_OUT_OF_BOUNDS_EXCEPTION(1007, "LIST SEARCH ERROR"),
+    METHOD_ARGUMENT_TYPE_MISMATCH_EXCEPTION(1010, "PARAMETER SENDING ERROR"),
+    NULL_POINTER_EXCEPTION(1011, "NULL VALUES"),
+    ARITHMETIC_EXCEPTION(1012, "ARITHMETIC ERROR"),
+    HTTP_REQUEST_METHOD_NOT_SUPPORTED_EXCEPTION(1013, "METHOD NOT SUPPORTED"),
+    INTERNAL_SERVER_ERROR(5000, "INTERNAL SERVER ERROR"),
+    ILLEGAL_ARGUMENT_EXCEPTION(9000, "INVALID ARGUMENT"),
+    USERNAME_NOT_FOUND_EXCEPTION(9001, "INVALID USER"),
+    ENTITY_NOT_FOUND_EXCEPTION(9002, "ENTITY NOT FOUND"),
+    DATA_INTEGRITY_VIOLATION_EXCEPTION(9003, "DATA ENTRY ERROR");
     private final int code;
     private final String message;
 

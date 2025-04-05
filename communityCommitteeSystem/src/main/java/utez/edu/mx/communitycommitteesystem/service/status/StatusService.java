@@ -1,7 +1,6 @@
 package utez.edu.mx.communitycommitteesystem.service.status;
 
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import utez.edu.mx.communitycommitteesystem.model.status.StatusBean;
 import utez.edu.mx.communitycommitteesystem.model.status.StatusRepository;

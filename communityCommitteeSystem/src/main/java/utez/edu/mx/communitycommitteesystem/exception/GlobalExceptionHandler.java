@@ -19,25 +19,25 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<String> handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
         logger.error(ex);
-        return ResponseEntity.badRequest().body(ErrorCatalog.DataIntegrityViolationException.getMessage());
+        return ResponseEntity.badRequest().body(ErrorCatalog.DATA_INTEGRITY_VIOLATION_EXCEPTION.getMessage());
 
     }
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<String> handleEntityNotFoundException(EntityNotFoundException ex) {
         logger.error(ex);
-        return ResponseEntity.ok(ErrorCatalog.EntityNotFoundException.getMessage());
+        return ResponseEntity.ok(ErrorCatalog.ENTITY_NOT_FOUND_EXCEPTION.getMessage());
 
     }
     @ExceptionHandler(UsernameNotFoundException.class)
     public ResponseEntity<String> handleUsernameNotFoundException(UsernameNotFoundException ex) {
         logger.error(ex);
-        return ResponseEntity.ok(ErrorCatalog.UsernameNotFoundException.getMessage());
+        return ResponseEntity.ok(ErrorCatalog.USERNAME_NOT_FOUND_EXCEPTION.getMessage());
 
     }
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<String> handleIllegalArgumentException(IllegalArgumentException ex) {
         logger.error(ex);
-        return ResponseEntity.ok(ErrorCatalog.IllegalArgumentException.getMessage());
+        return ResponseEntity.ok(ErrorCatalog.ILLEGAL_ARGUMENT_EXCEPTION.getMessage());
 
     }
 
@@ -57,25 +57,25 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<String> MethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException ex) {
         logger.error(ex);
-        return ResponseEntity.ok(ErrorCatalog.MethodArgumentTypeMismatchException.getMessage());
+        return ResponseEntity.ok(ErrorCatalog.METHOD_ARGUMENT_TYPE_MISMATCH_EXCEPTION.getMessage());
 
     }
     @ExceptionHandler(NullPointerException.class)
     public ResponseEntity<String> NullPointerException(NullPointerException ex) {
         logger.error(ex);
-        return ResponseEntity.ok(ErrorCatalog.NullPointerException.getMessage());
+        return ResponseEntity.ok(ErrorCatalog.NULL_POINTER_EXCEPTION.getMessage());
 
     }
     @ExceptionHandler(ArithmeticException.class)
     public ResponseEntity<String> ArithmeticException(ArithmeticException ex) {
         logger.error(ex);
-        return ResponseEntity.ok(ErrorCatalog.ArithmeticException.getMessage());
+        return ResponseEntity.ok(ErrorCatalog.ARITHMETIC_EXCEPTION.getMessage());
 
     }
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     public ResponseEntity<String> HttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException ex) {
         logger.error(ex);
-        return ResponseEntity.ok(ErrorCatalog.HttpRequestMethodNotSupportedException.getMessage());
+        return ResponseEntity.ok(ErrorCatalog.HTTP_REQUEST_METHOD_NOT_SUPPORTED_EXCEPTION.getMessage());
 
     }
 

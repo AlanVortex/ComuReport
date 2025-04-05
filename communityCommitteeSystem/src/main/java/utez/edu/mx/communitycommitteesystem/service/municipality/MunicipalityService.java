@@ -2,7 +2,6 @@ package utez.edu.mx.communitycommitteesystem.service.municipality;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import utez.edu.mx.communitycommitteesystem.model.municipality.MunicipalityBean;
 import utez.edu.mx.communitycommitteesystem.model.municipality.MunicipalityRepository;
@@ -25,8 +24,8 @@ public class MunicipalityService {
 
     private final PersonService personService;
 
-    public Optional<MunicipalityBean> findByUuid(String uuid) {
-        return Optional.ofNullable(municipalityRepository.findByUuid(uuid));
+    public MunicipalityBean findByUuid(String uuid) {
+        return municipalityRepository.findByUuid(uuid).orElseThrow(() -> new EntityNotFoundException("Municipality not found!."));
     }
 
     public String registerMunicipalityWithAdmin(MunicipalityBean municipalityBean , String uuidState) {
@@ -52,10 +51,8 @@ public class MunicipalityService {
     }
 
     public MunicipalityBean getMunicipalityAdminByUuid(String municipalityUuid , String uuidState) {
-        MunicipalityBean municipality = municipalityRepository.findByUuid(municipalityUuid);
-        if (municipality == null) {
-            throw new EntityNotFoundException("Municipio no encontrado con el UUID proporcionado.");
-        }
+        MunicipalityBean municipality = findByUuid(municipalityUuid);
+
         municipalityRepository.findByUuidAndStateBean(uuidState,municipality.getStateBean());
         return municipality; // Obtienes la persona (administrador) asociada
     }

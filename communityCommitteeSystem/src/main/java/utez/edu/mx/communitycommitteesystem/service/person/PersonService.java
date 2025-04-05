@@ -26,9 +26,6 @@ public class PersonService {
     }
 
     // Buscar persona por correo
-    public PersonBean findByEmail(String email) {
-        return personRepository.findByEmail(email);
-    }
 
     // Guardar persona
     public PersonBean save(PersonBean person) {

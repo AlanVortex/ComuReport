@@ -1,7 +1,6 @@
 package utez.edu.mx.communitycommitteesystem.service.report;
 
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import utez.edu.mx.communitycommitteesystem.controller.report.ReportDto;
@@ -13,7 +12,6 @@ import utez.edu.mx.communitycommitteesystem.model.committee.CommitteeBean;
 import utez.edu.mx.communitycommitteesystem.model.committee.CommitteeRepository;
 import utez.edu.mx.communitycommitteesystem.model.image.ImageBean;
 import utez.edu.mx.communitycommitteesystem.model.municipality.MunicipalityBean;
-import utez.edu.mx.communitycommitteesystem.model.municipality.MunicipalityRepository;
 import utez.edu.mx.communitycommitteesystem.model.person.PersonBean;
 import utez.edu.mx.communitycommitteesystem.model.report.ReportBean;
 import utez.edu.mx.communitycommitteesystem.model.report.ReportRepository;
@@ -21,6 +19,7 @@ import utez.edu.mx.communitycommitteesystem.model.sms.SmsBean;
 import utez.edu.mx.communitycommitteesystem.model.sms.SmsRepository;
 import utez.edu.mx.communitycommitteesystem.model.status.StatusBean;
 import utez.edu.mx.communitycommitteesystem.model.status.StatusRepository;
+import utez.edu.mx.communitycommitteesystem.service.municipality.MunicipalityService;
 import utez.edu.mx.communitycommitteesystem.service.sms.SmsService;
 
 import java.util.ArrayList;
@@ -40,7 +39,7 @@ public class ReportService {
     private final CommitteeRepository committeeRepository;
 
 
-    private final MunicipalityRepository municipalityRepository;
+    private final MunicipalityService municipalityService;
 
 
     private final ColonyRepository colonyRepository;
@@ -58,15 +57,13 @@ public class ReportService {
             throw new RuntimeException("Colonia no encontrada para el usuario logueado.");
         }
 
-        CommitteeBean committee = committeeRepository.findByUuid(dto.getCommitteeUuid());
+        CommitteeBean committee = committeeRepository.findByUuid(dto.getCommitteeUuid()).get();
         if (committee == null) {
             throw new RuntimeException("Committee no encontrado con el UUID proporcionado.");
         }
 
-        MunicipalityBean municipality = municipalityRepository.findByUuid(dto.getMunicipalityUuid());
-        if (municipality == null) {
-            throw new RuntimeException("Municipio no encontrado con el UUID proporcionado.");
-        }
+        MunicipalityBean municipality = municipalityService.findByUuid(dto.getMunicipalityUuid());
+
 
         ReportBean report = new ReportBean();
         report.setTitle(dto.getTitle());

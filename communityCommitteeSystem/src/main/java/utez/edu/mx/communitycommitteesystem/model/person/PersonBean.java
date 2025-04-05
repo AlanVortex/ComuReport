@@ -3,8 +3,6 @@ package utez.edu.mx.communitycommitteesystem.model.person;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 import utez.edu.mx.communitycommitteesystem.model.area.AreaBean;
 import utez.edu.mx.communitycommitteesystem.model.colony.ColonyBean;
 import utez.edu.mx.communitycommitteesystem.model.committee.CommitteeBean;
@@ -16,8 +14,6 @@ import java.util.List;
 
 @Entity
 @Data
-@Getter
-@Setter
 @Table(name = "person",indexes = {
         @Index(name = "idx_unique_email", columnList = "email", unique = true)
 })
@@ -66,33 +62,6 @@ public class PersonBean {
     private String token;
 
 
-    public PersonBean() {
-    }
-
-    public PersonBean(Long id, String name, String lastname, String email, String password, String phone, StateBean stateBean, MunicipalityBean municipalityBean, ColonyBean colonyBean, CommitteeBean committeeBean, AreaBean areaBean, List<SmsBean> smsBeanList) {
-        this.id = id;
-        this.name = name;
-        this.lastname = lastname;
-        this.email = email;
-        this.password = password;
-        this.phone = phone;
-        this.stateBean = stateBean;
-        this.municipalityBean = municipalityBean;
-        this.colonyBean = colonyBean;
-        this.committeeBean = committeeBean;
-        this.areaBean = areaBean;
-        this.smsBeanList = smsBeanList;
-    }
-
-    public PersonBean(Long id, String name, String lastname, String email, String password, String phone) {
-        this.id = id;
-        this.name = name;
-        this.lastname = lastname;
-        this.email = email;
-        this.password = password;
-        this.phone = phone;
-    }
-
     @JsonIgnore
     public String getRole(){
         if(this.committeeBean!=null){
@@ -124,7 +93,7 @@ public class PersonBean {
             return municipalityBean.getUuid();
         }
         if ( this.colonyBean!=null){
-            return committeeBean.getUuid();
+            return colonyBean.getUuid();
         }
         if ( this.stateBean!=null){
             return stateBean.getUuid();

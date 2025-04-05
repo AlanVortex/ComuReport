@@ -24,6 +24,9 @@ public class CommitteeBean {
     @Column(length = 36, unique = true, nullable = false)
     private String uuid;
 
+    @Column(length = 100)
+    private String nameCommittee;
+
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idColony")
@@ -44,12 +47,7 @@ public class CommitteeBean {
     public CommitteeBean() {
         this.uuid = UUID.randomUUID().toString(); // Generar UUID automáticamente
     }
-    public CommitteeBean(Long id, ColonyBean colonyBean, PersonBean personBean, List<ReportBean> reportBeanList) {
-        this.id = id;
-        this.colonyBean = colonyBean;
-        this.personBean = personBean;
-        this.reportBeanList = reportBeanList;
-    }
+
 
     public PersonBean getPersonBean() {
         return personBean;

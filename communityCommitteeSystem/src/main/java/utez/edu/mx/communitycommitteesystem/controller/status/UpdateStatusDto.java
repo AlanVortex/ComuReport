@@ -7,12 +7,4 @@ import lombok.Setter;
 @Setter
 public class UpdateStatusDto {
     private Long idStatus;
-
-    public Long getIdStatus() {
-        return idStatus;
-    }
-
-    public void setIdStatus(Long idStatus) {
-        this.idStatus = idStatus;
-    }
 }
