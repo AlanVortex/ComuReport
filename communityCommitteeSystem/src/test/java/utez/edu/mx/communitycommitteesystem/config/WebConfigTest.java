@@ -1,4 +1,4 @@
-package utez.edu.mx.communitycommitteesystem;
+package utez.edu.mx.communitycommitteesystem.config;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

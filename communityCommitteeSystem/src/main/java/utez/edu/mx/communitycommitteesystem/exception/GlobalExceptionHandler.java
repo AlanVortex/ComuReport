@@ -49,31 +49,31 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(IndexOutOfBoundsException.class)
-    public ResponseEntity<String> IndexOutOfBoundsException(IndexOutOfBoundsException ex) {
+    public ResponseEntity<String> handleIndexOutOfBoundsException(IndexOutOfBoundsException ex) {
         logger.error(ex);
         return ResponseEntity.ok(ErrorCatalog.INDEX_OUT_OF_BOUNDS_EXCEPTION.getMessage());
 
     }
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
-    public ResponseEntity<String> MethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException ex) {
+    public ResponseEntity<String> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException ex) {
         logger.error(ex);
         return ResponseEntity.ok(ErrorCatalog.METHOD_ARGUMENT_TYPE_MISMATCH_EXCEPTION.getMessage());
 
     }
     @ExceptionHandler(NullPointerException.class)
-    public ResponseEntity<String> NullPointerException(NullPointerException ex) {
+    public ResponseEntity<String> handleNullPointerException(NullPointerException ex) {
         logger.error(ex);
         return ResponseEntity.ok(ErrorCatalog.NULL_POINTER_EXCEPTION.getMessage());
 
     }
     @ExceptionHandler(ArithmeticException.class)
-    public ResponseEntity<String> ArithmeticException(ArithmeticException ex) {
+    public ResponseEntity<String> handleArithmeticException(ArithmeticException ex) {
         logger.error(ex);
         return ResponseEntity.ok(ErrorCatalog.ARITHMETIC_EXCEPTION.getMessage());
 
     }
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-    public ResponseEntity<String> HttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException ex) {
+    public ResponseEntity<String> handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException ex) {
         logger.error(ex);
         return ResponseEntity.ok(ErrorCatalog.HTTP_REQUEST_METHOD_NOT_SUPPORTED_EXCEPTION.getMessage());
 

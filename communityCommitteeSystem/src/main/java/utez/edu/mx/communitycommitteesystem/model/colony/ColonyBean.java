@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import utez.edu.mx.communitycommitteesystem.model.committee.CommitteeBean;
 import utez.edu.mx.communitycommitteesystem.model.municipality.MunicipalityBean;
 import utez.edu.mx.communitycommitteesystem.model.person.PersonBean;
 import utez.edu.mx.communitycommitteesystem.model.report.ReportBean;
@@ -36,9 +35,7 @@ public class ColonyBean {
     @JoinColumn(name = "idMunicipality")
     private MunicipalityBean municipalityBean;
 
-    @OneToMany(mappedBy = "colonyBean", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonIgnore
-    private List<CommitteeBean> committeeBeanList;
+
 
     @OneToMany(mappedBy = "colonyBean", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore

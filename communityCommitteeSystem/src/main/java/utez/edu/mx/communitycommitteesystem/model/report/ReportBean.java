@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 import utez.edu.mx.communitycommitteesystem.model.area.AreaBean;
 import utez.edu.mx.communitycommitteesystem.model.colony.ColonyBean;
-import utez.edu.mx.communitycommitteesystem.model.committee.CommitteeBean;
 import utez.edu.mx.communitycommitteesystem.model.image.ImageBean;
 import utez.edu.mx.communitycommitteesystem.model.municipality.MunicipalityBean;
 import utez.edu.mx.communitycommitteesystem.model.sms.SmsBean;
@@ -55,9 +54,7 @@ public class ReportBean {
     @OneToMany( mappedBy = "reportBean",cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<ImageBean> ImageBeanList;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "idCommittee")
-    private CommitteeBean committeeBean;
+
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idMunicipality")

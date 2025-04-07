@@ -31,8 +31,10 @@ public class ColonyService {
         return colonyRepository.findByUuid(uuid).orElseThrow(() -> new EntityNotFoundException("Colony not found"));
     }
 
-    public void delete(String uuidMunicipality, String uuid) {
-        colonyRepository.delete(findByUuid(municipalityService.findByUuid(uuidMunicipality) ,uuid));
+    public boolean delete(String uuidMunicipality, String uuid) {
+
+        personService.delete(get(uuid,uuidMunicipality).getPersonBean());
+        return true;
     }
 
     public ColonyBean get(String uuid, String uuidMunicipality) {

@@ -2,10 +2,10 @@ package utez.edu.mx.communitycommitteesystem.model.person;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import utez.edu.mx.communitycommitteesystem.model.area.AreaBean;
 import utez.edu.mx.communitycommitteesystem.model.colony.ColonyBean;
-import utez.edu.mx.communitycommitteesystem.model.committee.CommitteeBean;
 import utez.edu.mx.communitycommitteesystem.model.municipality.MunicipalityBean;
 import utez.edu.mx.communitycommitteesystem.model.sms.SmsBean;
 import utez.edu.mx.communitycommitteesystem.model.state.StateBean;
@@ -13,7 +13,8 @@ import utez.edu.mx.communitycommitteesystem.model.state.StateBean;
 import java.util.List;
 
 @Entity
-@Data
+@Getter
+@Setter
 @Table(name = "person",indexes = {
         @Index(name = "idx_unique_email", columnList = "email", unique = true)
 })
@@ -35,22 +36,19 @@ public class PersonBean {
     @Column(length = 50, nullable = false)
     private String phone;
     @JsonIgnore
-    @OneToOne(mappedBy = "personBean", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "personBean", cascade = CascadeType.ALL, fetch = FetchType.LAZY,orphanRemoval = true)
     private StateBean stateBean;
     @JsonIgnore
-    @OneToOne(mappedBy = "personBean", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "personBean", cascade = CascadeType.ALL, fetch = FetchType.LAZY,orphanRemoval = true )
     private MunicipalityBean municipalityBean;
     @JsonIgnore
-    @OneToOne(mappedBy = "personBean", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "personBean", cascade = CascadeType.ALL, fetch = FetchType.LAZY,orphanRemoval = true)
     private ColonyBean colonyBean;
     @JsonIgnore
-    @OneToOne(mappedBy = "personBean", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private CommitteeBean committeeBean;
-    @JsonIgnore
-    @OneToOne(mappedBy = "personBean", cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "personBean", cascade = CascadeType.ALL, fetch = FetchType.LAZY,orphanRemoval = true)
     private AreaBean areaBean;
     @JsonIgnore
-    @OneToMany(mappedBy = "personBean", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "personBean", cascade = CascadeType.ALL, fetch = FetchType.LAZY,orphanRemoval = true)
     private List<SmsBean> smsBeanList;
     @JsonIgnore
     @Column(columnDefinition = "BOOL DEFAULT true")
@@ -64,38 +62,33 @@ public class PersonBean {
 
     @JsonIgnore
     public String getRole(){
-        if(this.committeeBean!=null){
-            return "Committee";
-        }
+
         if(this.areaBean!=null){
             return "Area";
         }
-        if ( this.municipalityBean!=null){
+        else if ( this.municipalityBean!=null){
             return "Municipality";
         }
-        if ( this.colonyBean!=null){
+        else if ( this.colonyBean!=null){
             return "Colony";
         }
-        if ( this.stateBean!=null){
+        else if ( this.stateBean!=null){
             return "State";
         }
         return "";
     }
     @JsonIgnore
     public String getRoleUuid(){
-        if(this.committeeBean!=null){
-            return committeeBean.getUuid();
-        }
         if(this.areaBean!=null){
             return areaBean.getUuid();
         }
-        if ( this.municipalityBean!=null){
+        else if ( this.municipalityBean!=null){
             return municipalityBean.getUuid();
         }
-        if ( this.colonyBean!=null){
+        else if ( this.colonyBean!=null){
             return colonyBean.getUuid();
         }
-        if ( this.stateBean!=null){
+        else if ( this.stateBean!=null){
             return stateBean.getUuid();
         }
         return "";
