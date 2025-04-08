@@ -51,7 +51,7 @@ public class ReportBean {
     @JoinColumn(name = "idStatus")
     private StatusBean statusBean;
 
-    @OneToMany( mappedBy = "reportBean",cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany( mappedBy = "reportBean",cascade = CascadeType.ALL)
     private List<ImageBean> ImageBeanList;
 
 

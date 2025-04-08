@@ -16,23 +16,15 @@ public class ReportDtoTest
     @Test
     void send(){
         ReportDto reportDto = new ReportDto();
-        reportDto.setCommitteeUuid("");
         reportDto.setTitle("Test");
         reportDto.setDescription("Test description");
-        reportDto.setImageBase64(null);
-        reportDto.setCommitteeUuid("");
-        reportDto.setMunicipalityUuid("");
+
 
         reportDto.getDescription();
-        reportDto.getImageBase64();
         reportDto.getTitle();
-        reportDto.getCommitteeUuid();
 
         assertEquals("Test", reportDto.getTitle());
         assertEquals("Test description", reportDto.getDescription());
-        assertEquals(null, reportDto.getImageBase64());
-        assertEquals("", reportDto.getCommitteeUuid());
-        assertEquals("", reportDto.getMunicipalityUuid());
 
 
     }

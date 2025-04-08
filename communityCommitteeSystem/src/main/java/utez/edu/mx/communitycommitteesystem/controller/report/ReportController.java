@@ -1,10 +1,14 @@
 package utez.edu.mx.communitycommitteesystem.controller.report;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import utez.edu.mx.communitycommitteesystem.model.report.ReportBean;
+import utez.edu.mx.communitycommitteesystem.security.jwt.JwtProvider;
 import utez.edu.mx.communitycommitteesystem.service.report.ReportService;
 
 import java.util.List;
@@ -15,15 +19,15 @@ import java.util.List;
 public class ReportController {
 
     private final ReportService reportService;
+    private final JwtProvider jwtProvider;
 
-    @PostMapping()
-    public ResponseEntity<String> registerReport(@RequestBody ReportDto dto, @RequestHeader("Colony-UUID") String colonyUuid) {
-        try {
-            ReportBean report = reportService.registerReport(dto, colonyUuid);
-            return ResponseEntity.status(HttpStatus.CREATED).body("Reporte registrado con éxito");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error al registrar el reporte: " + e.getMessage());
-        }
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<String> registerReport(
+            @ModelAttribute("dto") ReportDto dto, // Aquí mapeas los datos del DTO
+            HttpServletRequest req) {
+             reportService.registerReport(dto,jwtProvider.resolveClaimsJUuid(req));
+            return ResponseEntity.ok("Report registered successfully");
+
     }
 
     @GetMapping("/colony/{colonyUuid}")
