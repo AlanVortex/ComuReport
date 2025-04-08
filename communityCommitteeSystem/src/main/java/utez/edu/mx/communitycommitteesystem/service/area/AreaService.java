@@ -4,7 +4,6 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import utez.edu.mx.communitycommitteesystem.exception.GlobalExceptionHandler;
 import utez.edu.mx.communitycommitteesystem.model.area.AreaBean;
@@ -20,19 +19,18 @@ import java.util.List;
 @Service
 public class AreaService {
 
-    @Autowired
-    private AreaRepository areaRepository;
+
+    private final AreaRepository areaRepository;
 
     private final PersonService personService;
 
-    @Autowired
-    private MunicipalityService municipalityService;
 
-    private static final Logger logger = LogManager.getLogger(GlobalExceptionHandler.class);
+    private final MunicipalityService municipalityService;
+
+    private static final Logger logger = LogManager.getLogger(AreaService.class);
 
     public AreaBean getArea(String areaUuid, String municipalityUuid) {
-        MunicipalityBean municipalityBean = municipalityService.findByUuid(municipalityUuid)
-                .orElseThrow(() -> new EntityNotFoundException("Municipality not found!."));
+        MunicipalityBean municipalityBean = municipalityService.findByUuid(municipalityUuid);
 
         AreaBean areaBaen = areaRepository.findByUuidAndMunicipalityBean(areaUuid, municipalityBean)
                 .orElseThrow(() -> new EntityNotFoundException("Area not found"));
@@ -41,8 +39,7 @@ public class AreaService {
 
     public List<AreaBean> findByMunicipality(String municipalityUuid) {
 
-        MunicipalityBean municipalityBean = municipalityService.findByUuid(municipalityUuid)
-                .orElseThrow(() -> new EntityNotFoundException("Municipality not found!."));
+        MunicipalityBean municipalityBean = municipalityService.findByUuid(municipalityUuid);
 
         List<AreaBean> areas = areaRepository.findByMunicipalityBean(municipalityBean);
 
@@ -51,8 +48,7 @@ public class AreaService {
 
     public String save(AreaBean areaBean, String municipalityUuid) {
 
-        MunicipalityBean municipalityBean = municipalityService.findByUuid(municipalityUuid)
-                .orElseThrow(() -> new EntityNotFoundException("Municipality not found!"));
+        MunicipalityBean municipalityBean = municipalityService.findByUuid(municipalityUuid);
 
         areaBean.setMunicipalityBean(municipalityBean);
 
@@ -77,7 +73,7 @@ public class AreaService {
         AreaBean area =  getArea(areaBean.getUuid(), municipalityUuid);
         logger.info(area.getNameArea());
 
-        areaRepository.delete(area);
+//        personService.delete(area.getPersonBean());
         return  "Delete successfully";
     }
 }

@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-import utez.edu.mx.communitycommitteesystem.exception.GlobalExceptionHandler;
 import utez.edu.mx.communitycommitteesystem.security.model.UserDetailsImpl;
 
 import java.security.Key;
@@ -23,7 +22,7 @@ public class JwtProvider {
     private long expiration;
     private final String TOKEN_HEADER = "Authorization";
     private final String TOKEN_TYPE = "Bearer ";
-    private static final Logger logger = LogManager.getLogger(GlobalExceptionHandler.class);
+    private static final Logger logger = LogManager.getLogger(JwtProvider.class);
 
     public String generateToken(Authentication auth) {
         UserDetails user = (UserDetailsImpl) auth.getPrincipal();
@@ -66,8 +65,10 @@ public class JwtProvider {
                 return parseJwtClaims(token);
             return null;
         } catch (ExpiredJwtException e) {
+            logger.error(e);
             throw e;
         } catch (Exception e) {
+            logger.error(e);
             throw e;
         }
     }
@@ -85,7 +86,9 @@ public class JwtProvider {
             parseJwtClaims(token);
             return claims.getExpiration().after(new Date());
         }catch (MalformedJwtException | UnsupportedJwtException | ExpiredJwtException e){
+            logger.error(e);
         } catch (Exception e){
+            logger.error(e);
         }
         return false;
     }
@@ -97,8 +100,10 @@ public class JwtProvider {
                 return (String) claims.get("uuid");
             return null;
         } catch (ExpiredJwtException e) {
+            logger.error(e);
             throw e;
         } catch (Exception e) {
+            logger.error(e);
             throw e;
         }
     }

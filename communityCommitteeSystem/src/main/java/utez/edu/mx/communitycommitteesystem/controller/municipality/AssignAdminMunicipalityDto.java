@@ -1,11 +1,14 @@
 package utez.edu.mx.communitycommitteesystem.controller.municipality;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import utez.edu.mx.communitycommitteesystem.controller.person.PersonDto;
 import utez.edu.mx.communitycommitteesystem.model.municipality.MunicipalityBean;
 import utez.edu.mx.communitycommitteesystem.model.person.PersonBean;
 
-@Data
+@Getter
+@Setter
 public class AssignAdminMunicipalityDto extends PersonDto {
 
     private String municipalityName;

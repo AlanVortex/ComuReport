@@ -1,10 +1,8 @@
 package utez.edu.mx.communitycommitteesystem.service.state;
 
 import lombok.Data;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import utez.edu.mx.communitycommitteesystem.model.municipality.MunicipalityBean;
 import utez.edu.mx.communitycommitteesystem.model.person.PersonBean;
 import utez.edu.mx.communitycommitteesystem.model.state.StateBean;
 import utez.edu.mx.communitycommitteesystem.model.state.StateRepository;
@@ -16,13 +14,13 @@ import java.util.List;
 @Data
 
 public class StateService {
-    @Autowired
-    private StateRepository stateRepository;
 
-    @Autowired
-    private PersonService personService;
+    private final StateRepository stateRepository;
 
-    private BCryptPasswordEncoder bcryptPasswordEncoder;
+
+    private final PersonService personService;
+
+    private  BCryptPasswordEncoder bcryptPasswordEncoder;
 
 
 
@@ -30,14 +28,6 @@ public class StateService {
         return stateRepository.findByUuid(stateUuid).orElse(null);
     }
 
-    public List<StateBean> findByNameState(String nameState) {
-        return stateRepository.findByNameState(nameState);
-    }
-
-    // Si quieres obtener los estados que están asociados a un municipio en particular
-    public List<StateBean> findByMunicipality(MunicipalityBean municipalityBean) {
-        return stateRepository.findByMunicipalityBeanList(municipalityBean);
-    }
 
     public String registerStateWithAdmin(StateBean stateBean) {
 

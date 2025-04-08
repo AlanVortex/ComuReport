@@ -1,7 +1,7 @@
 package utez.edu.mx.communitycommitteesystem.service.municipality;
 
 import jakarta.persistence.EntityNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import utez.edu.mx.communitycommitteesystem.model.municipality.MunicipalityBean;
 import utez.edu.mx.communitycommitteesystem.model.municipality.MunicipalityRepository;
@@ -14,18 +14,18 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class MunicipalityService {
-    @Autowired
-    private MunicipalityRepository municipalityRepository;
+    private final MunicipalityRepository municipalityRepository;
 
-    @Autowired
-    private StateService stateService;
 
-    @Autowired
-    private PersonService personService;
+    private final StateService stateService;
 
-    public Optional<MunicipalityBean> findByUuid(String uuid) {
-        return Optional.ofNullable(municipalityRepository.findByUuid(uuid));
+
+    private final PersonService personService;
+
+    public MunicipalityBean findByUuid(String uuid) {
+        return municipalityRepository.findByUuid(uuid).orElseThrow(() -> new EntityNotFoundException("Municipality not found!."));
     }
 
     public String registerMunicipalityWithAdmin(MunicipalityBean municipalityBean , String uuidState) {
@@ -51,10 +51,8 @@ public class MunicipalityService {
     }
 
     public MunicipalityBean getMunicipalityAdminByUuid(String municipalityUuid , String uuidState) {
-        MunicipalityBean municipality = municipalityRepository.findByUuid(municipalityUuid);
-        if (municipality == null) {
-            throw new EntityNotFoundException("Municipio no encontrado con el UUID proporcionado.");
-        }
+        MunicipalityBean municipality = findByUuid(municipalityUuid);
+
         municipalityRepository.findByUuidAndStateBean(uuidState,municipality.getStateBean());
         return municipality; // Obtienes la persona (administrador) asociada
     }
@@ -68,8 +66,8 @@ public class MunicipalityService {
 
     public void  delete(MunicipalityBean municipalityBean , String uuidState) {
         MunicipalityBean municipality = getMunicipalityAdminByUuid(municipalityBean.getUuid(), uuidState);
+        personService.delete(municipality.getPersonBean());
 
-        municipalityRepository.delete(municipality);
     }
 
 

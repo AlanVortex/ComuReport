@@ -1,7 +1,7 @@
 package utez.edu.mx.communitycommitteesystem.service.person;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.Getter;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import utez.edu.mx.communitycommitteesystem.model.person.PersonBean;
@@ -26,9 +26,6 @@ public class PersonService {
     }
 
     // Buscar persona por correo
-    public PersonBean findByEmail(String email) {
-        return personRepository.findByEmail(email);
-    }
 
     // Guardar persona
     public PersonBean save(PersonBean person) {
@@ -52,9 +49,18 @@ public class PersonService {
         return personRepository.save(person);
     }
 
-    public String encryptPassword(String password) {
-        return new BCryptPasswordEncoder().encode(password);
+    public void delete(PersonBean person) {
+        personRepository.delete(person);
+    }
+    public void delete(Long id) {
+        personRepository.deleteById(id);
     }
 
+    public PersonBean getPerson(Long id) {
+        return personRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Person not found!"));
+    }
+    public PersonBean update(PersonBean person) {
+        return personRepository.save(person);
+    }
 }
 

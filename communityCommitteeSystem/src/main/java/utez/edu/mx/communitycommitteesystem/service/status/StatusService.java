@@ -1,14 +1,15 @@
 package utez.edu.mx.communitycommitteesystem.service.status;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import utez.edu.mx.communitycommitteesystem.model.status.StatusBean;
 import utez.edu.mx.communitycommitteesystem.model.status.StatusRepository;
 
 @Service
+@AllArgsConstructor
 public class StatusService {
-    @Autowired
-    private StatusRepository statusRepository;
+
+    private final StatusRepository statusRepository;
 
     public StatusBean findById(Long id) {
         return statusRepository.findById(id)

@@ -15,10 +15,14 @@ public class ImageBean {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(columnDefinition = "LONGTEXT")
+    @Column(length = 100)
     private String image;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @Column(length = 255)
+    private String url;
+
+
+    @ManyToOne
     @JoinColumn(name = "idReport")
     private ReportBean reportBean;
 
