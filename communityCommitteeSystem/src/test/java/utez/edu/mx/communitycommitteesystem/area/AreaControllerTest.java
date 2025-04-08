@@ -27,7 +27,7 @@ class AreaControllerTest {
     String areaUuid = "159cb393-6d2b-4cc0-b46a-863bcc765981"; // Usa un UUID real existente
 
 
-    String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJvY3VsY29AZ21haWwuY29tIiwicm9sZXMiOlt7ImF1dGhvcml0eSI6Ik11bmljaXBhbGl0eSJ9XSwidXVpZCI6IjJjYjM4MDFhLTNlZjItNGFlMi1hYWQyLTc2N2Y0NzliYTlkYiIsImlhdCI6MTc0Mzk4ODIxNSwiZXhwIjoxNzQ0NTkzMDE1fQ.9g5bhOYV9cvF5TytHabFaT0RGbajI3cs5bGHwuXqEkk";
+    String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJvY3VsY29AZ21haWwuY29tIiwicm9sZXMiOlt7ImF1dGhvcml0eSI6Ik11bmljaXBhbGl0eSJ9XSwidXVpZCI6IjJjYjM4MDFhLTNlZjItNGFlMi1hYWQyLTc2N2Y0NzliYTlkYiIsImlhdCI6MTc0NDA3NDUzNSwiZXhwIjoxNzQ0Njc5MzM1fQ.IYKGpFfb98NrYZCKhrC4cugTw-rQgtPm53C-aoNZcX0";
 
     @Test
     void testGetAllByMunicipality() throws Exception {

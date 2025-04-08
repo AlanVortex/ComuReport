@@ -73,7 +73,7 @@ public class AreaService {
         AreaBean area =  getArea(areaBean.getUuid(), municipalityUuid);
         logger.info(area.getNameArea());
 
-        personService.delete(area.getPersonBean());
+//        personService.delete(area.getPersonBean());
         return  "Delete successfully";
     }
 }

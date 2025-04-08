@@ -66,8 +66,8 @@ public class MunicipalityService {
 
     public void  delete(MunicipalityBean municipalityBean , String uuidState) {
         MunicipalityBean municipality = getMunicipalityAdminByUuid(municipalityBean.getUuid(), uuidState);
+        personService.delete(municipality.getPersonBean());
 
-        municipalityRepository.delete(municipality);
     }
 
 

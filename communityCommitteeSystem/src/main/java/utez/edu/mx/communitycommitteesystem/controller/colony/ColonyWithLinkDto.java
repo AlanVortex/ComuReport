@@ -13,7 +13,6 @@ public class ColonyWithLinkDto extends PersonDto {
 
     private String colonyName;
     private String uuid;
-    private ColonyBean colony;
     public ColonyBean toEntity(){
         PersonBean personBean = getPersonBean();
         ColonyBean colonyBean = new ColonyBean();
