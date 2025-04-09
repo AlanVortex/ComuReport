@@ -40,7 +40,7 @@ public class ReportService {
 
 
     private final ColonyService colonyService;
-    private final StatusService  statusService;
+    private final StatusService statusService;
     private final AreaService areaService;
 
     private final SmsService smsService;
@@ -50,7 +50,7 @@ public class ReportService {
     private static final Logger logger = LogManager.getLogger(ReportService.class);
 
 
-    public ReportBean registerReport(ReportDto dto, String loggedInColonyUuid ) {
+    public ReportBean registerReport(ReportDto dto, String loggedInColonyUuid) {
         ColonyBean colony = colonyService.findByUuid(loggedInColonyUuid);
         MunicipalityBean municipality = municipalityService.findByUuid(colony.getMunicipalityBean().getUuid());
         StatusBean statusBean = statusService.findById(1L);
@@ -63,8 +63,7 @@ public class ReportService {
         report.setStatusBean(statusBean);
 
         List ImageBeanList = new ArrayList();
-        for (MultipartFile file : dto.getFile())
-        {
+        for (MultipartFile file : dto.getFile()) {
             ImageBean imageBean = new ImageBean();
             imageBean.setImage(file.getOriginalFilename());
             imageBean.setUrl(firebaseInitializer.upload(file));
@@ -78,25 +77,24 @@ public class ReportService {
         return reportRepository.save(report);
     }
 
-    public List<ReportSummaryDto> getReportsByColonyUuid(String uuid , String role) {
+    public List<ReportSummaryDto> getReportsByColonyUuid(String uuid, String role) {
         logger.info(role);
         List<ReportBean> reports = new ArrayList<>();
         List<ReportSummaryDto> reportSummaryDtos = new ArrayList<>();
 
-        switch (role)
-        {
+        switch (role) {
             case "Colony":
                 ColonyBean colony = colonyService.findByUuid(uuid);
-                reports = reportRepository.findByColonyBeanAndStatusBean_Id(colony ,1L);
-            break;
+                reports = reportRepository.findByColonyBeanAndStatusBean_IdAndId(colony, 1L, 2L);
+                break;
             case "Municipality":
-                MunicipalityBean  municipality = municipalityService.findByUuid(uuid);
-                reports = reportRepository.findByMunicipalityBeanAndStatusBean_Id(municipality,2L);
-            break;
+                MunicipalityBean municipality = municipalityService.findByUuid(uuid);
+                reports = reportRepository.findByMunicipalityBeanAndStatusBean_Id(municipality, 1L);
+                break;
             case "Area":
                 AreaBean areaBean = areaService.getArea(uuid);
-                reports = reportRepository.findByAreaBeanAndStatusBean_Id(areaBean,3L);
-            break;
+                reports = reportRepository.findByAreaBeanAndStatusBean_Id(areaBean, 2L);
+                break;
         }
 
 
@@ -124,8 +122,26 @@ public class ReportService {
     }
 
     @Transactional
-    public String updateReportStatus(String uuid, ReportStatusUpdateDto request) {
-        ReportBean report = findByuuid(uuid);
+    public String updateReportStatus(ReportStatusUpdateDto request, String uuid, String role) {
+        ReportBean report = null;
+        switch (role) {
+            case "Municipality":
+                MunicipalityBean municipality = municipalityService.findByUuid(uuid);
+                StatusBean statusBean = statusService.findById(2L);
+                report = reportRepository.findByMunicipalityBeanAndUuid(municipality, request.getUuid());
+                report.setStatusBean(statusBean);
+                break;
+            case "Area":
+                StatusBean status = statusService.findById(3L);
+                AreaBean areaBean = areaService.getArea(uuid);
+                report = reportRepository.findByAreaBeanAndUuid(areaBean, request.getUuid());
+                report.setStatusBean(status);
+                break;
+        }
+
+        reportRepository.save(report);
+
+/*
         StatusBean status = statusService.findById(request.getStatusId());
         report.setStatusBean(status);
         report.setStatusDescription(request.getStatusDescription());
@@ -146,12 +162,12 @@ public class ReportService {
         sms.setReportBean(report);
         sms.setMessage(messageBody);
         smsRepository.save(sms);
-
+*/
         return "Reporte actualizado y SMS enviado.";
     }
 
     public ReportBean findByuuid(String uuid) {
-        return  reportRepository.findByUuid(uuid)
+        return reportRepository.findByUuid(uuid)
                 .orElseThrow(() -> new RuntimeException("Report not found"));
 
     }

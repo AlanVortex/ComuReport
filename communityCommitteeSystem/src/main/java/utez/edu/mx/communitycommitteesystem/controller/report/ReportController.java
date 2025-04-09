@@ -6,8 +6,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import utez.edu.mx.communitycommitteesystem.model.report.ReportBean;
 import utez.edu.mx.communitycommitteesystem.security.jwt.JwtProvider;
 import utez.edu.mx.communitycommitteesystem.service.report.ReportService;
 
@@ -32,20 +30,14 @@ public class ReportController {
 
     @GetMapping("")
     public ResponseEntity<List<ReportSummaryDto>> getReportsByColony(HttpServletRequest req) {
-
         List<ReportSummaryDto> reports = reportService.getReportsByColonyUuid(jwtProvider.resolveClaimsJUuid(req) , jwtProvider.resolveClaimsJRole(req));
         return ResponseEntity.ok(reports);
     }
 
-    @PutMapping("/updateStatus/{uuid}")
-    public ResponseEntity<String> updateReportStatus(@PathVariable String uuid, @RequestBody ReportStatusUpdateDto request) {
-        try {
-            reportService.updateReportStatus(uuid, request);
+    @PutMapping("")
+    public ResponseEntity<String> updateReportStatus(HttpServletRequest req, @RequestBody ReportStatusUpdateDto request) {
+            reportService.updateReportStatus( request,jwtProvider.resolveClaimsJUuid(req) , jwtProvider.resolveClaimsJRole(req));
             return ResponseEntity.ok("Reporte actualizado");
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: " + e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al actualizar el estado.");
-        }
+
     }
 }

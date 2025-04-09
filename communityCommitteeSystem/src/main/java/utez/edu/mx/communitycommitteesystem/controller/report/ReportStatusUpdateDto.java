@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ReportStatusUpdateDto {
-    private Long statusId;
     private String statusDescription;
+    private String uuid;
 
 }
