@@ -12,5 +12,5 @@ public interface AreaRepository extends JpaRepository<AreaBean, Long> {
     List<AreaBean> findByMunicipalityBean(MunicipalityBean municipalityBean);
 
     Optional<AreaBean> findByUuidAndMunicipalityBean(String uuid, MunicipalityBean municipalityBean);
-
+    Optional<AreaBean> findByUuid(String uuid);
 }
