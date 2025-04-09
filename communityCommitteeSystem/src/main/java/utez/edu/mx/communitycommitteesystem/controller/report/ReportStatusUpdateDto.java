@@ -10,5 +10,6 @@ import lombok.Setter;
 public class ReportStatusUpdateDto {
     private String statusDescription;
     private String uuid;
+    private String uuidArea;
 
 }

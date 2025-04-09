@@ -29,5 +29,7 @@ public interface ReportRepository extends JpaRepository<ReportBean, Long> {
     ReportBean findByMunicipalityBeanAndUuid(MunicipalityBean municipalityBean, String uuid);
 
     ReportBean findByAreaBeanAndUuid(AreaBean areaBean, String uuid);
+
+    List<ReportBean> findByColonyBeanAndStatusBean_IdOrId(ColonyBean colony, long l, long l1);
 }
 

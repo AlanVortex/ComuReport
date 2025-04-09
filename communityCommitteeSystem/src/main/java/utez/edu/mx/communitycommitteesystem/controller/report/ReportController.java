@@ -40,4 +40,10 @@ public class ReportController {
             return ResponseEntity.ok("Reporte actualizado");
 
     }
+    @PutMapping("/cancel")
+    public ResponseEntity<String> cancelReportStatus(HttpServletRequest req, @RequestBody ReportStatusUpdateDto request) {
+        reportService.cancelReport( request,jwtProvider.resolveClaimsJUuid(req) , jwtProvider.resolveClaimsJRole(req));
+        return ResponseEntity.ok("Reporte actualizado");
+
+    }
 }
