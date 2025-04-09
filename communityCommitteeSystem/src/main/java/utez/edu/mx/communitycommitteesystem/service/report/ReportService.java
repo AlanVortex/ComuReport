@@ -1,5 +1,6 @@
 package utez.edu.mx.communitycommitteesystem.service.report;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -85,7 +86,7 @@ public class ReportService {
         switch (role) {
             case "Colony":
                 ColonyBean colony = colonyService.findByUuid(uuid);
-                reports = reportRepository.findByColonyBeanAndStatusBean_IdAndId(colony, 1L, 2L);
+                reports = reportRepository.findByColonyBeanAndStatusBean_IdOrId(colony, 1L, 2L);
                 break;
             case "Municipality":
                 MunicipalityBean municipality = municipalityService.findByUuid(uuid);
@@ -128,8 +129,10 @@ public class ReportService {
             case "Municipality":
                 MunicipalityBean municipality = municipalityService.findByUuid(uuid);
                 StatusBean statusBean = statusService.findById(2L);
+                AreaBean areaAssing = areaService.getArea(request.getUuidArea(),municipality.getUuid());
                 report = reportRepository.findByMunicipalityBeanAndUuid(municipality, request.getUuid());
                 report.setStatusBean(statusBean);
+                report.setAreaBean(areaAssing);
                 break;
             case "Area":
                 StatusBean status = statusService.findById(3L);
@@ -164,6 +167,27 @@ public class ReportService {
         smsRepository.save(sms);
 */
         return "Reporte actualizado y SMS enviado.";
+    }
+
+    @Transactional
+    public String cancelReport(ReportStatusUpdateDto request, String uuid, String role) {
+        ReportBean report = null;
+        StatusBean statusBean = statusService.findById(4L);
+
+        switch (role) {
+            case "Municipality":
+                MunicipalityBean municipality = municipalityService.findByUuid(uuid);
+                report = reportRepository.findByMunicipalityBeanAndUuid(municipality, request.getUuid());
+                break;
+            case "Area":
+                AreaBean areaBean = areaService.getArea(uuid);
+                report = reportRepository.findByAreaBeanAndUuid(areaBean, request.getUuid());
+                break;
+        }
+        report.setStatusBean(statusBean);
+        report.setStatusDescription(request.getStatusDescription());
+        reportRepository.save(report);
+        return "Reporte cancelado";
     }
 
     public ReportBean findByuuid(String uuid) {
