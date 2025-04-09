@@ -25,14 +25,15 @@ public class ReportController {
     public ResponseEntity<String> registerReport(
             @ModelAttribute("dto") ReportDto dto, // Aquí mapeas los datos del DTO
             HttpServletRequest req) {
-             reportService.registerReport(dto,jwtProvider.resolveClaimsJUuid(req));
-            return ResponseEntity.ok("Report registered successfully");
+        reportService.registerReport(dto, jwtProvider.resolveClaimsJUuid(req)  );
+        return ResponseEntity.ok("Report registered successfully");
 
     }
 
-    @GetMapping("/colony/{colonyUuid}")
-    public ResponseEntity<List<ReportSummaryDto>> getReportsByColony(@PathVariable String colonyUuid) {
-        List<ReportSummaryDto> reports = reportService.getReportsByColonyUuid(colonyUuid);
+    @GetMapping("")
+    public ResponseEntity<List<ReportSummaryDto>> getReportsByColony(HttpServletRequest req) {
+
+        List<ReportSummaryDto> reports = reportService.getReportsByColonyUuid(jwtProvider.resolveClaimsJUuid(req) , jwtProvider.resolveClaimsJRole(req));
         return ResponseEntity.ok(reports);
     }
 
