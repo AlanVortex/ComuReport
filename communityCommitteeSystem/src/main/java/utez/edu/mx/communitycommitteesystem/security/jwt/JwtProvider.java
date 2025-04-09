@@ -14,6 +14,9 @@ import utez.edu.mx.communitycommitteesystem.security.model.UserDetailsImpl;
 
 import java.security.Key;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
 @Service
 public class JwtProvider {
     @Value("${jwt.secret}")
@@ -98,6 +101,23 @@ public class JwtProvider {
             Claims claims =  resolveClaims(req);
             if (claims != null)
                 return (String) claims.get("uuid");
+            return null;
+        } catch (ExpiredJwtException e) {
+            logger.error(e);
+            throw e;
+        } catch (Exception e) {
+            logger.error(e);
+            throw e;
+        }
+    }
+    public String resolveClaimsJRole(HttpServletRequest req) {
+        try {
+            Claims claims =  resolveClaims(req);
+            if (claims != null) {
+                List<Map<String, String>> authorityList = (List<Map<String, String>>) claims.get("roles");
+                String authority = authorityList.get(0).get("authority");
+                return authority;
+            }
             return null;
         } catch (ExpiredJwtException e) {
             logger.error(e);

@@ -36,6 +36,9 @@ public class AreaService {
                 .orElseThrow(() -> new EntityNotFoundException("Area not found"));
         return  areaBaen;
     }
+    public AreaBean getArea(String areaUuid) {
+        return  areaRepository.findByUuid(areaUuid).orElseThrow(() -> new EntityNotFoundException("Area not found"));
+    }
 
     public List<AreaBean> findByMunicipality(String municipalityUuid) {
 

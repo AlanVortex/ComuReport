@@ -39,8 +39,7 @@ public class MainSecurity {
             "/api/area/"
     };
     private final String[] Colony_LIST = {
-            "/api/committee",
-            "/api/report",
+            "/api/committee"
     };
     private final UserDetailsServiceImpl service;
 
@@ -91,6 +90,7 @@ public class MainSecurity {
                     for (String path : Colony_LIST) {
                         req.requestMatchers(new AntPathRequestMatcher(path)).hasAnyAuthority("Colony");
                     }
+                    req.requestMatchers(new AntPathRequestMatcher("/api/report")).hasAnyAuthority("Colony","Municipality","Area");
                     req.anyRequest().authenticated();
                 })
                 .httpBasic(Customizer.withDefaults())
