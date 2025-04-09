@@ -12,11 +12,9 @@ class ReportStatusUpdateDtoTest {
     void ReportStatusUpdateDtoTest () {
         ReportStatusUpdateDto dto = new ReportStatusUpdateDto();
 
-        dto.setStatusId(1L);
         dto.setStatusDescription("Test");
 
         assertNotNull(dto);
-        assertEquals(1L, dto.getStatusId());
         assertEquals("Test",dto.getStatusDescription());
     }
 }
