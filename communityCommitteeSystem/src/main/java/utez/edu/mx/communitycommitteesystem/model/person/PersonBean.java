@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.logging.log4j.core.config.plugins.validation.constraints.NotBlank;
 import utez.edu.mx.communitycommitteesystem.model.area.AreaBean;
 import utez.edu.mx.communitycommitteesystem.model.colony.ColonyBean;
 import utez.edu.mx.communitycommitteesystem.model.municipality.MunicipalityBean;
@@ -28,6 +29,7 @@ public class PersonBean {
     private String name;
     @Column(length = 100, nullable = false)
     private String lastname;
+    @NotBlank(message = "Necesitas un correo")
     @Column(length = 50, nullable = false)
     private String email;
     @Column( nullable = false)

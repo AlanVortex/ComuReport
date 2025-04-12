@@ -1,21 +1,28 @@
 package utez.edu.mx.communitycommitteesystem.controller.person;
 
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import lombok.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import utez.edu.mx.communitycommitteesystem.model.person.PersonBean;
+
+
 
 @NoArgsConstructor
 @Getter
 @Setter
-@Data
 public class PersonDto {
+    @NotBlank
     private String name;
+    @NotBlank
     private String lastname;
+    @NotBlank
+    @Email
     private String email;
+    @NotBlank
     private String password;
+    @NotBlank
     private String phone;
 
     public PersonBean getPersonBean(){

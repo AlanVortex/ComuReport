@@ -1,5 +1,6 @@
 package utez.edu.mx.communitycommitteesystem.controller.state;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -7,13 +8,11 @@ import utez.edu.mx.communitycommitteesystem.controller.person.PersonDto;
 import utez.edu.mx.communitycommitteesystem.model.person.PersonBean;
 import utez.edu.mx.communitycommitteesystem.model.state.StateBean;
 
-@Data
 @Getter
 @Setter
 public class StateWithAdminDto extends PersonDto {
+    @NotBlank
     private String stateName;
-
-
 
 
     public StateBean toEntity(){

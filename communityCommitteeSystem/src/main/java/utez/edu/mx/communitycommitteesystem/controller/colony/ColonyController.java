@@ -1,6 +1,7 @@
 package utez.edu.mx.communitycommitteesystem.controller.colony;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +21,7 @@ public class ColonyController {
     private final JwtProvider jwtProvider;
 
     @PostMapping()
-    public ResponseEntity<String> create(@RequestBody ColonyWithLinkDto dto,HttpServletRequest req) {
+    public ResponseEntity<String> create(@Valid @RequestBody ColonyWithLinkDto dto, HttpServletRequest req) {
 
         return ResponseEntity.ok(colonyService.registerColonyWithLink(dto.toEntity() , jwtProvider.resolveClaimsJUuid(req)));
     }

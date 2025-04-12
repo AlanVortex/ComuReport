@@ -1,5 +1,6 @@
 package utez.edu.mx.communitycommitteesystem.controller.state;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +22,7 @@ public class StateController {
 
 
     @PostMapping()
-    public ResponseEntity<String> registerStateWithAdmin(@RequestBody StateWithAdminDto dto) {
+    public ResponseEntity<String> registerStateWithAdmin(@Valid @RequestBody StateWithAdminDto dto) {
             String result = stateService.registerStateWithAdmin(dto.toEntity());
             return ResponseEntity.ok(result);
 

@@ -1,6 +1,7 @@
 package utez.edu.mx.communitycommitteesystem.controller.municipality;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +22,7 @@ public class MunicipalityController {
 
 
     @PostMapping()
-    public ResponseEntity<String> registerMunicipalityWithAdmin(@RequestBody AssignAdminMunicipalityDto dto, HttpServletRequest req) {
+    public ResponseEntity<String> registerMunicipalityWithAdmin(@Valid @RequestBody AssignAdminMunicipalityDto dto, HttpServletRequest req) {
 
         String uuid = jwtProvider.resolveClaimsJUuid(req);
         String response = municipalityService.registerMunicipalityWithAdmin(dto.toEntity(), uuid);

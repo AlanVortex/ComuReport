@@ -1,6 +1,7 @@
 package utez.edu.mx.communitycommitteesystem.controller.report;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -21,7 +22,7 @@ public class ReportController {
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> registerReport(
-            @ModelAttribute("dto") ReportDto dto, // Aquí mapeas los datos del DTO
+            @Valid @ModelAttribute("dto") ReportDto dto, // Aquí mapeas los datos del DTO
             HttpServletRequest req) {
         reportService.registerReport(dto, jwtProvider.resolveClaimsJUuid(req)  );
         return ResponseEntity.ok("Report registered successfully");

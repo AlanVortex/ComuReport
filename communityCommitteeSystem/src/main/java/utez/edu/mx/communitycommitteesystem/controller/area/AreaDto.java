@@ -1,6 +1,7 @@
 package utez.edu.mx.communitycommitteesystem.controller.area;
 
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 import utez.edu.mx.communitycommitteesystem.controller.person.PersonDto;
@@ -10,6 +11,7 @@ import utez.edu.mx.communitycommitteesystem.model.person.PersonBean;
 @Getter
 @Setter
 public class AreaDto extends PersonDto {
+    @NotBlank
     private String nameArea;
     private String uuid;
 

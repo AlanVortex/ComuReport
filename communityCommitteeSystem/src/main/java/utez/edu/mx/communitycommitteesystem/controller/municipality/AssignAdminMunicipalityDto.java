@@ -1,6 +1,6 @@
 package utez.edu.mx.communitycommitteesystem.controller.municipality;
 
-import lombok.Data;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 import utez.edu.mx.communitycommitteesystem.controller.person.PersonDto;
@@ -11,6 +11,7 @@ import utez.edu.mx.communitycommitteesystem.model.person.PersonBean;
 @Setter
 public class AssignAdminMunicipalityDto extends PersonDto {
 
+    @NotBlank
     private String municipalityName;
     private String uuid;
 
