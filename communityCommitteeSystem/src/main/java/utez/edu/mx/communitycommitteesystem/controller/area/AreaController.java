@@ -1,6 +1,8 @@
 package utez.edu.mx.communitycommitteesystem.controller.area;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +22,7 @@ public class AreaController {
 
     //Crear una area , con verificacion y asginacion de su administrador de municipio
     @PostMapping("")
-    public ResponseEntity<String> createArea(@RequestBody AreaDto dto, HttpServletRequest req) {
+    public ResponseEntity<String> createArea(@Valid @RequestBody AreaDto dto, HttpServletRequest req) {
 
         return ResponseEntity.ok(areaService.save(dto.toEntity(), jwtProvider.resolveClaimsJUuid(req)));
     }
@@ -34,7 +36,7 @@ public class AreaController {
 
     //Ver una area , con verificacion de su administrador de municipio
     @GetMapping("/{uuid}")
-    public ResponseEntity<AreaBean> getByMunicipality(HttpServletRequest req, @PathVariable String uuid) {
+    public ResponseEntity<AreaBean> getByMunicipality(HttpServletRequest req,@NotBlank @PathVariable String uuid) {
         return ResponseEntity.ok(areaService.getArea(uuid, jwtProvider.resolveClaimsJUuid(req)));
     }
 

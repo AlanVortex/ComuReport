@@ -3,6 +3,7 @@ package utez.edu.mx.communitycommitteesystem.model.report;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.logging.log4j.core.config.plugins.validation.constraints.NotBlank;
 import utez.edu.mx.communitycommitteesystem.model.area.AreaBean;
 import utez.edu.mx.communitycommitteesystem.model.colony.ColonyBean;
 import utez.edu.mx.communitycommitteesystem.model.image.ImageBean;
@@ -24,6 +25,7 @@ public class ReportBean {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotBlank(message = "Necesitas colocarle un titulo al reporte")
     @Column(length = 100, nullable = false)
     private String title;
     @Column(length = 250, nullable = false)

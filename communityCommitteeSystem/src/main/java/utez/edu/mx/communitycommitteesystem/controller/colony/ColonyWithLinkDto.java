@@ -1,5 +1,6 @@
 package utez.edu.mx.communitycommitteesystem.controller.colony;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,7 +11,7 @@ import utez.edu.mx.communitycommitteesystem.model.person.PersonBean;
 @Getter
 @Setter
 public class ColonyWithLinkDto extends PersonDto {
-
+    @NotBlank
     private String colonyName;
     private String uuid;
     public ColonyBean toEntity(){

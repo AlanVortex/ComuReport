@@ -58,7 +58,7 @@ public class AreaService {
         PersonBean personBean = personService.saveMun(areaBean.getPersonBean());
         areaBean.setPersonBean(personBean);
         areaRepository.save(areaBean);
-
+        logger.info("Creo area salida com sucesso" + areaBean.getUuid());
         return "Area registered successfully";
     }
 
@@ -67,7 +67,7 @@ public class AreaService {
 
        AreaBean areaUpdate =  getArea(areaBean.getUuid(), municipalityUuid);
        areaUpdate.setNameArea(areaBean.getNameArea());
-
+        logger.info("Actualizo area salida com sucesso" + areaBean.getUuid());
         areaRepository.save(areaUpdate);
         return  "Updated successfully";
     }
