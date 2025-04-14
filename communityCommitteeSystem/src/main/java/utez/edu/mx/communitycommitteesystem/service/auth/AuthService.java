@@ -1,7 +1,9 @@
 package utez.edu.mx.communitycommitteesystem.service.auth;
 
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.authentication.AccountExpiredException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.DisabledException;
@@ -28,14 +30,18 @@ public class AuthService {
     private final JwtProvider provider;
     private final AuthenticationManager manager;
 
-    public AuthService(PersonService userService, JwtProvider provider, AuthenticationManager manager) {
+    private final JdbcTemplate jdbcTemplate;
+
+
+    public AuthService(PersonService userService, JwtProvider provider, AuthenticationManager manager, JdbcTemplate jdbcTemplate) {
         this.userService = userService;
         this.provider = provider;
         this.manager = manager;
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     @Transactional
-    public ResponseEntity<TokenDto> signIn(String username, String password) {
+    public ResponseEntity<TokenDto> signIn(String username, String password, HttpServletRequest request) {
         TokenDto tokenDto = new TokenDto();
 
 
@@ -72,6 +78,16 @@ public class AuthService {
 
             tokenDto.setToken(token);
             tokenDto.setRole(auth.getAuthorities().iterator().next().toString());
+
+            String ip = request.getRemoteAddr();
+            String userAgent = request.getHeader("User-Agent");
+            String role = tokenDto.getRole();
+
+            jdbcTemplate.update(
+                    "INSERT INTO user_login_logs (user_uuid, user_role, ip_address, user_agent) VALUES (?, ?, ?, ?)",
+                    user.getRoleUuid(), role, ip, userAgent
+            );
+
             return ResponseEntity.ok(tokenDto);
         } catch (Exception e) {
 

@@ -1,5 +1,6 @@
 package utez.edu.mx.communitycommitteesystem.controller.auth;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -15,9 +16,9 @@ import utez.edu.mx.communitycommitteesystem.service.auth.AuthService;
 public class AuthController {
     private final AuthService service;
     @PostMapping("/signin")
-    public ResponseEntity<TokenDto> signIn(@Valid @RequestBody SignDto dto) {
+    public ResponseEntity<TokenDto> signIn(HttpServletRequest request, @Valid @RequestBody SignDto dto) {
         return service.signIn
-                (dto.getUsername(), dto.getPassword());
+                (dto.getUsername(), dto.getPassword(), request);
     }
 
 
