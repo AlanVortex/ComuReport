@@ -18,7 +18,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "state")
 public class StateBean {
-
+    @JsonIgnore
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -38,6 +38,8 @@ public class StateBean {
     @JsonIgnore
     private List<MunicipalityBean> municipalityBeanList;
 
+    @JoinColumn(name = "status", columnDefinition = "true")
+    private boolean status;
     public StateBean() {
         this.uuid = UUID.randomUUID().toString(); // Generar UUID al crear la entidad
     }
