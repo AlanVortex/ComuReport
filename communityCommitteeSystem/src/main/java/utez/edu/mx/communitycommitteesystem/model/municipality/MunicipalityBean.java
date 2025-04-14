@@ -1,6 +1,7 @@
 package utez.edu.mx.communitycommitteesystem.model.municipality;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -13,7 +14,8 @@ import utez.edu.mx.communitycommitteesystem.model.state.StateBean;
 
 import java.util.List;
 import java.util.UUID;
-
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 @Entity
 @Getter
 @Setter
@@ -32,6 +34,8 @@ public class MunicipalityBean {
     private String uuid;
 
     @OneToOne
+    @JsonManagedReference
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "idPerson")
     private PersonBean personBean;
 
@@ -43,13 +47,15 @@ public class MunicipalityBean {
     @JsonIgnore
     @OneToMany( mappedBy = "municipalityBean",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ColonyBean> colonyBeanList;
-
+    @JsonIgnore
     @OneToMany( mappedBy = "municipalityBean",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<AreaBean> areaBeanList;
-
+    @JsonIgnore
     @OneToMany(mappedBy = "municipalityBean", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ReportBean> reportBeanList;
 
+    @Column(name = "status", nullable = false)
+    private boolean status = true;
 
     public MunicipalityBean() {
         this.uuid = UUID.randomUUID().toString();
