@@ -138,6 +138,7 @@ public class ReportService {
                 StatusBean status = statusService.findById(3L);
                 AreaBean areaBean = areaService.getArea(uuid);
                 report = reportRepository.findByAreaBeanAndUuid(areaBean, request.getUuid());
+                report.setStatusDescription(request.getStatusDescription());
                 report.setStatusBean(status);
                 break;
         }
