@@ -20,6 +20,5 @@ public interface StateRepository extends JpaRepository<StateBean, Long> {
     List<StateBean> findByMunicipalityBeanList(MunicipalityBean municipalityBean);
 
 
-    // Si deseas obtener el estado que está asociado a un municipio en particular
 
 }

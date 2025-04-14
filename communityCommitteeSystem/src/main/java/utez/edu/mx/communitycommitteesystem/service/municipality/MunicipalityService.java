@@ -3,6 +3,7 @@ package utez.edu.mx.communitycommitteesystem.service.municipality;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import utez.edu.mx.communitycommitteesystem.model.municipality.MunicipalityBean;
 import utez.edu.mx.communitycommitteesystem.model.municipality.MunicipalityRepository;
 import utez.edu.mx.communitycommitteesystem.model.person.PersonBean;
@@ -27,13 +28,9 @@ public class MunicipalityService {
     public MunicipalityBean findByUuid(String uuid) {
         return municipalityRepository.findByUuid(uuid).orElseThrow(() -> new EntityNotFoundException("Municipality not found!."));
     }
-
+    @Transactional
     public String registerMunicipalityWithAdmin(MunicipalityBean municipalityBean , String uuidState) {
         StateBean state = stateService.findByUuid(uuidState);
-        if (state == null) {
-            throw new EntityNotFoundException("No se encontró un estado con el UUID proporcionado.");
-        }
-
         PersonBean savedPerson = personService.save(municipalityBean.getPersonBean());
         municipalityBean.setPersonBean(savedPerson);
         municipalityBean.setStateBean(state);
@@ -44,9 +41,6 @@ public class MunicipalityService {
 
     public List<MunicipalityBean> getMunicipalitiesByStateUuid(String stateUuid) {
         StateBean state = stateService.findByUuid(stateUuid);
-        if (state == null) {
-            throw new EntityNotFoundException("Estado no encontrado con el UUID proporcionado.");
-        }
         return state.getMunicipalityBeanList();
     }
 
