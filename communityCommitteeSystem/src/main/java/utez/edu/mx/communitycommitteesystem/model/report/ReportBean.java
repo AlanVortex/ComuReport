@@ -9,6 +9,7 @@ import utez.edu.mx.communitycommitteesystem.model.colony.ColonyBean;
 import utez.edu.mx.communitycommitteesystem.model.image.ImageBean;
 import utez.edu.mx.communitycommitteesystem.model.municipality.MunicipalityBean;
 import utez.edu.mx.communitycommitteesystem.model.sms.SmsBean;
+import utez.edu.mx.communitycommitteesystem.model.state.StateBean;
 import utez.edu.mx.communitycommitteesystem.model.status.StatusBean;
 
 import java.util.ArrayList;
@@ -61,6 +62,10 @@ public class ReportBean {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idMunicipality")
     private MunicipalityBean municipalityBean;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "idState")
+    private StateBean stateBean;
 
     public ReportBean() {
         this.uuid = java.util.UUID.randomUUID().toString();

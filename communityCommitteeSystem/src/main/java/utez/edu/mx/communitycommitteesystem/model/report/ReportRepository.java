@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import utez.edu.mx.communitycommitteesystem.model.area.AreaBean;
 import utez.edu.mx.communitycommitteesystem.model.colony.ColonyBean;
 import utez.edu.mx.communitycommitteesystem.model.municipality.MunicipalityBean;
+import utez.edu.mx.communitycommitteesystem.model.state.StateBean;
 
 import java.util.List;
 import java.util.Optional;
@@ -31,5 +32,7 @@ public interface ReportRepository extends JpaRepository<ReportBean, Long> {
     ReportBean findByAreaBeanAndUuid(AreaBean areaBean, String uuid);
 
     List<ReportBean> findByColonyBeanAndStatusBean_IdOrId(ColonyBean colony, long l, long l1);
+
+    List<ReportBean> findByStateBean(StateBean stateBean);
 }
 
