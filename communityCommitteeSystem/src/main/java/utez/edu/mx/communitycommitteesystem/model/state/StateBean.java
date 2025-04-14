@@ -6,15 +6,16 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 import utez.edu.mx.communitycommitteesystem.model.municipality.MunicipalityBean;
 import utez.edu.mx.communitycommitteesystem.model.person.PersonBean;
+import utez.edu.mx.communitycommitteesystem.model.report.ReportBean;
 
 import java.util.List;
 import java.util.UUID;
 
 @Getter
 @Setter
-@Data
 @Entity
 @Table(name = "state")
 public class StateBean {
@@ -38,8 +39,13 @@ public class StateBean {
     @JsonIgnore
     private List<MunicipalityBean> municipalityBeanList;
 
-    @JoinColumn(name = "status", columnDefinition = "true")
-    private boolean status;
+    @OneToMany( mappedBy = "stateBean",cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonIgnore
+    private List<ReportBean> reportBeanList;
+
+    @Column(name = "status", nullable = false)
+    private boolean status = true;
+
     public StateBean() {
         this.uuid = UUID.randomUUID().toString(); // Generar UUID al crear la entidad
     }
