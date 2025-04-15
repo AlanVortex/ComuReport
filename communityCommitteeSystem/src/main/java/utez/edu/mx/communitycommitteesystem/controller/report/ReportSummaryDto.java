@@ -3,7 +3,6 @@ package utez.edu.mx.communitycommitteesystem.controller.report;
 import lombok.Data;
 import utez.edu.mx.communitycommitteesystem.model.image.ImageBean;
 
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 

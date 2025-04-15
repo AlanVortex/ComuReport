@@ -25,6 +25,9 @@ import utez.edu.mx.communitycommitteesystem.security.service.UserDetailsServiceI
 @EnableMethodSecurity
 
 public class MainSecurity {
+    private String authMunicipality = "Municipality";
+    private String authColony = "Colony";
+    private String authArea = "Area";
     private final String[] WHITE_LIST = {
             "/api/auth/signin",
             "/api/state",
@@ -86,13 +89,13 @@ public class MainSecurity {
                         req.requestMatchers(new AntPathRequestMatcher(path)).hasAnyAuthority("State");
                     }
                     for (String path : Municipality_LIST) {
-                        req.requestMatchers(new AntPathRequestMatcher(path)).hasAnyAuthority("Municipality");
+                        req.requestMatchers(new AntPathRequestMatcher(path)).hasAnyAuthority(authMunicipality);
                     }
                     for (String path : Colony_LIST) {
-                        req.requestMatchers(new AntPathRequestMatcher(path)).hasAnyAuthority("Colony");
+                        req.requestMatchers(new AntPathRequestMatcher(path)).hasAnyAuthority(authColony);
                     }
-                    req.requestMatchers(new AntPathRequestMatcher("/api/report")).hasAnyAuthority("Colony","Municipality","Area");
-                    req.requestMatchers(new AntPathRequestMatcher("/api/report/history")).hasAnyAuthority("Colony","Municipality","Area");
+                    req.requestMatchers(new AntPathRequestMatcher("/api/report")).hasAnyAuthority(authColony,authMunicipality,authArea);
+                    req.requestMatchers(new AntPathRequestMatcher("/api/report/history")).hasAnyAuthority(authColony,authMunicipality,authArea);
 
                     req.anyRequest().authenticated();
                 })

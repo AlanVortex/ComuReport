@@ -7,6 +7,8 @@ import com.google.cloud.storage.*;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.cloud.FirestoreClient;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -19,11 +21,13 @@ import java.util.UUID;
 
 @Service
 public class FirebaseInitializer {
+    private static final Logger logger = LogManager.getLogger(FirebaseInitializer.class);
+
     @PostConstruct
     private void initFirestore() throws IOException {
         InputStream serviceAccount = getClass().getClassLoader().getResourceAsStream("private-key-firestore.json");
 
-        FirebaseOptions options = new FirebaseOptions.Builder()
+        FirebaseOptions options =  FirebaseOptions.builder()
                 .setCredentials(GoogleCredentials.fromStream(serviceAccount))
                 .build();
 
@@ -46,15 +50,14 @@ public class FirebaseInitializer {
         storage.create(blobInfo, Files.readAllBytes(file.toPath()));
 
 
-        String DOWNLOAD_URL = "https://firebasestorage.googleapis.com/v0/b/places-36635.appspot.com/o/%s?alt=media";
-        return String.format(DOWNLOAD_URL, URLEncoder.encode(fileName, StandardCharsets.UTF_8));
+        String urlDownload = "https://firebasestorage.googleapis.com/v0/b/places-36635.appspot.com/o/%s?alt=media";
+        return String.format(urlDownload, URLEncoder.encode(fileName, StandardCharsets.UTF_8));
     }
 
     private File convertToFile(MultipartFile multipartFile, String fileName) throws IOException {
         File tempFile = new File(fileName);
         try (FileOutputStream fos = new FileOutputStream(tempFile)) {
             fos.write(multipartFile.getBytes());
-            fos.close();
         }
         return tempFile;
     }
@@ -70,12 +73,13 @@ public class FirebaseInitializer {
             fileName = UUID.randomUUID().toString().concat(this.getExtension(fileName));  // to generated random string values for file name.
 
             File file = this.convertToFile(multipartFile, fileName);                      // to convert multipartFile to File
-            String URL = this.uploadFile(file, fileName);                                   // to get uploaded file link
-            file.delete();
-            return URL;
+            String url = this.uploadFile(file, fileName);
+            Files.delete(file.toPath());
+            return url;
         } catch (Exception e) {
-           // e.printStackTrace();
+            logger.warn(e);
             return "Image couldn't upload, Something went wrong";
+
         }
     }
 

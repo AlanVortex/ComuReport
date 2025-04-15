@@ -1,5 +1,6 @@
 package utez.edu.mx.communitycommitteesystem.service.report;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -47,7 +48,10 @@ public class ReportService {
     private final SmsService smsService;
     private FirebaseInitializer firebaseInitializer;
     private static final Logger logger = LogManager.getLogger(ReportService.class);
-
+    private static final String AUTH_MUNUCIPALITY = "Municipality";
+    private static final String AUTH_COLONY = "Colony";
+    private static final String AUTH_AREA = "Area";
+    private static final String AUTH_STATE = "State";
 
     public ReportBean registerReport(ReportDto dto, String loggedInColonyUuid) {
         ColonyBean colony = colonyService.findByUuid(loggedInColonyUuid);
@@ -63,7 +67,7 @@ public class ReportService {
         report.setStatusBean(statusBean);
         report.setStateBean(stateBean);
 
-        List ImageBeanList = new ArrayList();
+        List<ImageBean> imageBeanList = new ArrayList<>();
         if (!Arrays.stream(dto.getFile()).findFirst().get().isEmpty()) {
             logger.info("Tamaño  de imagens de la report" + dto.getFile().length);
             for (MultipartFile file : dto.getFile()) {
@@ -72,10 +76,10 @@ public class ReportService {
                 imageBean.setUrl(firebaseInitializer.upload(file));
                 imageBean.setReportBean(report);
                 logger.info(imageBean.getUrl());
-                ImageBeanList.add(imageBean);
+                imageBeanList.add(imageBean);
 
             }
-            report.setImageBeanList(ImageBeanList);
+            report.setImageBeanList(imageBeanList);
         }
 
 
@@ -84,32 +88,31 @@ public class ReportService {
 
     public List<ReportSummaryDto> getReportsByColonyUuid(String uuid, String role) {
         logger.info(role);
-        List<ReportBean> reports = new ArrayList<>();
-        List<ReportSummaryDto> reportSummaryDtos = new ArrayList<>();
+        List<ReportBean> reports;
 
         switch (role) {
-            case "Colony":
+            case AUTH_COLONY:
                 ColonyBean colony = colonyService.findByUuid(uuid);
                 reports = reportRepository.findByColonyBeanAndStatusBean_IdNotAndStatusBean_IdNot(colony, 3L, 4L);
                 break;
-            case "Municipality":
+            case AUTH_MUNUCIPALITY:
                 MunicipalityBean municipality = municipalityService.findByUuid(uuid);
                 reports = reportRepository.findByMunicipalityBeanAndStatusBean_Id(municipality, 1L);
                 break;
-            case "Area":
+            case AUTH_AREA:
                 AreaBean areaBean = areaService.getArea(uuid);
                 reports = reportRepository.findByAreaBeanAndStatusBean_Id(areaBean, 2L);
                 break;
-            case "State":
+            case AUTH_STATE:
                 StateBean stateBean = stateService.findByUuid(uuid);
                 reports = reportRepository.findByStateBean(stateBean);
                 break;
+            default:
+                reports = new ArrayList<>();
         }
 
-
-        reports.forEach(report -> {
-            reportSummaryDtos.add(convertToDto(report));
-        });
+        List<ReportSummaryDto> reportSummaryDtos = new ArrayList<>();
+        reports.forEach(report ->  reportSummaryDtos.add(convertToDto(report)));
 
 
         return reportSummaryDtos;
@@ -133,48 +136,26 @@ public class ReportService {
     @Transactional
     public String updateReportStatus(ReportStatusUpdateDto request, String uuid, String role) {
         ReportBean report = null;
-        switch (role) {
-            case "Municipality":
-                MunicipalityBean municipality = municipalityService.findByUuid(uuid);
-                StatusBean statusBean = statusService.findById(2L);
-                AreaBean areaAssing = areaService.getArea(request.getUuidArea(), municipality.getUuid());
-                report = reportRepository.findByMunicipalityBeanAndUuid(municipality, request.getUuid());
-                report.setStatusBean(statusBean);
-                report.setAreaBean(areaAssing);
-                break;
-            case "Area":
-                StatusBean status = statusService.findById(3L);
-                AreaBean areaBean = areaService.getArea(uuid);
-                report = reportRepository.findByAreaBeanAndUuid(areaBean, request.getUuid());
-                report.setStatusDescription(request.getStatusDescription());
-                report.setStatusBean(status);
-                break;
+        if(role.equals(AUTH_MUNUCIPALITY)){
+            MunicipalityBean municipality = municipalityService.findByUuid(uuid);
+            StatusBean statusBean = statusService.findById(2L);
+            AreaBean areaAssing = areaService.getArea(request.getUuidArea(), municipality.getUuid());
+            report = reportRepository.findByMunicipalityBeanAndUuid(municipality, request.getUuid());
+            report.setStatusBean(statusBean);
+            report.setAreaBean(areaAssing);
+        }
+        else if(role.equals(AUTH_AREA)){
+            StatusBean status = statusService.findById(3L);
+            AreaBean areaBean = areaService.getArea(uuid);
+            report = reportRepository.findByAreaBeanAndUuid(areaBean, request.getUuid());
+            report.setStatusDescription(request.getStatusDescription());
+            report.setStatusBean(status);
         }
 
-        reportRepository.save(report);
 
-/*
-        StatusBean status = statusService.findById(request.getStatusId());
-        report.setStatusBean(status);
-        report.setStatusDescription(request.getStatusDescription());
         reportRepository.save(report);
 
 
-        String messageBody = String.format(
-                "ACTUALIZACIÓN DE REPORTE\n" +
-                        "Título: %s\n" +
-                        "Estado: %s\n" +
-                        report.getTitle(),
-                status.getType()
-        );
-
-
-        SmsBean sms = new SmsBean();
-        sms.setDeliveryDate(new Date());
-        sms.setReportBean(report);
-        sms.setMessage(messageBody);
-        smsRepository.save(sms);
-*/
         return "Reporte actualizado y SMS enviado.";
     }
 
@@ -183,16 +164,15 @@ public class ReportService {
         ReportBean report = null;
         StatusBean statusBean = statusService.findById(4L);
 
-        switch (role) {
-            case "Municipality":
-                MunicipalityBean municipality = municipalityService.findByUuid(uuid);
-                report = reportRepository.findByMunicipalityBeanAndUuid(municipality, request.getUuid());
-                break;
-            case "Area":
-                AreaBean areaBean = areaService.getArea(uuid);
-                report = reportRepository.findByAreaBeanAndUuid(areaBean, request.getUuid());
-                break;
+        if (role.equals(AUTH_MUNUCIPALITY)) {
+            MunicipalityBean municipality = municipalityService.findByUuid(uuid);
+            report = reportRepository.findByMunicipalityBeanAndUuid(municipality, request.getUuid());
         }
+        if (role.equals(AUTH_AREA)) {
+            AreaBean areaBean = areaService.getArea(uuid);
+            report = reportRepository.findByAreaBeanAndUuid(areaBean, request.getUuid());
+        }
+
         report.setStatusBean(statusBean);
         report.setStatusDescription(request.getStatusDescription());
         reportRepository.save(report);
@@ -207,32 +187,32 @@ public class ReportService {
     public List<ReportSummaryDto> findAllHistory(String uuid ,  String role) {
 
 
-        List<ReportBean> reports = new ArrayList<>();
+        List<ReportBean> reports;
         List<ReportSummaryDto> reportSummaryDtos = new ArrayList<>();
 
         switch (role) {
-            case "Colony":
+            case AUTH_COLONY:
                 ColonyBean colony = colonyService.findByUuid(uuid);
                 reports = reportRepository.findByColonyBean(colony);
                 break;
-            case "Municipality":
+            case AUTH_MUNUCIPALITY:
                 MunicipalityBean municipality = municipalityService.findByUuid(uuid);
                 reports = reportRepository.findByMunicipalityBean(municipality);
                 break;
-            case "Area":
+            case AUTH_AREA:
                 AreaBean areaBean = areaService.getArea(uuid);
                 reports = reportRepository.findByAreaBean(areaBean);
                 break;
-            case "State":
+            case AUTH_STATE:
                 StateBean stateBean = stateService.findByUuid(uuid);
                 reports = reportRepository.findByStateBean(stateBean);
                 break;
+            default:
+                reports = new ArrayList<>();
         }
 
 
-        reports.forEach(report -> {
-            reportSummaryDtos.add(convertToDto(report));
-        });
+        reports.forEach(report -> reportSummaryDtos.add(convertToDto(report)));
 
 
         return reportSummaryDtos;

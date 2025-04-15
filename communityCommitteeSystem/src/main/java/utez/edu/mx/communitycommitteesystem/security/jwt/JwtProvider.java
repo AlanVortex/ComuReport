@@ -80,7 +80,6 @@ public class JwtProvider {
         String bearerToken = req.getHeader(TOKEN_HEADER);
         if (bearerToken != null && bearerToken.startsWith(TOKEN_TYPE))
             return bearerToken.replace(TOKEN_TYPE, "");
-        // bearerToken.substring(TOKEN_TYPE.length());
         return null;
     }
 
@@ -115,13 +114,9 @@ public class JwtProvider {
             Claims claims =  resolveClaims(req);
             if (claims != null) {
                 List<Map<String, String>> authorityList = (List<Map<String, String>>) claims.get("roles");
-                String authority = authorityList.get(0).get("authority");
-                return authority;
+                return authorityList.get(0).get("authority");
             }
             return null;
-        } catch (ExpiredJwtException e) {
-            logger.error(e);
-            throw e;
         } catch (Exception e) {
             logger.error(e);
             throw e;
