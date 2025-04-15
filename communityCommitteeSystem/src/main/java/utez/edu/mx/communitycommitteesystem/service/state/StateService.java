@@ -1,28 +1,29 @@
 package utez.edu.mx.communitycommitteesystem.service.state;
 
 import jakarta.persistence.EntityNotFoundException;
-import lombok.Data;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import lombok.AllArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+import utez.edu.mx.communitycommitteesystem.controller.person.PersonUpdateContact;
 import utez.edu.mx.communitycommitteesystem.model.person.PersonBean;
 import utez.edu.mx.communitycommitteesystem.model.state.StateBean;
 import utez.edu.mx.communitycommitteesystem.model.state.StateRepository;
 import utez.edu.mx.communitycommitteesystem.service.person.PersonService;
-
-import java.util.List;
+import utez.edu.mx.communitycommitteesystem.service.report.ReportService;
 
 @Service
-@Data
-
 public class StateService {
 
     private final StateRepository stateRepository;
-
-
     private final PersonService personService;
-
-    private  BCryptPasswordEncoder bcryptPasswordEncoder;
-
+    private ReportService reportService;
+    public StateService(StateRepository stateRepository,
+                        PersonService personService,
+                        @Lazy ReportService reportService) {
+        this.stateRepository = stateRepository;
+        this.personService = personService;
+        this.reportService = reportService;
+    }
 
 
     public String registerStateWithAdmin(StateBean stateBean) {
@@ -37,13 +38,30 @@ public class StateService {
        return stateRepository.findByUuid(stateUuid).orElseThrow(() -> new EntityNotFoundException("Not fount state"));
     }
 
-    public StateBean update(StateBean stateBean) {
-        StateBean state = findByUuid(stateBean.getUuid());
-        state.getPersonBean().setPhone(stateBean.getPersonBean().getPhone());
-        state.getPersonBean().setEmail(stateBean.getPersonBean().getEmail());
-        return stateRepository.save(stateBean);
+    public StateBean update(String uuid, PersonUpdateContact personUpdateContact ) {
+        StateBean state = findByUuid(uuid);
+        state.getPersonBean().setPhone(personUpdateContact.getPhone());
+        state.getPersonBean().setEmail(personUpdateContact.getEmail());
+        return stateRepository.save(state);
     }
 
+    public String delete(String uuid) {
+        StateBean state = findByUuid(uuid);
+        if (!reportService.getReportsByColonyUuid(state.getUuid() , state.getPersonBean().getRole()).isEmpty()){
+            state.setStatus(false);
+            stateRepository.save(state);
+            return "State disabled successfully";
+        }
+        personService.delete(findByUuid(uuid).getPersonBean());
+        return "State delete succeessfully";
+    }
 
+    public String transfer(String uuid,StateBean stateBean) {
+        StateBean state = findByUuid(uuid);
+        PersonBean personBean =  personService.save(stateBean.getPersonBean());
+        state.setPersonBean(personBean);
+        stateRepository.save(state);
+        return "Estado y administrador registrados correctamente";
+    }
 
 }

@@ -13,5 +13,5 @@ public interface MunicipalityRepository  extends JpaRepository<MunicipalityBean 
     // findByUuid
     Optional<MunicipalityBean> findByUuid(String uuid);
 
-    List<MunicipalityBean> findByUuidAndStateBean(String uuid, StateBean stateBean);
+    Optional<MunicipalityBean> findByUuidAndStateBean(String uuid, StateBean stateBean);
 }

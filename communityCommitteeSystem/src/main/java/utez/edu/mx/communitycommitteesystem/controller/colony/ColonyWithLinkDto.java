@@ -21,5 +21,13 @@ public class ColonyWithLinkDto extends PersonDto {
         colonyBean.setNameColony(colonyName);
         return colonyBean;
     }
+    public ColonyBean toUpdateEntity(){
+        PersonBean personBean = getPersonBean();
+        ColonyBean colonyBean = new ColonyBean();
+        colonyBean.setPersonBean(personBean);
+        colonyBean.setNameColony(colonyName);
+        colonyBean.setUuid(uuid);
+        return colonyBean;
+    }
 
 }

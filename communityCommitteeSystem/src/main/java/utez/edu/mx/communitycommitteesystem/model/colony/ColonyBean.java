@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import utez.edu.mx.communitycommitteesystem.model.municipality.MunicipalityBean;
 import utez.edu.mx.communitycommitteesystem.model.person.PersonBean;
 import utez.edu.mx.communitycommitteesystem.model.report.ReportBean;
@@ -27,6 +29,7 @@ public class ColonyBean {
     private String uuid;
 
     @OneToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "idPerson")
     private PersonBean personBean;
 
@@ -35,7 +38,8 @@ public class ColonyBean {
     @JoinColumn(name = "idMunicipality")
     private MunicipalityBean municipalityBean;
 
-
+    @Column(name = "status", nullable = false)
+    private boolean status = true;
 
     @OneToMany(mappedBy = "colonyBean", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore

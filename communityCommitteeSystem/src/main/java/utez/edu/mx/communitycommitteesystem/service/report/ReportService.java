@@ -19,14 +19,17 @@ import utez.edu.mx.communitycommitteesystem.model.report.ReportBean;
 import utez.edu.mx.communitycommitteesystem.model.report.ReportRepository;
 import utez.edu.mx.communitycommitteesystem.model.sms.SmsBean;
 import utez.edu.mx.communitycommitteesystem.model.sms.SmsRepository;
+import utez.edu.mx.communitycommitteesystem.model.state.StateBean;
 import utez.edu.mx.communitycommitteesystem.model.status.StatusBean;
 import utez.edu.mx.communitycommitteesystem.service.area.AreaService;
 import utez.edu.mx.communitycommitteesystem.service.colony.ColonyService;
 import utez.edu.mx.communitycommitteesystem.service.municipality.MunicipalityService;
 import utez.edu.mx.communitycommitteesystem.service.sms.SmsService;
+import utez.edu.mx.communitycommitteesystem.service.state.StateService;
 import utez.edu.mx.communitycommitteesystem.service.status.StatusService;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -43,10 +46,8 @@ public class ReportService {
     private final ColonyService colonyService;
     private final StatusService statusService;
     private final AreaService areaService;
-
+    private final StateService stateService;
     private final SmsService smsService;
-
-    private final SmsRepository smsRepository;
     private FirebaseInitializer firebaseInitializer;
     private static final Logger logger = LogManager.getLogger(ReportService.class);
 
@@ -54,6 +55,7 @@ public class ReportService {
     public ReportBean registerReport(ReportDto dto, String loggedInColonyUuid) {
         ColonyBean colony = colonyService.findByUuid(loggedInColonyUuid);
         MunicipalityBean municipality = municipalityService.findByUuid(colony.getMunicipalityBean().getUuid());
+        StateBean stateBean = stateService.findByUuid(municipality.getStateBean().getUuid());
         StatusBean statusBean = statusService.findById(1L);
         ReportBean report = new ReportBean();
         report.setTitle(dto.getTitle());
@@ -62,18 +64,23 @@ public class ReportService {
         report.setColonyBean(colony);
         report.setMunicipalityBean(municipality);
         report.setStatusBean(statusBean);
+        report.setStateBean(stateBean);
 
         List ImageBeanList = new ArrayList();
-        for (MultipartFile file : dto.getFile()) {
-            ImageBean imageBean = new ImageBean();
-            imageBean.setImage(file.getOriginalFilename());
-            imageBean.setUrl(firebaseInitializer.upload(file));
-            imageBean.setReportBean(report);
-            logger.info(imageBean.getUrl());
-            ImageBeanList.add(imageBean);
+        if (!Arrays.stream(dto.getFile()).findFirst().get().isEmpty()) {
+            logger.info("Tamaño  de imagens de la report" + dto.getFile().length);
+            for (MultipartFile file : dto.getFile()) {
+                ImageBean imageBean = new ImageBean();
+                imageBean.setImage(file.getOriginalFilename());
+                imageBean.setUrl(firebaseInitializer.upload(file));
+                imageBean.setReportBean(report);
+                logger.info(imageBean.getUrl());
+                ImageBeanList.add(imageBean);
 
+            }
+            report.setImageBeanList(ImageBeanList);
         }
-        report.setImageBeanList(ImageBeanList);
+
 
         return reportRepository.save(report);
     }
@@ -95,6 +102,10 @@ public class ReportService {
             case "Area":
                 AreaBean areaBean = areaService.getArea(uuid);
                 reports = reportRepository.findByAreaBeanAndStatusBean_Id(areaBean, 2L);
+                break;
+            case "State":
+                StateBean stateBean = stateService.findByUuid(uuid);
+                reports = reportRepository.findByStateBean(stateBean);
                 break;
         }
 
@@ -129,7 +140,7 @@ public class ReportService {
             case "Municipality":
                 MunicipalityBean municipality = municipalityService.findByUuid(uuid);
                 StatusBean statusBean = statusService.findById(2L);
-                AreaBean areaAssing = areaService.getArea(request.getUuidArea(),municipality.getUuid());
+                AreaBean areaAssing = areaService.getArea(request.getUuidArea(), municipality.getUuid());
                 report = reportRepository.findByMunicipalityBeanAndUuid(municipality, request.getUuid());
                 report.setStatusBean(statusBean);
                 report.setAreaBean(areaAssing);

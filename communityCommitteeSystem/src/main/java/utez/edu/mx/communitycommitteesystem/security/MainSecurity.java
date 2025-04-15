@@ -27,10 +27,11 @@ import utez.edu.mx.communitycommitteesystem.security.service.UserDetailsServiceI
 public class MainSecurity {
     private final String[] WHITE_LIST = {
             "/api/auth/signin",
-            "/api/state"
+            "/api/state",
     };
     private final String[] State_LIST = {
             "/api/municipality",
+            "/api/state/transfer"
     };
     private final String[] Municipality_LIST = {
             "/api/colony",
