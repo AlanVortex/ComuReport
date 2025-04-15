@@ -1,21 +1,22 @@
 package utez.edu.mx.communitycommitteesystem.service.area;
 
 import jakarta.persistence.EntityNotFoundException;
-import lombok.AllArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
-import utez.edu.mx.communitycommitteesystem.exception.GlobalExceptionHandler;
+import utez.edu.mx.communitycommitteesystem.controller.person.PersonUpdateContact;
 import utez.edu.mx.communitycommitteesystem.model.area.AreaBean;
 import utez.edu.mx.communitycommitteesystem.model.area.AreaRepository;
+import utez.edu.mx.communitycommitteesystem.model.colony.ColonyBean;
 import utez.edu.mx.communitycommitteesystem.model.municipality.MunicipalityBean;
 import utez.edu.mx.communitycommitteesystem.model.person.PersonBean;
 import utez.edu.mx.communitycommitteesystem.service.municipality.MunicipalityService;
 import utez.edu.mx.communitycommitteesystem.service.person.PersonService;
+import utez.edu.mx.communitycommitteesystem.service.report.ReportService;
 
 import java.util.List;
 
-@AllArgsConstructor
 @Service
 public class AreaService {
 
@@ -23,11 +24,17 @@ public class AreaService {
     private final AreaRepository areaRepository;
 
     private final PersonService personService;
-
-
     private final MunicipalityService municipalityService;
+    private ReportService reportService;
 
     private static final Logger logger = LogManager.getLogger(AreaService.class);
+
+    public AreaService(AreaRepository areaRepository, PersonService personService, MunicipalityService municipalityService,@Lazy ReportService reportService) {
+        this.areaRepository = areaRepository;
+        this.personService = personService;
+        this.municipalityService = municipalityService;
+        this.reportService = reportService;
+    }
 
     public AreaBean getArea(String areaUuid, String municipalityUuid) {
         MunicipalityBean municipalityBean = municipalityService.findByUuid(municipalityUuid);
@@ -62,22 +69,33 @@ public class AreaService {
         return "Area registered successfully";
     }
 
-    public String update(AreaBean areaBean, String municipalityUuid) {
-
-
-       AreaBean areaUpdate =  getArea(areaBean.getUuid(), municipalityUuid);
-       areaUpdate.setNameArea(areaBean.getNameArea());
-        logger.info("Actualizo area salida com sucesso" + areaBean.getUuid());
+    public String update(PersonUpdateContact dto, String municipalityUuid) {
+       AreaBean areaUpdate =  getArea(dto.getUuid(), municipalityUuid);
+       areaUpdate.getPersonBean().setEmail(dto.getEmail());
+       areaUpdate.getPersonBean().setPhone(dto.getPhone());
         areaRepository.save(areaUpdate);
         return  "Updated successfully";
     }
 
-    public String delete(AreaBean areaBean, String municipalityUuid) {
-        AreaBean area =  getArea(areaBean.getUuid(), municipalityUuid);
+    public String delete(String uuidArea, String municipalityUuid) {
+        AreaBean area =  getArea(uuidArea, municipalityUuid);
         logger.info(area.getNameArea());
 
-//        personService.delete(area.getPersonBean());
-        return  "Delete successfully";
+        if (!reportService.getReportsByColonyUuid(uuidArea, area.getPersonBean().getRole()).isEmpty()) {
+            area.setStatus(false);
+            areaRepository.save(area);
+            return "Area disabled successfully";
+        }
+        personService.delete(getArea(uuidArea,municipalityUuid).getPersonBean());
+        return "Area delete successfully";
+    }
+    public String transfer(AreaBean areaBean, String uuid){
+        AreaBean area =  getArea(areaBean.getUuid(), uuid);
+        area.setPersonBean(areaBean.getPersonBean());
+        PersonBean personBean =  personService.save(area.getPersonBean());
+        area.setPersonBean(personBean);
+        areaRepository.save(area);
+        return "Area transfer successfully";
     }
 }
 
