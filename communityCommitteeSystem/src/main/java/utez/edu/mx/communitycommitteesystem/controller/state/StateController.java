@@ -3,15 +3,12 @@ package utez.edu.mx.communitycommitteesystem.controller.state;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import utez.edu.mx.communitycommitteesystem.controller.person.PersonUpdateContact;
 import utez.edu.mx.communitycommitteesystem.model.state.StateBean;
 import utez.edu.mx.communitycommitteesystem.security.jwt.JwtProvider;
 import utez.edu.mx.communitycommitteesystem.service.state.StateService;
-
-import java.util.List;
 
 @RestController
 @AllArgsConstructor

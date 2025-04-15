@@ -1,7 +1,6 @@
 package utez.edu.mx.communitycommitteesystem.service.colony;
 
 import jakarta.persistence.EntityNotFoundException;
-import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import utez.edu.mx.communitycommitteesystem.controller.colony.ColonyWithLinkDto;
@@ -44,6 +43,7 @@ public class ColonyService {
         ColonyBean colonyBean = findByUuid(municipalityService.findByUuid(uuidMunicipality),dto.getUuid());
         if (!reportService.getReportsByColonyUuid(dto.getUuid(), colonyBean.getPersonBean().getRole()).isEmpty()) {
             colonyBean.setStatus(false);
+            colonyBean.getPersonBean().setStatus(false);
             colonyRepository.save(colonyBean);
             return "Colony disabled successfully";
         }

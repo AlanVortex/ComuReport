@@ -12,7 +12,6 @@ import utez.edu.mx.communitycommitteesystem.model.municipality.MunicipalityBean;
 import utez.edu.mx.communitycommitteesystem.model.municipality.MunicipalityRepository;
 import utez.edu.mx.communitycommitteesystem.model.person.PersonBean;
 import utez.edu.mx.communitycommitteesystem.model.state.StateBean;
-import utez.edu.mx.communitycommitteesystem.security.jwt.JwtProvider;
 import utez.edu.mx.communitycommitteesystem.service.person.PersonService;
 import utez.edu.mx.communitycommitteesystem.service.report.ReportService;
 import utez.edu.mx.communitycommitteesystem.service.state.StateService;
@@ -25,7 +24,6 @@ public class MunicipalityService {
     private final StateService stateService;
     private final PersonService personService;
     private ReportService reportService;
-    private static final Logger logger = LogManager.getLogger(JwtProvider.class);
 
 
     public MunicipalityService(MunicipalityRepository municipalityRepository, StateService stateService, PersonService personService,
@@ -72,6 +70,7 @@ public class MunicipalityService {
         MunicipalityBean municipality = findByUuid(municipalityBean.getUuid(), uuidState);
         if (!reportService.getReportsByColonyUuid(municipality.getUuid(), municipality.getPersonBean().getRole()).isEmpty()) {
             municipality.setStatus(false);
+            municipality.getPersonBean().setStatus(false);
             municipalityRepository.save(municipality);
             return "Municipality disabled successfully";
         }

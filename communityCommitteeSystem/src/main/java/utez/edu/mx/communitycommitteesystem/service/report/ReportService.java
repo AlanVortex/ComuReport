@@ -141,7 +141,7 @@ public class ReportService {
         switch (role) {
             case "Municipality":
                 MunicipalityBean municipality = municipalityService.findByUuid(uuid);
-                StatusBean statusBean = statusService.findById(2L); // Procesado
+                StatusBean statusBean = statusService.findById(2L); 
                 AreaBean areaAssing = areaService.getArea(request.getUuidArea(), municipality.getUuid());
                 report = reportRepository.findByMunicipalityBeanAndUuid(municipality, request.getUuid());
                 report.setStatusBean(statusBean);
@@ -150,12 +150,12 @@ public class ReportService {
 
             case "Area":
                 AreaBean areaBean = areaService.getArea(uuid);
-                StatusBean statusBeann = statusService.findById(3L); // Realizado
+                StatusBean statusBeann = statusService.findById(3L); 
                 report = reportRepository.findByAreaBeanAndUuid(areaBean, request.getUuid());
                 report.setStatusBean(statusBeann);
                 report.setStatusDescription(request.getStatusDescription());
 
-                // Enviar SMS si status es 3 (realizado)
+                
                 sendSmsIfStatusApplies(report);
                 break;
         }
@@ -167,7 +167,7 @@ public class ReportService {
     @Transactional
     public String cancelReport(ReportStatusUpdateDto request, String uuid, String role) {
         ReportBean report = null;
-        StatusBean statusBean = statusService.findById(4L); // Cancelado
+        StatusBean statusBean = statusService.findById(4L); 
 
         switch (role) {
             case "Municipality":
@@ -183,7 +183,7 @@ public class ReportService {
         report.setStatusBean(statusBean);
         report.setStatusDescription(request.getStatusDescription());
 
-        // Enviar SMS si status es 4 (cancelado)
+        
         sendSmsIfStatusApplies(report);
 
         reportRepository.save(report);
