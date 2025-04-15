@@ -47,4 +47,10 @@ public class ReportController {
         return ResponseEntity.ok("Reporte actualizado");
 
     }
+
+    @GetMapping("/history")
+    public ResponseEntity<List<ReportSummaryDto>> history(HttpServletRequest req) {
+        List<ReportSummaryDto> reports = reportService.findAllHistory(jwtProvider.resolveClaimsJUuid(req) , jwtProvider.resolveClaimsJRole(req));
+        return ResponseEntity.ok(reports);
+    }
 }

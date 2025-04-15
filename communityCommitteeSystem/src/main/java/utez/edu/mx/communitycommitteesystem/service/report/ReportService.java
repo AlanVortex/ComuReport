@@ -207,4 +207,37 @@ public class ReportService {
                 .orElseThrow(() -> new RuntimeException("Report not found"));
 
     }
+    public List<ReportSummaryDto> findAllHistory(String uuid ,  String role) {
+
+
+        List<ReportBean> reports = new ArrayList<>();
+        List<ReportSummaryDto> reportSummaryDtos = new ArrayList<>();
+
+        switch (role) {
+            case "Colony":
+                ColonyBean colony = colonyService.findByUuid(uuid);
+                reports = reportRepository.findByColonyBean(colony);
+                break;
+            case "Municipality":
+                MunicipalityBean municipality = municipalityService.findByUuid(uuid);
+                reports = reportRepository.findByMunicipalityBean(municipality);
+                break;
+            case "Area":
+                AreaBean areaBean = areaService.getArea(uuid);
+                reports = reportRepository.findByAreaBean(areaBean);
+                break;
+            case "State":
+                StateBean stateBean = stateService.findByUuid(uuid);
+                reports = reportRepository.findByStateBean(stateBean);
+                break;
+        }
+
+
+        reports.forEach(report -> {
+            reportSummaryDtos.add(convertToDto(report));
+        });
+
+
+        return reportSummaryDtos;
+    }
 }

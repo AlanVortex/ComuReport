@@ -74,7 +74,7 @@ public class FirebaseInitializer {
             file.delete();
             return URL;
         } catch (Exception e) {
-            e.printStackTrace();
+           // e.printStackTrace();
             return "Image couldn't upload, Something went wrong";
         }
     }

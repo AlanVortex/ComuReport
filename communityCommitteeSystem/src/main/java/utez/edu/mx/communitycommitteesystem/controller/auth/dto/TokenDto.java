@@ -1,7 +1,6 @@
 package utez.edu.mx.communitycommitteesystem.controller.auth.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 

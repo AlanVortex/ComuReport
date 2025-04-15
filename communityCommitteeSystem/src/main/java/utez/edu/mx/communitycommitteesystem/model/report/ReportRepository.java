@@ -34,5 +34,7 @@ public interface ReportRepository extends JpaRepository<ReportBean, Long> {
     List<ReportBean> findByColonyBeanAndStatusBean_IdOrId(ColonyBean colony, long l, long l1);
 
     List<ReportBean> findByStateBean(StateBean stateBean);
+
+    List<ReportBean> findByAreaBean(AreaBean areaBean);
 }
 
