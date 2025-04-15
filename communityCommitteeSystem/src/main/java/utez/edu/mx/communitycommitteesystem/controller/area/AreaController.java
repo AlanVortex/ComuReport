@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import utez.edu.mx.communitycommitteesystem.controller.person.PersonUpdateContact;
 import utez.edu.mx.communitycommitteesystem.model.area.AreaBean;
 import utez.edu.mx.communitycommitteesystem.security.jwt.JwtProvider;
 import utez.edu.mx.communitycommitteesystem.service.area.AreaService;
@@ -42,12 +43,20 @@ public class AreaController {
 
     //Editar una area , con verificacion de su administrador de municipio
     @PutMapping("")
-    public ResponseEntity<String> updateByMunicipality(HttpServletRequest req, @RequestBody AreaDto areaDto) {
-        return ResponseEntity.ok(areaService.update(areaDto.toEntityUpdate(), jwtProvider.resolveClaimsJUuid(req)));
+    public ResponseEntity<String> updateByMunicipality(HttpServletRequest req,@Valid @RequestBody PersonUpdateContact dto) {
+        return ResponseEntity.ok(areaService.update(dto, jwtProvider.resolveClaimsJUuid(req)));
     }
+
     @DeleteMapping("")
     public ResponseEntity<String> deleteByMunicipality(HttpServletRequest req, @RequestBody AreaDto dto) {
-        return ResponseEntity.ok(areaService.delete(dto.toEntityUpdate(), jwtProvider.resolveClaimsJUuid(req)));
+        return ResponseEntity.ok(areaService.delete(dto.getUuid(), jwtProvider.resolveClaimsJUuid(req)));
     }
+
+    @PutMapping("/transfer")
+    public ResponseEntity<String> transfer(@Valid @RequestBody AreaDto dto, HttpServletRequest req) {
+
+        return ResponseEntity.ok(areaService.transfer(dto.toEntityUpdate(), jwtProvider.resolveClaimsJUuid(req)));
+    }
+
 
 }

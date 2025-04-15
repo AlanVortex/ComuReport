@@ -1,7 +1,6 @@
 package utez.edu.mx.communitycommitteesystem.service.state;
 
 import jakarta.persistence.EntityNotFoundException;
-import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import utez.edu.mx.communitycommitteesystem.controller.person.PersonUpdateContact;
@@ -49,6 +48,7 @@ public class StateService {
         StateBean state = findByUuid(uuid);
         if (!reportService.getReportsByColonyUuid(state.getUuid() , state.getPersonBean().getRole()).isEmpty()){
             state.setStatus(false);
+            state.getPersonBean().setStatus(false);
             stateRepository.save(state);
             return "State disabled successfully";
         }

@@ -12,21 +12,21 @@ import utez.edu.mx.communitycommitteesystem.model.person.PersonBean;
 public class AssignAdminMunicipalityDto extends PersonDto {
 
     @NotBlank
-    private String municipalityName;
+    private String nameMunicipality;
     private String uuid;
 
     public MunicipalityBean toEntity(){
         MunicipalityBean municipalityBean = new MunicipalityBean();
         PersonBean person = getPersonBean();
         municipalityBean.setPersonBean(person);
-        municipalityBean.setNameMunicipality(municipalityName);
+        municipalityBean.setNameMunicipality(nameMunicipality);
         return municipalityBean;
 
     }
 
     public MunicipalityBean toEntityUpdate(){
         MunicipalityBean municipalityBean = new MunicipalityBean();
-        municipalityBean.setNameMunicipality(municipalityName);
+        municipalityBean.setNameMunicipality(nameMunicipality);
         municipalityBean.setUuid(uuid);
         return municipalityBean;
 

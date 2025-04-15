@@ -24,6 +24,8 @@ public class AreaDto extends PersonDto {
     }
     public AreaBean toEntityUpdate() {
         AreaBean areaBean = new AreaBean();
+        PersonBean personBean = getPersonBean();
+        areaBean.setPersonBean(personBean);
         areaBean.setNameArea(nameArea);
         areaBean.setUuid(uuid);
         return areaBean;

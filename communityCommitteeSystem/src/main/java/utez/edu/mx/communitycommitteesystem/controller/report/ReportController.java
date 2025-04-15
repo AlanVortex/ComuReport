@@ -3,7 +3,6 @@ package utez.edu.mx.communitycommitteesystem.controller.report;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -46,5 +45,11 @@ public class ReportController {
         reportService.cancelReport( request,jwtProvider.resolveClaimsJUuid(req) , jwtProvider.resolveClaimsJRole(req));
         return ResponseEntity.ok("Reporte actualizado");
 
+    }
+
+    @GetMapping("/history")
+    public ResponseEntity<List<ReportSummaryDto>> history(HttpServletRequest req) {
+        List<ReportSummaryDto> reports = reportService.findAllHistory(jwtProvider.resolveClaimsJUuid(req) , jwtProvider.resolveClaimsJRole(req));
+        return ResponseEntity.ok(reports);
     }
 }
