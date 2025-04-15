@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import utez.edu.mx.communitycommitteesystem.controller.person.PersonUpdateContact;
 import utez.edu.mx.communitycommitteesystem.model.area.AreaBean;
 import utez.edu.mx.communitycommitteesystem.model.area.AreaRepository;
-import utez.edu.mx.communitycommitteesystem.model.colony.ColonyBean;
 import utez.edu.mx.communitycommitteesystem.model.municipality.MunicipalityBean;
 import utez.edu.mx.communitycommitteesystem.model.person.PersonBean;
 import utez.edu.mx.communitycommitteesystem.service.municipality.MunicipalityService;

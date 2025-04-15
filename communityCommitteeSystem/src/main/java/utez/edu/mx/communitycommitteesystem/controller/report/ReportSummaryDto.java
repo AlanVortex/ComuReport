@@ -11,19 +11,18 @@ import java.util.List;
 public class ReportSummaryDto {
     private String title;
     private List<ImageBean> image;
-    private LocalDate date;
+    private Date date;
     private String uuid;
     private String status;
     private String colonyName;
     private String municipalityName;
 
-    public ReportSummaryDto(String title, String s, Date reportDate, String status) {
-    }
+
 
     public ReportSummaryDto(String title, List<ImageBean> image, Date date, String name, String lastname, String status,String uuid) {
         this.title = title;
         this.image = image;
-        this.date = LocalDate.now();
+        this.date = date;
         this.colonyName = name;
         this.municipalityName = lastname;
         this.status = status;

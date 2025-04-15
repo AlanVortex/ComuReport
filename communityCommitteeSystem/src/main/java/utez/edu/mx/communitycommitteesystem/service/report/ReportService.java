@@ -1,6 +1,5 @@
 package utez.edu.mx.communitycommitteesystem.service.report;
 
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -17,8 +16,6 @@ import utez.edu.mx.communitycommitteesystem.model.image.ImageBean;
 import utez.edu.mx.communitycommitteesystem.model.municipality.MunicipalityBean;
 import utez.edu.mx.communitycommitteesystem.model.report.ReportBean;
 import utez.edu.mx.communitycommitteesystem.model.report.ReportRepository;
-import utez.edu.mx.communitycommitteesystem.model.sms.SmsBean;
-import utez.edu.mx.communitycommitteesystem.model.sms.SmsRepository;
 import utez.edu.mx.communitycommitteesystem.model.state.StateBean;
 import utez.edu.mx.communitycommitteesystem.model.status.StatusBean;
 import utez.edu.mx.communitycommitteesystem.service.area.AreaService;
@@ -93,7 +90,7 @@ public class ReportService {
         switch (role) {
             case "Colony":
                 ColonyBean colony = colonyService.findByUuid(uuid);
-                reports = reportRepository.findByColonyBeanAndStatusBean_IdOrId(colony, 1L, 2L);
+                reports = reportRepository.findByColonyBeanAndStatusBean_IdNot(colony, 3L);
                 break;
             case "Municipality":
                 MunicipalityBean municipality = municipalityService.findByUuid(uuid);

@@ -92,6 +92,8 @@ public class MainSecurity {
                         req.requestMatchers(new AntPathRequestMatcher(path)).hasAnyAuthority("Colony");
                     }
                     req.requestMatchers(new AntPathRequestMatcher("/api/report")).hasAnyAuthority("Colony","Municipality","Area");
+                    req.requestMatchers(new AntPathRequestMatcher("/api/report/history")).hasAnyAuthority("Colony","Municipality","Area");
+
                     req.anyRequest().authenticated();
                 })
                 .httpBasic(Customizer.withDefaults())

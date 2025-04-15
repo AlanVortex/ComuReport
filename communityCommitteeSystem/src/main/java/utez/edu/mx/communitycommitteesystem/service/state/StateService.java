@@ -1,7 +1,6 @@
 package utez.edu.mx.communitycommitteesystem.service.state;
 
 import jakarta.persistence.EntityNotFoundException;
-import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import utez.edu.mx.communitycommitteesystem.controller.person.PersonUpdateContact;
