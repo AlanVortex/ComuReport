@@ -15,7 +15,7 @@ class AssignAdminMunicipalityDtoTest {
 
 
         AssignAdminMunicipalityDto dto = new AssignAdminMunicipalityDto();
-        dto.setMunicipalityName("Tlalnepantla");
+        dto.setNameMunicipality("Tlalnepantla");
         dto.setName("John");
         dto.setLastname("Doe");
         dto.setEmail("john@example.com");
@@ -26,14 +26,14 @@ class AssignAdminMunicipalityDtoTest {
 
         // Assert
         assertNotNull(result);
-        assertEquals("Tlalnepantla", dto.getMunicipalityName());
+        assertEquals("Tlalnepantla", dto.getNameMunicipality());
     }
 
     @Test
     void toEntityUpdate_ShouldMapCorrectly() {
         // Arrange
         AssignAdminMunicipalityDto dto = new AssignAdminMunicipalityDto();
-        dto.setMunicipalityName("Naucalpan");
+        dto.setNameMunicipality("Naucalpan");
         dto.setUuid("321e4567-e89b-12d3-a456-426614174111");
 
         // Act
