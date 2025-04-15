@@ -72,6 +72,7 @@ public class MunicipalityService {
         MunicipalityBean municipality = findByUuid(municipalityBean.getUuid(), uuidState);
         if (!reportService.getReportsByColonyUuid(municipality.getUuid(), municipality.getPersonBean().getRole()).isEmpty()) {
             municipality.setStatus(false);
+            municipality.getPersonBean().setStatus(false);
             municipalityRepository.save(municipality);
             return "Municipality disabled successfully";
         }

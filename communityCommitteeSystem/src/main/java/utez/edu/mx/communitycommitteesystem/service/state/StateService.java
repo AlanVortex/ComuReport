@@ -49,6 +49,7 @@ public class StateService {
         StateBean state = findByUuid(uuid);
         if (!reportService.getReportsByColonyUuid(state.getUuid() , state.getPersonBean().getRole()).isEmpty()){
             state.setStatus(false);
+            state.getPersonBean().setStatus(false);
             stateRepository.save(state);
             return "State disabled successfully";
         }

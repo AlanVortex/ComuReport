@@ -44,6 +44,7 @@ public class ColonyService {
         ColonyBean colonyBean = findByUuid(municipalityService.findByUuid(uuidMunicipality),dto.getUuid());
         if (!reportService.getReportsByColonyUuid(dto.getUuid(), colonyBean.getPersonBean().getRole()).isEmpty()) {
             colonyBean.setStatus(false);
+            colonyBean.getPersonBean().setStatus(false);
             colonyRepository.save(colonyBean);
             return "Colony disabled successfully";
         }

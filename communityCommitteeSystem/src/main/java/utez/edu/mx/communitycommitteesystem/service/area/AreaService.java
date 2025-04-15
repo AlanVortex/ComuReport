@@ -83,6 +83,7 @@ public class AreaService {
 
         if (!reportService.getReportsByColonyUuid(uuidArea, area.getPersonBean().getRole()).isEmpty()) {
             area.setStatus(false);
+            area.getPersonBean().setStatus(false);
             areaRepository.save(area);
             return "Area disabled successfully";
         }
