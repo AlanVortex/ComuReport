@@ -90,7 +90,7 @@ public class ReportService {
         switch (role) {
             case "Colony":
                 ColonyBean colony = colonyService.findByUuid(uuid);
-                reports = reportRepository.findByColonyBeanAndStatusBean_IdNot(colony, 3L);
+                reports = reportRepository.findByColonyBeanAndStatusBean_IdNotAndStatusBean_IdNot(colony, 3L, 4L);
                 break;
             case "Municipality":
                 MunicipalityBean municipality = municipalityService.findByUuid(uuid);
