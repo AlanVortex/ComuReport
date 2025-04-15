@@ -49,6 +49,7 @@ public class ReportService {
     private final StateService stateService;
     private final SmsService smsService;
     private FirebaseInitializer firebaseInitializer;
+    private final SmsRepository smsRepository;
     private static final Logger logger = LogManager.getLogger(ReportService.class);
 
 
@@ -136,55 +137,37 @@ public class ReportService {
     @Transactional
     public String updateReportStatus(ReportStatusUpdateDto request, String uuid, String role) {
         ReportBean report = null;
+
         switch (role) {
             case "Municipality":
                 MunicipalityBean municipality = municipalityService.findByUuid(uuid);
-                StatusBean statusBean = statusService.findById(2L);
+                StatusBean statusBean = statusService.findById(2L); // Procesado
                 AreaBean areaAssing = areaService.getArea(request.getUuidArea(), municipality.getUuid());
                 report = reportRepository.findByMunicipalityBeanAndUuid(municipality, request.getUuid());
                 report.setStatusBean(statusBean);
                 report.setAreaBean(areaAssing);
                 break;
+
             case "Area":
-                StatusBean status = statusService.findById(3L);
                 AreaBean areaBean = areaService.getArea(uuid);
+                StatusBean statusBeann = statusService.findById(3L); // Realizado
                 report = reportRepository.findByAreaBeanAndUuid(areaBean, request.getUuid());
+                report.setStatusBean(statusBeann);
                 report.setStatusDescription(request.getStatusDescription());
-                report.setStatusBean(status);
+
+                // Enviar SMS si status es 3 (realizado)
+                sendSmsIfStatusApplies(report);
                 break;
         }
 
         reportRepository.save(report);
-
-/*
-        StatusBean status = statusService.findById(request.getStatusId());
-        report.setStatusBean(status);
-        report.setStatusDescription(request.getStatusDescription());
-        reportRepository.save(report);
-
-
-        String messageBody = String.format(
-                "ACTUALIZACIÓN DE REPORTE\n" +
-                        "Título: %s\n" +
-                        "Estado: %s\n" +
-                        report.getTitle(),
-                status.getType()
-        );
-
-
-        SmsBean sms = new SmsBean();
-        sms.setDeliveryDate(new Date());
-        sms.setReportBean(report);
-        sms.setMessage(messageBody);
-        smsRepository.save(sms);
-*/
-        return "Reporte actualizado y SMS enviado.";
+        return "Reporte actualizado.";
     }
 
     @Transactional
     public String cancelReport(ReportStatusUpdateDto request, String uuid, String role) {
         ReportBean report = null;
-        StatusBean statusBean = statusService.findById(4L);
+        StatusBean statusBean = statusService.findById(4L); // Cancelado
 
         switch (role) {
             case "Municipality":
@@ -196,11 +179,40 @@ public class ReportService {
                 report = reportRepository.findByAreaBeanAndUuid(areaBean, request.getUuid());
                 break;
         }
+
         report.setStatusBean(statusBean);
         report.setStatusDescription(request.getStatusDescription());
+
+        // Enviar SMS si status es 4 (cancelado)
+        sendSmsIfStatusApplies(report);
+
         reportRepository.save(report);
         return "Reporte cancelado";
     }
+
+    // Método auxiliar
+    private void sendSmsIfStatusApplies(ReportBean report) {
+        Long statusId = report.getStatusBean().getId();
+        if (statusId == 3L || statusId == 4L) {
+            String messageBody = String.format(
+                    "ACTUALIZACIÓN DE REPORTE\nTítulo: %s\nEstado: %s",
+                    report.getTitle(),
+                    report.getStatusBean().getType()
+            );
+
+            SmsBean sms = new SmsBean();
+            sms.setDeliveryDate(new Date());
+            sms.setReportBean(report);
+            sms.setMessage(messageBody);
+            smsRepository.save(sms);
+
+            String phone = report.getColonyBean().getPersonBean().getPhone();
+            if (phone != null && !phone.isEmpty()) {
+                smsService.sendSms(phone, messageBody);
+            }
+        }
+    }
+
 
     public ReportBean findByuuid(String uuid) {
         return reportRepository.findByUuid(uuid)
