@@ -5,6 +5,7 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import utez.edu.mx.communitycommitteesystem.controller.person.PersonUpdateContact;
 import utez.edu.mx.communitycommitteesystem.model.colony.ColonyBean;
 import utez.edu.mx.communitycommitteesystem.security.jwt.JwtProvider;
 import utez.edu.mx.communitycommitteesystem.service.colony.ColonyService;
@@ -42,8 +43,20 @@ public class ColonyController {
     }
     @DeleteMapping()
     public ResponseEntity<String> delete(HttpServletRequest req ,  @RequestBody ColonyWithLinkDto dto) {
-        colonyService.delete(jwtProvider.resolveClaimsJUuid(req) , dto.getUuid());
 
-        return ResponseEntity.ok("Delete success");
+
+        return ResponseEntity.ok( colonyService.delete(jwtProvider.resolveClaimsJUuid(req) , dto));
     }
+
+    @PutMapping()
+    public ResponseEntity<String> update(@Valid @RequestBody PersonUpdateContact dto, HttpServletRequest req) {
+
+        return ResponseEntity.ok(colonyService.update(dto , jwtProvider.resolveClaimsJUuid(req)));
+    }
+
+    @PutMapping("/transfer")
+    public ResponseEntity<String> transfer(@Valid @RequestBody ColonyWithLinkDto dto, HttpServletRequest req) {
+        return ResponseEntity.ok(colonyService.transfer(dto.toUpdateEntity() , jwtProvider.resolveClaimsJUuid(req)));
+    }
+
 }

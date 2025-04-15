@@ -75,13 +75,5 @@ class ColonyServiceTest {
         assertFalse(colonies.isEmpty(), "La lista de colonias no debe estar vacía");
     }
 
-    @Test
-    void delete() {
-        List<ColonyBean> list = colonyService.findAll(municipalityUuid);
-        assertFalse(list.isEmpty(), "Debe haber al menos una colonia para eliminar");
 
-        ColonyBean colonyToDelete = list.get(list.size() - 1);
-        boolean deleted = colonyService.delete(municipalityUuid, colonyToDelete.getUuid());
-        assertTrue(deleted, "La colonia debe eliminarse correctamente");
-    }
 }

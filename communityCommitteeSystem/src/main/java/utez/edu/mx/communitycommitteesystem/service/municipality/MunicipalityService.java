@@ -1,7 +1,6 @@
 package utez.edu.mx.communitycommitteesystem.service.municipality;
 
 import jakarta.persistence.EntityNotFoundException;
-import lombok.AllArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.context.annotation.Lazy;
@@ -19,7 +18,6 @@ import utez.edu.mx.communitycommitteesystem.service.report.ReportService;
 import utez.edu.mx.communitycommitteesystem.service.state.StateService;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class MunicipalityService {
