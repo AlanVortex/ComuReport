@@ -1,7 +1,9 @@
 package utez.edu.mx.communitycommitteesystem.service.state;
 
 import jakarta.persistence.EntityNotFoundException;
+import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import utez.edu.mx.communitycommitteesystem.controller.person.PersonUpdateContact;
 import utez.edu.mx.communitycommitteesystem.model.person.PersonBean;
@@ -11,18 +13,11 @@ import utez.edu.mx.communitycommitteesystem.service.person.PersonService;
 import utez.edu.mx.communitycommitteesystem.service.report.ReportService;
 
 @Service
+@AllArgsConstructor
 public class StateService {
 
     private final StateRepository stateRepository;
     private final PersonService personService;
-    private ReportService reportService;
-    public StateService(StateRepository stateRepository,
-                        PersonService personService,
-                        @Lazy ReportService reportService) {
-        this.stateRepository = stateRepository;
-        this.personService = personService;
-        this.reportService = reportService;
-    }
 
 
     public String registerStateWithAdmin(StateBean stateBean) {
@@ -46,13 +41,20 @@ public class StateService {
 
     public String delete(String uuid) {
         StateBean state = findByUuid(uuid);
-        if (!reportService.getReportsByColonyUuid(state.getUuid() , state.getPersonBean().getRole()).isEmpty()){
+        try
+        {
+            personService.delete(findByUuid(uuid).getPersonBean());
+
+        }
+        catch (DataIntegrityViolationException e) {
+
             state.setStatus(false);
             state.getPersonBean().setStatus(false);
+            personService.save(state.getPersonBean());
             stateRepository.save(state);
             return "State disabled successfully";
         }
-        personService.delete(findByUuid(uuid).getPersonBean());
+
         return "State delete succeessfully";
     }
 

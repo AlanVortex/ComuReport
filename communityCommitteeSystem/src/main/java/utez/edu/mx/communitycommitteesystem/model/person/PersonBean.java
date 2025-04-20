@@ -54,10 +54,10 @@ public class PersonBean {
     private List<SmsBean> smsBeanList;
     @JsonIgnore
     @Column(columnDefinition = "BOOL DEFAULT true")
-    private Boolean status;
+    private Boolean status = true;
     @JsonIgnore
     @Column(columnDefinition = "BOOL DEFAULT false")
-    private Boolean blocked;
+    private Boolean blocked = false;
     @JsonIgnore
     private String token;
 

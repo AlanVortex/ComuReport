@@ -90,7 +90,7 @@ public class AuthService {
 
             return ResponseEntity.ok(tokenDto);
         } catch (Exception e) {
-
+            System.out.println(e);
             String message = "CredentialsMismatch";
             if (e instanceof DisabledException)
                 message = "UserDisabled";

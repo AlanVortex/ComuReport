@@ -135,51 +135,43 @@ public class ReportService {
                 report.getUuid()
         );
     }
-
     @Transactional
     public String updateReportStatus(ReportStatusUpdateDto request, String uuid, String role) {
         ReportBean report = null;
 
-        switch (role) {
-            case "Municipality":
-                MunicipalityBean municipality = municipalityService.findByUuid(uuid);
-                StatusBean statusBean = statusService.findById(2L); // Procesado
-                AreaBean areaAssing = areaService.getArea(request.getUuidArea(), municipality.getUuid());
-                report = reportRepository.findByMunicipalityBeanAndUuid(municipality, request.getUuid());
-                report.setStatusBean(statusBean);
-                report.setAreaBean(areaAssing);
-                break;
+        if(role.equals(AUTH_MUNUCIPALITY)){
+            MunicipalityBean municipality = municipalityService.findByUuid(uuid);
+            StatusBean statusBean = statusService.findById(2L);
+            AreaBean areaAssing = areaService.getArea(request.getUuidArea(), municipality.getUuid());
+            report = reportRepository.findByMunicipalityBeanAndUuid(municipality, request.getUuid());
+            report.setStatusBean(statusBean);
+            report.setAreaBean(areaAssing);
+        }
+        else if(role.equals(AUTH_AREA)){
+            StatusBean status = statusService.findById(3L);
+            AreaBean areaBean = areaService.getArea(uuid);
+            report = reportRepository.findByAreaBeanAndUuid(areaBean, request.getUuid());
+            report.setStatusDescription(request.getStatusDescription());
+            report.setStatusBean(status);
+            sendSmsIfStatusApplies(report);
 
-            case "Area":
-                AreaBean areaBean = areaService.getArea(uuid);
-                StatusBean statusBeann = statusService.findById(3L); // Realizado
-                report = reportRepository.findByAreaBeanAndUuid(areaBean, request.getUuid());
-                report.setStatusBean(statusBeann);
-                report.setStatusDescription(request.getStatusDescription());
-
-                // Enviar SMS si status es 3 (realizado)
-                sendSmsIfStatusApplies(report);
-                break;
         }
 
         reportRepository.save(report);
         return "Reporte actualizado.";
     }
 
-    @Transactional
     public String cancelReport(ReportStatusUpdateDto request, String uuid, String role) {
         ReportBean report = null;
         StatusBean statusBean = statusService.findById(4L); // Cancelado
 
-        switch (role) {
-            case "Municipality":
-                MunicipalityBean municipality = municipalityService.findByUuid(uuid);
-                report = reportRepository.findByMunicipalityBeanAndUuid(municipality, request.getUuid());
-                break;
-            case "Area":
-                AreaBean areaBean = areaService.getArea(uuid);
-                report = reportRepository.findByAreaBeanAndUuid(areaBean, request.getUuid());
-                break;
+        if (role.equals(AUTH_MUNUCIPALITY)) {
+            MunicipalityBean municipality = municipalityService.findByUuid(uuid);
+            report = reportRepository.findByMunicipalityBeanAndUuid(municipality, request.getUuid());
+        }
+        if (role.equals(AUTH_AREA)) {
+            AreaBean areaBean = areaService.getArea(uuid);
+            report = reportRepository.findByAreaBeanAndUuid(areaBean, request.getUuid());
         }
 
         report.setStatusBean(statusBean);
