@@ -29,8 +29,6 @@ public class PersonService {
 
     // Guardar persona
     public PersonBean save(PersonBean person) {
-        person.setStatus(true);
-        person.setBlocked(false);
         return personRepository.save(person);
 
     }

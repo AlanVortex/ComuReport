@@ -4,7 +4,9 @@ import jakarta.persistence.EntityNotFoundException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import utez.edu.mx.communitycommitteesystem.controller.person.PersonUpdateContact;
 import utez.edu.mx.communitycommitteesystem.model.area.AreaBean;
 import utez.edu.mx.communitycommitteesystem.model.area.AreaRepository;
@@ -78,15 +80,19 @@ public class AreaService {
 
     public String delete(String uuidArea, String municipalityUuid) {
         AreaBean area =  getArea(uuidArea, municipalityUuid);
-        logger.info(area.getNameArea());
 
-        if (!reportService.getReportsByColonyUuid(uuidArea, area.getPersonBean().getRole()).isEmpty()) {
+        try{
+            logger.info(area.getNameArea());
+            personService.delete(getArea(uuidArea,municipalityUuid).getPersonBean());
+        }catch (DataIntegrityViolationException e){
+            System.out.println(e);
             area.setStatus(false);
             area.getPersonBean().setStatus(false);
+            personService.save(area.getPersonBean());
             areaRepository.save(area);
             return "Area disabled successfully";
         }
-        personService.delete(getArea(uuidArea,municipalityUuid).getPersonBean());
+
         return "Area delete successfully";
     }
     public String transfer(AreaBean areaBean, String uuid){

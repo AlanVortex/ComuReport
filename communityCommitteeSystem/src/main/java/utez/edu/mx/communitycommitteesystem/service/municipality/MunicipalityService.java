@@ -4,6 +4,7 @@ import jakarta.persistence.EntityNotFoundException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import utez.edu.mx.communitycommitteesystem.controller.municipality.AssignAdminMunicipalityDto;
@@ -26,8 +27,7 @@ public class MunicipalityService {
     private ReportService reportService;
 
 
-    public MunicipalityService(MunicipalityRepository municipalityRepository, StateService stateService, PersonService personService,
-                               @Lazy ReportService reportService) {
+    public MunicipalityService(MunicipalityRepository municipalityRepository, StateService stateService, PersonService personService, @Lazy ReportService reportService) {
         this.municipalityRepository = municipalityRepository;
         this.stateService = stateService;
         this.personService = personService;
@@ -68,13 +68,19 @@ public class MunicipalityService {
 
     public String delete(MunicipalityBean municipalityBean, String uuidState) {
         MunicipalityBean municipality = findByUuid(municipalityBean.getUuid(), uuidState);
-        if (!reportService.getReportsByColonyUuid(municipality.getUuid(), municipality.getPersonBean().getRole()).isEmpty()) {
+        try {
+            personService.delete(municipality.getPersonBean());
+
+
+        } catch (DataIntegrityViolationException e) {
             municipality.setStatus(false);
             municipality.getPersonBean().setStatus(false);
+            personService.save(municipality.getPersonBean());
             municipalityRepository.save(municipality);
             return "Municipality disabled successfully";
+
         }
-        personService.delete(municipality.getPersonBean());
+
         return "Municipality delete successfully";
 
 

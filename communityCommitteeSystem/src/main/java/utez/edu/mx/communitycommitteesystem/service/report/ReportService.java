@@ -135,7 +135,7 @@ public class ReportService {
                 report.getUuid()
         );
     }
-
+    @Transactional
     public String updateReportStatus(ReportStatusUpdateDto request, String uuid, String role) {
         ReportBean report = null;
 
