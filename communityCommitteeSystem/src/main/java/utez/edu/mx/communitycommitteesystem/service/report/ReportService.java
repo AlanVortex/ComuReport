@@ -183,9 +183,12 @@ public class ReportService {
         reportRepository.save(report);
         return "Reporte cancelado";
     }
+    @Transactional
+    protected void sendSmsIfStatusApplies(ReportBean report) {
+        try
+        {
 
-    // Método auxiliar
-    private void sendSmsIfStatusApplies(ReportBean report) {
+
         Long statusId = report.getStatusBean().getId();
         if (statusId == 3L || statusId == 4L) {
             String messageBody = String.format(
@@ -204,6 +207,9 @@ public class ReportService {
             if (phone != null && !phone.isEmpty()) {
                 smsService.sendSms(phone, messageBody);
             }
+        }
+        }catch (Exception e){
+            logger.info(e);
         }
     }
 
